@@ -12,18 +12,17 @@ use Illuminate\Support\Facades\Validator;
 class Institucioncontroller extends Controller
 {
 
-    // ----------------- Crud -----------------------------
-
-    public function listar()
+    public function Listar()
     {
-        $school = Institucion::all();
-        return view('Institucion')->with('listar', $school);
+        $instituciones = Institucion::all();
+        return view('institucion')->with('instituciones', $instituciones);
     }
 
 
     function Obtener(Request $request)
     {
-        return json_encode(DB::select("select * from institucion where codigo = ?", [$request->codigo]));
+        $institucion = Institucion::where("codigo", $request->codigo)->first();
+        return json_encode($institucion);
     }
     
     public function CrearInstitucion(Request $request)

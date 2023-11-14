@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class PrincipalController extends Controller
 {
 
-    public function home()
+    public function Home()
     {
 
         if (Auth::check())
@@ -25,7 +25,7 @@ class PrincipalController extends Controller
     }
 
 
-    public function iniciar(Request $request)
+    public function Iniciar(Request $request)
     {
         //Validador
         Validator::make(
@@ -55,7 +55,7 @@ class PrincipalController extends Controller
         return redirect()->back();
     }
 
-    public function logout()
+    public function Salir()
     {
         if (Auth::check())
             Auth::logout();
