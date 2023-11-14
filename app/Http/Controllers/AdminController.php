@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
-    public function listar()
+    public function Listar()
     {
         $listar = Usuario::where('rol', '<>', 'a')->paginate(6);
         return view('usuario', compact('listar'));

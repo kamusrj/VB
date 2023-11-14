@@ -13,7 +13,7 @@ class LibrosController extends Controller
 {
 
 
-    public function listar()
+    public function Listar()
     {
         $user = Libro::paginate(5);
 
@@ -22,7 +22,8 @@ class LibrosController extends Controller
 
     function Obtener(Request $request)
     {
-        return json_encode(DB::select("select * from libro where id = ?", [$request->id]));
+        $libro  = Libro::where("id", $request->id)->first();
+        return json_encode($libro);
     }
     public function CrearLibro(Request $request)
     {
@@ -63,10 +64,8 @@ class LibrosController extends Controller
             $book->save();
             Session::flash('success', 'Actulalizado correctamente');
             return redirect()->back();
-        } else {
-
-            return redirect()->back()->withErrors('Error al actualizar los datos');
         }
+        return redirect()->back()->withErrors('Error al actualizar los datos');
     }
 
     public function EliminarLibro(Request $request)
