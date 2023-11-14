@@ -14,6 +14,7 @@ class FacturaController extends Controller
     public function CrearFactura(Request $request)
     {
 
+
         Validator::make(
             $request->all(),
             Facturas::ruleCreate()
@@ -24,6 +25,7 @@ class FacturaController extends Controller
         $f = new Facturas();
 
         $f->id_venta = $request->id_venta;
+       
         $f->fecha = Carbon::now()->format('d-m-Y');
         $f->representante = $request->representante;
         $f->n_remision = $request->n_remision;
@@ -33,6 +35,7 @@ class FacturaController extends Controller
         $f->cupon_i = $request->cupon_i;
         $f->cupon_f = $request->cupon_f;
         $f->total_c = $request->tota_c;
+
         $f->save();
 
         return view("ventas/facturas")->with("enviado");

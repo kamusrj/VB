@@ -19,17 +19,17 @@
 
     <div class="container">
         <h2>Nueva venta directa </h2>
-        <form method="post" action="{{ url('factura/create/' . $tv->id) }}">
+        <form method="post" action="{{ url('factura/create') }}">
             @csrf
             @include('errorMj')
 
             <div class="form-group">
                 <label for="Primaria"></label>
-                <input type="hidden" name="id_venta" style="background-color: #f6f6f6;" class="form-control" id="id_venta" value="{{$tv->id}}" readonly>
+                <input type="text" name="id_venta" style="background-color: #f6f6f6;" class="form-control" id="id_venta" value="{{$tituloVenta->id}}" readonly>
             </div>
             <div class="form-group">
                 <label for="Primaria">Institución</label>
-                <input type="text" name="institucion" style="background-color: #f6f6f6;" class="form-control" id="institucion" value="{{ $tv->institucion }}" readonly>
+                <input type="text" name="institucion" style="background-color: #f6f6f6;" class="form-control" id="institucion" value="{{$tituloVenta->institucion}}" readonly>
             </div>
 
             <div class="form-group">
