@@ -106,7 +106,7 @@
             // Captura los campos de cupon inicial y cupon final
             var cuponInicialInput = $("input[name='cupon_i']");
             var cuponFinalInput = $("input[name='cupon_f']");
-            var totalCuponesInput = $("input[name='total_c']");
+            var totalCuponesInput = $("input[name='cupon_t']");
 
             // Agrega un evento de cambio a ambos campos
             cuponInicialInput.on('input', calcularTotalCupones);

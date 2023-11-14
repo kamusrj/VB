@@ -60,8 +60,8 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post("actualizar", "actualizarLibro");
         Route::post('eliminar', 'EliminarLibro');
     });
-    Route::controller(Institucioncontroller::class)->prefix('institucion')->group(function () {
-        Route::get("/", "Listar");
+    Route::controller(InstitucionController::class)->prefix('institucion')->group(function () {
+        Route::get("/", "ListarInstitucion");
         Route::post("obtener", "Obtener");
         Route::post("crear", "CrearInstitucion");
         Route::post("actualizar", "ActualizarInstitucion");
