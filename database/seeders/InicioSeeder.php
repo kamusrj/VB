@@ -72,21 +72,21 @@ class InicioSeeder extends Seeder
                     'clave' => Hash::make('password8'),
                     'nombre' => 'Laura',
                     'apellido' => 'Sánchez',
-                    'rol' => 'c'
+                    'rol' => 'e'
                 ],
                 [
                     'correo' => 'usuario9',
                     'clave' => Hash::make('password9'),
                     'nombre' => 'Miguel',
                     'apellido' => 'González',
-                    'rol' => 'g'
+                    'rol' => 'e'
                 ],
                 [
                     'correo' => 'usuario10',
                     'clave' => Hash::make('password10'),
                     'nombre' => 'Carmen',
                     'apellido' => 'Díaz',
-                    'rol' => 'b'
+                    'rol' => 'e'
                 ]
             ]
         );

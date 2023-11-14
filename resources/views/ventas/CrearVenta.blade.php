@@ -30,11 +30,13 @@
                 <label for="Director">Director</label>
                 <input type="text" name="director" class="form-control" id="director">
             </div>
-
-            <div class="form-group">
-                <label for="Encargado">Encargado</label>
-                <input type="text" name="encargado" class="form-control" id="encargado">
-            </div>
+            <label for="Vendedor">Encargado</label>
+            <select name="encargado" class="form-control" id="Vendedor">
+                <option value="">Selecciona un Encargado</option>
+                @foreach($encargado as $e)
+                <option value="{{ $e->correo }}">{{ $e->nombre }} {{ $e->apellido }}</option>
+                @endforeach
+            </select>
 
             <div class="form-group">
                 <label for="Vendedor">Teléfono</label>
