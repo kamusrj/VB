@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Facturas;
+use App\Models\TituloVenta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -10,11 +11,15 @@ use Illuminate\Support\Facades\Validator;
 class FacturaController extends Controller
 {
 
+    public function efectuviCambio($id)
+    {
+        $tituloVenta = TituloVenta::where('id', $id)->first();
+
+        return view('ventas/EfectivoCambio')->with('tituloVenta', $tituloVenta);
+    }
 
     public function CrearFactura(Request $request)
     {
-
-
         Validator::make(
             $request->all(),
             Facturas::ruleCreate()
@@ -23,7 +28,6 @@ class FacturaController extends Controller
         )->validate();
 
         $f = new Facturas();
-
         $f->id_venta = $request->id_venta;
 
         $f->fecha = Carbon::now()->format('d-m-Y');
@@ -36,7 +40,6 @@ class FacturaController extends Controller
         $f->cupon_f = $request->cupon_f;
         $f->total_c = $request->tota_c;
         $f->save();
-
         $data = $f->id_venta;
         return redirect("factura/efectivoCambio/$data");
     }
