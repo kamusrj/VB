@@ -15,7 +15,7 @@ class LibrosController extends Controller
 
     public function Listar()
     {
-        $user = Libro::paginate(5);
+        $user = Libro::paginate(10);
 
         return view('catalogo', compact('user'));
     }

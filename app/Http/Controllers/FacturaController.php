@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class FacturaController extends Controller
 {
 
+
     public function efectuviCambio($id)
     {
         $tituloVenta = TituloVenta::where('id', $id)->first();
@@ -21,8 +22,6 @@ class FacturaController extends Controller
 
     public function createEfectivo(Request $request)
     {
-
-
         Validator::make(
             $request->all(),
             EfectivoCambio::ruleCreate()
@@ -78,4 +77,5 @@ class FacturaController extends Controller
         $data = $f->id_venta;
         return redirect("factura/efectivoCambio/$data");
     }
+    
 }

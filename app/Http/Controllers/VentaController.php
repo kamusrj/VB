@@ -13,6 +13,27 @@ use Illuminate\Support\Facades\Validator;
 class VentaController extends Controller
 {
 
+
+
+    public function listaLibros()
+    {
+
+
+
+        return view('venatas.Libros');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public function CrearVenta($id)
     {
         $school = Institucion::where('codigo', $id)->first();

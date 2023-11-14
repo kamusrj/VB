@@ -54,7 +54,6 @@ class PrincipalController extends Controller
 
         return redirect()->back();
     }
-
     public function Salir()
     {
         if (Auth::check())
