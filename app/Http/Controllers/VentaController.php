@@ -25,9 +25,9 @@ class VentaController extends Controller
 
     public function CrearFacturas($id)
     {
-        $tv = TituloVenta::where('id', $id)->first();
+        $tituloVenta = TituloVenta::where('id', $id)->first();
 
-        return view('ventas/Facturas')->with('tv', $tv);
+        return view('ventas/Facturas')->with('tituloVenta', $tituloVenta);
     }
 
     public function Crear(Request $request)

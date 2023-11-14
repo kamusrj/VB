@@ -19,12 +19,12 @@ class Institucioncontroller extends Controller
     }
 
 
-    function Obtener(Request $request)
+    function ObtenerInstitucion(Request $request)
     {
         $institucion = Institucion::where("codigo", $request->codigo)->first();
         return json_encode($institucion);
     }
-    
+
     public function CrearInstitucion(Request $request)
     {
         Validator::make(
@@ -54,7 +54,6 @@ class Institucioncontroller extends Controller
 
             $school->nombre = $request->nombre;
 
-
             $school->save();
             Session::flash('success', 'Actulalizado correctamente');
             return redirect()->back();
@@ -65,9 +64,8 @@ class Institucioncontroller extends Controller
     }
     public function EliminarInstitucion(Request $request)
     {
-
         $school = $request->codigo;
-       
+
         $school = Institucion::find($school);
         if ($school) {
             $school->delete();

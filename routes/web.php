@@ -39,7 +39,9 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get("/", "listar");
     });
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
-        Route::post("create/{id}", "CrearFactura");
+        Route::post("create", "CrearFactura");
+        Route::get('efectivoCambio/{id}', 'efectuviCambio');
+        Route::post('createEfectivo', 'createEfectivo');
         Route::get('/libro/{id}', 'obtenerDatosDelLibro');
         Route::post("update", "actualizarFactura");
         Route::post('delete', 'EliminarFactura ');
@@ -68,7 +70,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     });
     // prueba 4 partes
 
-  
+
 });
 
 /*Route::fallback(function () {
