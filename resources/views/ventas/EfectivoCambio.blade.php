@@ -20,7 +20,7 @@
     <div class="container">
         <h2> {{$tituloVenta->institucion}}</h2>
 
-        <form method="post" action="{{ url('factura/create') }}">
+        <form method="post" action="{{ url('factura/createEfectivo') }}">
             @csrf
             @include('errorMj')
 
@@ -43,49 +43,49 @@
                             <tr>
                                 <th scope="row" class="col-4">$0.01</th>
                                 <td class="col-8">
-                                    <input type="number" step="0.01" name="c_1" class="form-control" id="c_1">
+                                    <input type="number" step="0.01" name="centavo_uno" class="form-control" id="c_1">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="col-4">$0.05</th>
                                 <td class="col-8">
-                                    <input type="text" name="c_5" class="form-control" id="c_5">
+                                    <input type="text" name="centavo_cinco" class="form-control" id="c_5">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="col-4">$0.10</th>
                                 <td class="col-8">
-                                    <input type="text" name="c_10" class="form-control" id="c_10">
+                                    <input type="text" name="centavo_diez" class="form-control" id="c_10">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="col-4">$0.25</th>
                                 <td class="col-8">
-                                    <input type="text" name="c_25" class="form-control" id="c_25">
+                                    <input type="text" name="centavo_veinticinco" class="form-control" id="c_25">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="col-4">$1.00</th>
                                 <td class="col-8">
-                                    <input type="text" name="d_1" class="form-control" id="d_1">
+                                    <input type="text" name="dolar_uno" class="form-control" id="d_1">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="col-4">$5.00</th>
                                 <td class="col-8">
-                                    <input type="text" name="d_5" class="form-control" id="d_5">
+                                    <input type="text" name="dolar_cinco" class="form-control" id="d_5">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="col-4">$10.00</th>
                                 <td class="col-8">
-                                    <input type="number" name="d_10" class="form-control" id="d_10">
+                                    <input type="text" name="dolar_diez" class="form-control" id="d_10">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="col-4">$20.00</th>
                                 <td class="col-8">
-                                    <input type="text" name="d_10" class="form-control" id="d_10">
+                                    <input type="text" name="dolar_veinte" class="form-control" id="d_10">
                                 </td>
                             </tr>
                             <tr>
@@ -110,7 +110,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            var camposMonetarios = $('input[name^="c_"], input[name^="d_"]');
+            var camposMonetarios = $('input[id^="c_"], input[id^="d_"]');
             camposMonetarios.on('input', function() {
                 calcularTotal();
             });
@@ -121,7 +121,7 @@
                     var valor = parseFloat($(this).val()) || 0;
                     total += valor;
                 });
-                $('input[name="total"]').val('$' + total.toFixed(2));
+                $('input[name="total"]').val(total.toFixed(2));
             }
         });
     </script>

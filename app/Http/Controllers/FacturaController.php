@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EfectivoCambio;
 use App\Models\Facturas;
 use App\Models\TituloVenta;
 use Carbon\Carbon;
@@ -17,6 +18,40 @@ class FacturaController extends Controller
 
         return view('ventas/EfectivoCambio')->with('tituloVenta', $tituloVenta);
     }
+
+    public function createEfectivo(Request $request)
+    {
+
+
+        Validator::make(
+            $request->all(),
+            EfectivoCambio::ruleCreate()
+        )->addCustomAttributes(
+            EfectivoCambio::attrCreate()
+        )->validate();
+
+
+        $ec = new EfectivoCambio();
+
+        $ec->id_venta = $request->id_venta;
+        $ec->fecha = date('d-m-Y');
+        $ec->centavo_uno = $request->centavo_uno;
+        $ec->centavo_cinco = $request->centavo_cinco;
+        $ec->centavo_diez = $request->centavo_diez;
+        $ec->centavo_veinticinco = $request->centavo_veinticinco;
+        $ec->dolar_uno = $request->dolar_uno;
+        $ec->dolar_cinco = $request->dolar_cinco;
+        $ec->dolar_diez = $request->dolar_diez;
+        $ec->dolar_veinte = $request->dolar_veinte;
+        $ec->total = $request->total;
+
+        $ec->save();
+
+        $data = $ec->id_venta;
+        return redirect("factura/efectivoCambio/$data");
+    }
+
+
 
     public function CrearFactura(Request $request)
     {
