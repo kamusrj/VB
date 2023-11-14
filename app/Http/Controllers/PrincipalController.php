@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Roles;
+use App\Models\Usuario;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+class PrincipalController extends Controller
+{
+
+    public function home()
+    {
+
+        if (Auth::check())
+            if (in_array(Auth::user()->rol, ['a', 'g'])) {
+                return view('perfil');
+            } else {
+                return redirect('pedidos');
+            }
+        return view("login");
+    }
+
+
+    public function iniciar(Request $request)
+    {
+        //Validador
+        Validator::make(
+            $request->all(),
+            Usuario::ruleLogin()
+        )->setAttributeNames(
+            Usuario::attrLogin()
+        )->validate();
+
+        $user = Usuario::where("correo", $request->username)->first();
+
+        // Auntenticador
+        /**
+         * Clase Usuario, el middleware, Login 
+         */
+        if ($user)
+            if (Hash::check($request->password, $user->clave))
+                Auth::login($user);
+
+        //Autorizador Clase Auth = Null = False
+        if (Auth::check())
+            $request->session()->regenerate();
+        else
+            return redirect()->back()->withErrors('Usuario o Contraseña no validos');
+
+
+        return redirect()->back();
+    }
+
+    public function logout()
+    {
+        if (Auth::check())
+            Auth::logout();
+
+        return redirect("/");
+    }
+}
