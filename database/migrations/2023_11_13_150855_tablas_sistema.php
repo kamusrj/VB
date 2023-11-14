@@ -39,14 +39,14 @@ return new class extends Migration
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
             $table->string('fecha', 200);
-            $table->double('c_1')->notNull();
-            $table->double('c_5')->notNull();
-            $table->double('c_10')->notNull();
-            $table->double('c_25')->notNull();
-            $table->double('d_1')->notNull();
-            $table->double('d_5')->notNull();
-            $table->double('d_10')->notNull();
-            $table->double('d_25')->notNull();
+            $table->double('centavo_uno')->notNull();
+            $table->double('centavo_cinco')->notNull();
+            $table->double('centavo_diez')->notNull();
+            $table->double('centavo_veinticinco')->notNull();
+            $table->double('dolar_uno')->notNull();
+            $table->double('dolar_cinco')->notNull();
+            $table->double('dolar_diez')->notNull();
+            $table->double('dolar_veinte')->notNull();
             $table->double('total')->notNull();
         });
         Schema::create('inventario', function (Blueprint $table) {

@@ -11,7 +11,7 @@ class TituloVenta extends Model
 
 
     protected $table = "titulo_venta";
-
+    protected $fillable = ['id'];
     public $timestamps = false;
 
     static function ruleCreate(): array

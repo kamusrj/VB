@@ -14,18 +14,18 @@ class Institucioncontroller extends Controller
 
     // ----------------- Crud -----------------------------
 
-    public function listar()
+    public function listarInstitucion()
     {
         $school = Institucion::all();
         return view('Institucion')->with('listar', $school);
     }
 
 
-    function Obtener(Request $request)
+    function ObtenerInstitucion(Request $request)
     {
         return json_encode(DB::select("select * from institucion where codigo = ?", [$request->codigo]));
     }
-    
+
     public function CrearInstitucion(Request $request)
     {
         Validator::make(
@@ -55,7 +55,6 @@ class Institucioncontroller extends Controller
 
             $school->nombre = $request->nombre;
 
-
             $school->save();
             Session::flash('success', 'Actulalizado correctamente');
             return redirect()->back();
@@ -66,9 +65,8 @@ class Institucioncontroller extends Controller
     }
     public function EliminarInstitucion(Request $request)
     {
-
         $school = $request->codigo;
-       
+
         $school = Institucion::find($school);
         if ($school) {
             $school->delete();
