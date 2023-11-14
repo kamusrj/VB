@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::controller(PrincipalController::class)->group(function () {
-    Route::get('/', 'home');
-    Route::post('iniciar', 'iniciar');
-    Route::get('salir', 'logout');
+    Route::get('/', 'Home');
+    Route::post('iniciar', 'Iniciar');
+    Route::get('salir', 'Salir');
 });
 
 Route::middleware(UsuarioMiddleware::class)->group(function () {
@@ -53,19 +53,19 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('ventaf/{id}', 'CrearFacturas');
     });
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {
-        Route::get("/", "listar");
-        Route::post("up", "Obtener");
+        Route::get("/", "Listar");
+        Route::post("obtener", "Obtener");
         Route::post("buscar", "Buscar");
         Route::post("crear", "CrearLibro");
-        Route::post("update", "actualizarLibro");
-        Route::post('delete', 'EliminarLibro');
+        Route::post("actualizar", "actualizarLibro");
+        Route::post('eliminar', 'EliminarLibro');
     });
     Route::controller(Institucioncontroller::class)->prefix('institucion')->group(function () {
-        Route::get("/", "listarInstitucion");
-        Route::post("up", "Obtener");
+        Route::get("/", "Listar");
+        Route::post("obtener", "Obtener");
         Route::post("crear", "CrearInstitucion");
-        Route::post("update", "actualizarInstitucion");
-        Route::post('delete', 'EliminarInstitucion');
+        Route::post("actualizar", "ActualizarInstitucion");
+        Route::post('eliminar', 'EliminarInstitucion');
         Route::get('venta/{id}', 'venta');
     });
     // prueba 4 partes
