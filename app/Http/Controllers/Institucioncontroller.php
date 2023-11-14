@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class Institucioncontroller extends Controller
 {
 
-    public function Listar()
+    public function ListarInstitucion()
     {
         $instituciones = Institucion::all();
         return view('institucion')->with('instituciones', $instituciones);
