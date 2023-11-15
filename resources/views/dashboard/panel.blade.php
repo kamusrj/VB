@@ -39,15 +39,13 @@
                     <td>{{ $numero }}</td>
                     <td>{{ $item->institucion}}</td>
                     <td>{{ $item->director }}</td>
-                    <td> {{$item->nombre}}</td>
+                    <td>{{ $item->nombre_encargado }} {{ $item->apellido_encargado }}</td>
                     <td>{{ $item->telefono }}</td>
-                    <td> {{$item->nombre}}</td>
+                    <td>{{ $item->nombre_vendedor }} {{ $item->apellido_vendedor }}</td>
                     <td>{{ $item->zona}}</td>
                     <td>{{ $item->direccion}}</td>
                     <td></td>
                 </tr>
-
-
                 @php
                 $numero++;
                 @endphp

@@ -14,15 +14,6 @@ class TituloVenta extends Model
     protected $fillable = ['id'];
     public $timestamps = false;
 
-    public function encargado()
-    {
-        return $this->belongsTo(Usuario::class, 'encargado', 'correo');
-    }
-
-    public function vendedor()
-    {
-        return $this->belongsTo(Usuario::class, 'vendedor', 'correo');
-    }
 
     static function ruleCreate(): array
     {
