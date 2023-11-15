@@ -25,7 +25,7 @@
 
             <div class="form-group">
                 <label for="Primaria"></label>
-                <input type="text" name="id_venta" style="background-color: #f6f6f6;" class="form-control" id="id_venta" value="{{$tituloVenta->id}}" readonly>
+                <input type="hidden" name="id_venta" style="background-color: #f6f6f6;" class="form-control" id="id_venta" value="{{$tituloVenta->id}}" readonly>
             </div>
             <div class="form-group">
                 <label for="Primaria">Institución</label>

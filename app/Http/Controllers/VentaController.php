@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Institucion;
+use App\Models\Inventario;
 use App\Models\TituloVenta;
 use App\Models\Usuario;
-
+use Exception;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
@@ -15,24 +16,19 @@ class VentaController extends Controller
 
 
 
-    public function listaLibros()
+    public function inventario(Request $request)
     {
+        $libros = $request->input('libros_seleccionados', []);
 
-
-
-        return view('venatas.Libros');
+        foreach ($libros as $libro_id) {
+            $in = new Inventario();
+            $in->id_venta = $request->id_venta;
+            $in->fecha = date('Y-m-d');
+            $in->id_libro = $libro_id;
+            $in->save();
+        }
+        return "correcto";
     }
-
-
-
-
-
-
-
-
-
-
-
 
     public function CrearVenta($id)
     {

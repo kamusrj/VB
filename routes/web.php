@@ -43,6 +43,8 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('createEfectivo', 'createEfectivo');
     });
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
+
+        Route::post('inventario', 'inventario');
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
         Route::get('ventac/{id}', 'CrearVenta');

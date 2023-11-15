@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\EfectivoCambio;
 use App\Models\Facturas;
+use App\Models\Institucion;
+use App\Models\Libro;
 use App\Models\TituloVenta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -46,8 +48,13 @@ class FacturaController extends Controller
 
         $ec->save();
 
-        $data = $ec->id_venta;
-        return redirect("factura/efectivoCambio/$data");
+        $id = $request->id_venta;
+        $tituloVenta = TituloVenta::where('id', $id)->first();
+        $libro = Libro::all();
+
+        return view("ventas/Libros")
+            ->with('libro', $libro)
+            ->with('tituloVenta', $tituloVenta);
     }
 
 
@@ -77,5 +84,4 @@ class FacturaController extends Controller
         $data = $f->id_venta;
         return redirect("factura/efectivoCambio/$data");
     }
-    
 }
