@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('institucion');
             $table->string('director', 200);
             $table->string('encargado', 200);
+            $table->foreign('encargado')->references('correo')->on('usuario');
             $table->string('telefono', 50);
             $table->string('vendedor');
             $table->foreign('vendedor')->references('correo')->on('usuario');

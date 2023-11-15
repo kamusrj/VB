@@ -4,13 +4,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\Institucioncontroller;
 use App\Http\Controllers\LibrosController;
-use App\Http\Controllers\PedidosController;
+use App\Http\Controllers\PanelControl;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\VentaController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UsuarioMiddleware;
-use App\Models\Institucion;
-use App\Models\PanelControl;
+
 use Illuminate\Support\Facades\Route;
 
 
