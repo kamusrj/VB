@@ -10,10 +10,8 @@ use App\Http\Controllers\VentaController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UsuarioMiddleware;
 use App\Models\Institucion;
+use App\Models\PanelControl;
 use Illuminate\Support\Facades\Route;
-
-
-
 
 
 
@@ -22,6 +20,7 @@ Route::controller(PrincipalController::class)->group(function () {
     Route::post('iniciar', 'Iniciar');
     Route::get('salir', 'Salir');
 });
+
 
 Route::middleware(UsuarioMiddleware::class)->group(function () {
 
@@ -42,8 +41,8 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('efectivoCambio/{id}', 'efectuviCambio');
         Route::post('createEfectivo', 'createEfectivo');
     });
-    Route::controller(VentaController::class)->prefix('venta')->group(function () {
 
+    Route::controller(VentaController::class)->prefix('venta')->group(function () {
         Route::post('inventario', 'inventario');
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
@@ -51,6 +50,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('ventaf/{id}', 'CrearFacturas');
         Route::post('libros', 'listaLibros');
     });
+
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {
         Route::get("/", "Listar");
         Route::post("obtener", "Obtener");
@@ -67,6 +67,18 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post("actualizar", "ActualizarInstitucion");
         Route::post('eliminar', 'EliminarInstitucion');
         Route::get('venta/{id}', 'venta');
+    });
+
+
+
+
+    //  Panel de control ventas
+
+
+    Route::controller(PanelControl::class)->prefix('panel')->group(function () {
+
+
+        Route::get('/', 'ListarVentas');
     });
 });
 

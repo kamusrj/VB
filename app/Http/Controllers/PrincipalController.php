@@ -16,10 +16,10 @@ class PrincipalController extends Controller
     {
 
         if (Auth::check())
-            if (in_array(Auth::user()->rol, ['a', 'g'])) {
+            if (in_array(Auth::user()->rol, ['a', 'g', 'c'])) {
                 return view('perfil');
             } else {
-                return redirect('pedidos');
+                return view('dashboard.panel');
             }
         return view("login");
     }

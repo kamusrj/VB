@@ -56,8 +56,8 @@ return new class extends Migration
             $table->string('fecha', 200);
             $table->unsignedBigInteger('id_libro');
             $table->foreign('id_libro')->references('id')->on('libro');
-            $table->integer('stock');
-            $table->double('precio')->notNull();
+            $table->integer('stock')->nullable();
+            $table->double('precio')->nullable();
         });
     }
     public function down(): void
