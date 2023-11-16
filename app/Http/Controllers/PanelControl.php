@@ -35,8 +35,15 @@ class PanelControl extends Controller
 
     public function inventarioVenta($id)
     {
-        $inventario = Inventario::where('id_venta', $id)->first();
-        dd($inventario);
+        $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
+            ->select(
+                'inventario.*',
+                'lb.nombre as nombre_libro'
+            )
+            ->where('id_venta', $id)->get();
+
+
+
         return view('dashboard.inventario')->with('inventario', $inventario);
     }
 }

@@ -39,8 +39,8 @@
             <div class="card border-0">
                 <div class="card-body text-center">
                     <a href="{{ url('institucion/') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
-                        <i class="fas fa-school"></i>
-                        <span>Instituciones</span>
+                        <i class="fa-solid fa-school-lock"></i>
+                        <span>Cierre de venta </span>
                     </a>
                 </div>
             </div>

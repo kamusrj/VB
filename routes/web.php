@@ -76,10 +76,18 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
     Route::controller(PanelControl::class)->prefix('panel')->group(function () {
 
+        //dashboard
+
         Route::get('perfilVenta/{id}', 'perfilVenta');
         Route::get('/', 'ListarVentas');
 
         Route::get('inventario/{id}', 'inventarioVenta');
+
+
+        //Cierre de venta 
+
+
+
     });
 });
 
