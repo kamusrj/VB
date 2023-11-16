@@ -26,7 +26,7 @@
                     <th>vendedor</th>
                     <th>zona</th>
                     <th>direccion</th>
-                    <th>Acciones</th>
+                    <th>Ver / Estado</th>
 
                 </tr>
             </thead>
@@ -44,7 +44,20 @@
                     <td>{{ $item->nombre_vendedor }} {{ $item->apellido_vendedor }}</td>
                     <td>{{ $item->zona}}</td>
                     <td>{{ $item->direccion}}</td>
-                    <td></td>
+
+                    <td>
+                        <a href="{{ url('panel/perfilVenta/' . $item->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+
+                        @if ($item->estado === 'on')
+                        <i class="fa-solid fa-toggle-on fa-2xl" style="color: #029d96;"></i>
+                        @endif
+                        @if ($item->estado === 'off')
+                        <i class="fa-solid fa-toggle-off fa-2xl" style="color: #eb0d68;"></i>
+                        @endif
+                    </td>
+
                 </tr>
                 @php
                 $numero++;
@@ -53,12 +66,7 @@
             </tbody>
         </table>
     </div>
-
 </div>
 
-
-
-
 @endsection
-
 @section('script')

@@ -76,8 +76,10 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
     Route::controller(PanelControl::class)->prefix('panel')->group(function () {
 
-
+        Route::get('perfilVenta/{id}', 'perfilVenta');
         Route::get('/', 'ListarVentas');
+
+        Route::get('inventario/{id}', 'inventarioVenta');
     });
 });
 

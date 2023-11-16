@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('vendedor')->references('correo')->on('usuario');
             $table->string('zona', 200);
             $table->string('direccion', 80);
+            $table->set('estado', ['on', 'off'])->default('on');
         });
         Schema::create('nota_remision', function (Blueprint $table) {
             $table->id();
