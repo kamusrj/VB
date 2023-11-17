@@ -41,7 +41,7 @@
 <div class="container">
     <form action="" method="post"><br><br><br><br>
         <label for="fecha">Fecha de inicio de la venta:</label>
-        <input type="date" name="fecha" readonly>
+        <input type="date" name="fecha" require>
         <div class="table-responsive">
 
             <table class="table table-striped">

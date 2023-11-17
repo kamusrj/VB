@@ -11,6 +11,13 @@
         <div class="form-group">
             <label for="Primaria"></label>
             <input type="hidden" name="codigo" style="background-color: #f6f6f6;" class="form-control" id="codigo" value="{{$school->codigo}}" readonly>
+            @if (Auth::check())
+            <input type="hidden" name="autor" style="background-color: #f6f6f6;" class="form-control" id="autor" value="{{ Auth::user()->nombre }} {{ Auth::user()->apellido}}" readonly>
+            @endif
+        </div>
+        <div class="form-group">
+            <label for="Director">Fecha de inicio</label>
+            <input type="date" name="fecha_creacion" class="form-control" id="fecha_creacion" style="width: 45%;">
         </div>
         <div class="form-group">
             <label for="Primaria">Institución</label>
@@ -50,7 +57,7 @@
         <div class="form-group">
             <label for="direccion">Dirección</label>
             <input type="text" name="direccion" class="form-control" id="direccion">
-        </div>
+        </div><br>
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
 </div>

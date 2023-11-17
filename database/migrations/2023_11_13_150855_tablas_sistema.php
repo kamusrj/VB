@@ -20,6 +20,8 @@ return new class extends Migration
             $table->foreign('vendedor')->references('correo')->on('usuario');
             $table->string('zona', 200);
             $table->string('direccion', 80);
+            $table->string('autor', 200);
+            $table->string('fecha_venta', 200);
             $table->set('estado', ['on', 'off'])->default('on');
         });
         Schema::create('nota_remision', function (Blueprint $table) {
@@ -60,9 +62,9 @@ return new class extends Migration
             $table->foreign('id_libro')->references('id')->on('libro');
             $table->integer('stock')->default(0);
             $table->double('precio')->default(0);
-            $table->string('fecha_venta', 200)->nullable();
             $table->integer('descuento')->nullable();
-            $table->double('reintegro')->nullable();;
+            $table->integer('ofrecimiento_a')->nullable();
+            $table->string('autor', 200);
         });
     }
     public function down(): void

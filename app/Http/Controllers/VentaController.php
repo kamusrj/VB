@@ -52,6 +52,9 @@ class VentaController extends Controller
     }
     public function Crear(Request $request)
     {
+
+
+        dd($request->autor);
         Validator::make(
             $request->all(),
             TituloVenta::ruleCreate()

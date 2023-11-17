@@ -14,7 +14,6 @@ class InicioSeeder extends Seeder
      */
     public function run(): void
     {
-
         //usuario
         DB::table('usuario')->insert(
             [
