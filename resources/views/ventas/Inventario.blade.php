@@ -39,7 +39,7 @@
 
 
 <div class="container">
-    <form action="" method="post"><br><br><br><br>
+    <form action="{{ url('venta/inventarioVenta/') }}" method="post"><br><br><br><br>
         <label for="fecha">Fecha de inicio de la venta:</label>
         <input type="date" name="fecha" require>
         <div class="table-responsive">
@@ -52,7 +52,7 @@
                         <th scope="col">cantidad</th>
                         <th scope="col">precio</th>
                         <th scope="col">Descuento %</th>
-                        <th scope="col">reintegro</th>
+                        <th scope="col">Ofrecimientos <BR> adicionales</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,24 +62,18 @@
 
                         <td><input type="number" name="stock[]" value="{{$item->stock}}"></td>
                         <td class="precio">$<input type="number" name="precio[]" value="{{$item->precio}}"></td>
-                        <td><input type="number" name="descuento" min="0" value="{{$item->descuento}}"></td>
-                        <td><input type="number" name="reintegro" min="0" value="{{$item->reintegro}}"></td>
+                        <td><input type="number" name="descuento[]" min="0" value="{{$item->descuento}}"></td>
+                        <td><input type="number" name="ofrecimiento_a[]" min="0" value="{{$item->reintegro}}"></td>
                     </tr>
                     @endforeach
-                    <!--tr>
-                        <td></td>
-                        <td></td>
 
-                        <td colspan="6">
-                            Total: $<span id="totalPrecio">0.00</span>
-                        </td >
-                    </tr -->
                 </tbody>
 
 
             </table>
 
-        </div>
+        </div><br>
+        <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
 </div>
 @endsection

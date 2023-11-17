@@ -16,10 +16,6 @@
             @endif
         </div>
         <div class="form-group">
-            <label for="Director">Fecha de inicio</label>
-            <input type="date" name="fecha_creacion" class="form-control" id="fecha_creacion" style="width: 45%;">
-        </div>
-        <div class="form-group">
             <label for="Primaria">Institución</label>
             <input type="text" name="institucion" style="background-color: #f6f6f6;" class="form-control" id="institucion" value="{{ $school->nombre }}" readonly>
         </div>
@@ -28,7 +24,7 @@
             <label for="Director">Director</label>
             <input type="text" name="director" class="form-control" id="director">
         </div>
-        <label for="Vendedor">Encargado</label>
+        <label for="encargado">Encargado</label>
         <select name="encargado" class="form-control" id="Vendedor">
             <option value="">Selecciona un Encargado</option>
             @foreach($encargado as $e)

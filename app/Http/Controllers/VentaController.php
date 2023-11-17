@@ -32,6 +32,30 @@ class VentaController extends Controller
         return redirect("panel/inventario/$id");
     }
 
+    public function ventaInvario(Request $request)
+    {
+        $libros = $request->input('libros_seleccionados', []);
+
+        foreach ($libros as $libro_id) {
+            $in = new Inventario();
+
+            $in->stock = $request->stock;
+            $in->precio = $request->precio;
+            $in->descuento = $request->descuento;
+            $in->ofrecimiento_a = $request->ofecimieto_a;
+
+            dd($in);
+            $in->update();
+        }
+
+        $id = $request->id_venta;
+        return redirect("panel/");
+    }
+
+
+
+
+
     public function CrearVenta($id)
     {
         $school = Institucion::where('codigo', $id)->first();
@@ -48,13 +72,17 @@ class VentaController extends Controller
     {
         $tituloVenta = TituloVenta::where('id', $id)->first();
 
-        return view('ventas/Facturas')->with('tituloVenta', $tituloVenta);
+        $conta = Usuario::where('rol', 'c')->get();
+
+
+
+        return view('ventas/Facturas')->with('tituloVenta', $tituloVenta)->with('conta', $conta);
     }
     public function Crear(Request $request)
     {
 
 
-        dd($request->autor);
+
         Validator::make(
             $request->all(),
             TituloVenta::ruleCreate()
@@ -62,6 +90,7 @@ class VentaController extends Controller
             TituloVenta::attrCreate()
         )->validate();
         $vd = new TituloVenta();
+
         $vd->institucion = $request->institucion;
         $vd->director = $request->director;
         $vd->encargado = $request->encargado;
@@ -69,6 +98,8 @@ class VentaController extends Controller
         $vd->vendedor = $request->vendedor;
         $vd->zona = $request->zona;
         $vd->direccion = $request->direccion;
+        $vd->autor = $request->autor;
+        $vd->fecha_creacion = date('d-m-Y');
         $vd->save();
         Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
         $data = $vd->id;

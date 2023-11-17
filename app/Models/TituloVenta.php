@@ -18,6 +18,7 @@ class TituloVenta extends Model
     static function ruleCreate(): array
     {
         return [
+         
             'institucion' => "required",
             'director' => "required",
             'encargado' => "required",
@@ -30,6 +31,7 @@ class TituloVenta extends Model
     static function attrCreate(): array
     {
         return [
+    
             'institucion' => "Institución",
             'director' => "Director / Responsable",
             'encargado' => "Operador",

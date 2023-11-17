@@ -34,7 +34,13 @@
 
             <div class="form-group">
                 <label for="Director">Departamento de credito venta asignada a: </label>
-                <input type="text" name="representante" class="form-control" id="director">
+
+                <select name="representante" class="form-control" id="representante">
+                    <option value="">Selecciona un Encargado</option>
+                    @foreach($conta as $c)
+                    <option value="{{ $c->correo }}">{{ $c->nombre }} {{ $c->apellido }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
                 <label for="Encargado">Nota / Notas de remisión</label>
@@ -65,7 +71,7 @@
             <div class="form-group">
                 <label for="Zona">Total de Cupones</label>
                 <input type="text" name="cupon_t" class="form-control" id="Total" readonly>
-            </div>
+            </div><br>
 
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
