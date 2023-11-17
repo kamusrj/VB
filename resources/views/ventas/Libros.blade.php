@@ -5,7 +5,7 @@
 
 <div class="container">
     <br>
-    <form action="{{ url('venta/inventario') }}" method="post">
+    <form action="{{ url('venta/inventario/') }}" method="post">
         @csrf
         @include('errorMj')
 
@@ -107,7 +107,7 @@
         }
 
         try {
-            const response = await fetch("{{ url('venta/inventario') }}", {
+            const response = await fetch("{{ url('panel/inventario') }}", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +126,7 @@
             document.location.href = data;
         } catch (error) {
             console.error('Error:', error);
-            // Puedes agregar lógica para manejar el error aquí
+
         }
     }
 </script>

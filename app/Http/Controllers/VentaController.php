@@ -27,7 +27,9 @@ class VentaController extends Controller
             $in->id_libro = $libro_id;
             $in->save();
         }
-        return redirect('panel/');
+
+        $id = $request->id_venta;
+        return redirect("panel/inventario/$id");
     }
 
     public function CrearVenta($id)

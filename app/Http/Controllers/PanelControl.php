@@ -43,7 +43,6 @@ class PanelControl extends Controller
             ->where('id_venta', $id)->get();
 
 
-
-        return view('dashboard.inventario')->with('inventario', $inventario);
+        return view('ventas.inventario')->with('inventario', $inventario);
     }
 }
