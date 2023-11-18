@@ -91,43 +91,5 @@
 @endsection
 @section('script')
 
-<script>
-    async function guardarLibro() {
-        const libros_selected = document.querySelectorAll("[data-value-select]");
-        var dataLibros = [];
 
-        [].slice.call(libros_selected).forEach(element => {
-            if (element.checked) {
-                dataLibros.push(element.getAttribute("data-value-select"));
-            }
-        });
-
-        if (dataLibros.length === 0) {
-            return;
-        }
-
-        try {
-            const response = await fetch("{{ url('panel/inventario') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    libros: dataLibros
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error en la solicitud.');
-            }
-
-            const data = await response.json();
-            document.location.href = data;
-        } catch (error) {
-            console.error('Error:', error);
-
-        }
-    }
-</script>
 @endsection

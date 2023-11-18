@@ -39,7 +39,8 @@
 
 
 <div class="container">
-    <form action="{{ url('venta/inventarioVenta/') }}" method="post"><br><br><br><br>
+    <form action="{{ url('venta/inventarioVenta') }}" method="post"><br><br><br><br>
+        @csrf
         <label for="fecha">Fecha de inicio de la venta:</label>
         <input type="date" name="fecha" require>
         <div class="table-responsive">
@@ -59,7 +60,7 @@
                     @foreach($inventario as $item)
                     <tr>
                         <th scope="row">{{$item->nombre_libro}}</th>
-
+                        <input class="form-check-input" type="hidden" name="libros_seleccionados[]" value="{{ $item->id_libro}}">
                         <td><input type="number" name="stock[]" value="{{$item->stock}}"></td>
                         <td class="precio">$<input type="number" name="precio[]" value="{{$item->precio}}"></td>
                         <td><input type="number" name="descuento[]" min="0" value="{{$item->descuento}}"></td>

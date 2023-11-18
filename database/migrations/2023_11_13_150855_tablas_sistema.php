@@ -65,6 +65,7 @@ return new class extends Migration
             $table->double('precio')->default(0);
             $table->integer('descuento')->nullable();
             $table->integer('ofrecimiento_a')->nullable();
+            $table->string('fecha_inicio', 200)->nullable();
         });
     }
     public function down(): void

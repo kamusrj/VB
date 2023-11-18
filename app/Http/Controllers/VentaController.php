@@ -28,22 +28,26 @@ class VentaController extends Controller
         $id = $request->id_venta;
         return redirect("panel/inventario/$id");
     }
+
     public function ventaInvario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
-
         foreach ($libros as $libro_id) {
-            $in = new Inventario();
-            $in->stock = $request->stock;
-            $in->precio = $request->precio;
-            $in->descuento = $request->descuento;
-            $in->ofrecimiento_a = $request->ofecimieto_a;
+            $in = Inventario::where('id_libro', $libro_id)->first();
 
-            dd($in);
-            $in->update();
+            if ($in) {
+
+                $in->stock = $request->input('stock')[$libro_id];
+                $in->precio = $request->input('precio')[$libro_id];
+                $in->descuento = $request->input('descuento')[$libro_id];
+                $in->ofrecimiento_a = $request->input('ofrecimiento_a')[$libro_id];
+                $in->fecha_inicio = $request->fecha;
+                $in->save();
+                return redirect("panel/");
+            } else {
+                return 'error';
+            }
         }
-        $id = $request->id_venta;
-        return redirect("panel/");
     }
 
 
