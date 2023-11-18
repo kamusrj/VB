@@ -15,11 +15,9 @@ class VentaController extends Controller
 {
 
 
-
     public function inventario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
-
         foreach ($libros as $libro_id) {
             $in = new Inventario();
             $in->id_venta = $request->id_venta;
@@ -27,18 +25,15 @@ class VentaController extends Controller
             $in->id_libro = $libro_id;
             $in->save();
         }
-
         $id = $request->id_venta;
         return redirect("panel/inventario/$id");
     }
-
     public function ventaInvario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
 
         foreach ($libros as $libro_id) {
             $in = new Inventario();
-
             $in->stock = $request->stock;
             $in->precio = $request->precio;
             $in->descuento = $request->descuento;
@@ -47,7 +42,6 @@ class VentaController extends Controller
             dd($in);
             $in->update();
         }
-
         $id = $request->id_venta;
         return redirect("panel/");
     }

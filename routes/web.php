@@ -25,6 +25,8 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
     Route::middleware(AdminMiddleware::class)->group(function () {
 
+
+        //crud Usuario
         Route::controller(AdminController::class)->prefix('admin')->group(function () {
             Route::get('log', 'verLogs');
             Route::get('listar', 'listar');
@@ -60,9 +62,12 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('eliminar', 'EliminarLibro');
     });
 
+
+
+    //crud instituciones
     Route::controller(InstitucionController::class)->prefix('institucion')->group(function () {
         Route::get("/", "ListarInstitucion");
-        Route::post("obtener", "Obtener");
+        Route::post("obtener", "ObtenerInstitucion");
         Route::post("crear", "CrearInstitucion");
         Route::post("actualizar", "ActualizarInstitucion");
         Route::post('eliminar', 'EliminarInstitucion');
