@@ -13,6 +13,9 @@ class Usuario extends User
     use HasApiTokens, HasFactory, Notifiable;
 
 
+    
+
+
     protected $table = "usuario";
     protected $primaryKey = "correo";
     protected $fillable = [

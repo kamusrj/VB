@@ -53,8 +53,6 @@
             <i class="fas fa-sign-out-alt" style="font-size: 40px;"></i>
         </a>
 
-
-
         <form action="{{ url('libro/guardar') }}" method="post">
             @csrf
             <label for="escuela">Selecciona una escuela:</label>
@@ -74,11 +72,6 @@
 
             <button type="submit">Asignar Libros</button>
         </form>
-
-
-
-
-
     </div>
 </body>
 

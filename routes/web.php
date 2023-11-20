@@ -4,14 +4,13 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\Institucioncontroller;
 use App\Http\Controllers\LibrosController;
-use App\Http\Controllers\PedidosController;
+use App\Http\Controllers\PanelControl;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\VentaController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UsuarioMiddleware;
-use App\Models\Institucion;
-use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Route;
 
 
 
@@ -21,8 +20,13 @@ Route::controller(PrincipalController::class)->group(function () {
     Route::get('salir', 'Salir');
 });
 
+
 Route::middleware(UsuarioMiddleware::class)->group(function () {
+
     Route::middleware(AdminMiddleware::class)->group(function () {
+
+
+        //crud Usuario
         Route::controller(AdminController::class)->prefix('admin')->group(function () {
             Route::get('log', 'verLogs');
             Route::get('listar', 'listar');
@@ -33,25 +37,22 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         });
     });
 
-
-
-    Route::controller(PedidosController::class)->prefix('venta')->group(function () {
-        Route::get("/", "listar");
-    });
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
         Route::post("create", "CrearFactura");
         Route::get('efectivoCambio/{id}', 'efectuviCambio');
         Route::post('createEfectivo', 'createEfectivo');
-        Route::get('/libro/{id}', 'obtenerDatosDelLibro');
-        Route::post("update", "actualizarFactura");
-        Route::post('delete', 'EliminarFactura ');
     });
+
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
+        Route::post('inventario', 'inventario');
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
         Route::get('ventac/{id}', 'CrearVenta');
         Route::get('ventaf/{id}', 'CrearFacturas');
+        Route::post('libros', 'listaLibros');
+        Route::post('inventarioVenta', 'ventaInventario');
     });
+
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {
         Route::get("/", "Listar");
         Route::post("obtener", "Obtener");
@@ -60,17 +61,41 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post("actualizar", "actualizarLibro");
         Route::post('eliminar', 'EliminarLibro');
     });
-    Route::controller(Institucioncontroller::class)->prefix('institucion')->group(function () {
-        Route::get("/", "Listar");
-        Route::post("obtener", "Obtener");
+
+
+
+    //crud instituciones
+    Route::controller(InstitucionController::class)->prefix('institucion')->group(function () {
+        Route::get("/", "ListarInstitucion");
+        Route::post("obtener", "ObtenerInstitucion");
         Route::post("crear", "CrearInstitucion");
         Route::post("actualizar", "ActualizarInstitucion");
         Route::post('eliminar', 'EliminarInstitucion');
         Route::get('venta/{id}', 'venta');
     });
-    // prueba 4 partes
 
 
+
+
+    //  Panel de control ventas
+
+
+    Route::controller(PanelControl::class)->prefix('panel')->group(function () {
+
+        //dashboard
+
+        Route::get('controlVenta/{id}', 'controlVenta');
+        Route::get('perfilVenta/{id}', 'perfilVenta');
+        Route::get('/', 'ListarVentas');
+
+        Route::get('inventario/{id}', 'inventarioVenta');
+
+
+        //Cierre de venta 
+
+
+
+    });
 });
 
 /*Route::fallback(function () {

@@ -1,7 +1,11 @@
 @extends('layouts.master')
 
-@section('title', 'Bienvenido')
+@section('title', 'Perfil de venta')
 
+@section('content')
+
+
+<h1> {{$tituloVenta->institucion}} </h1>
 @section('style')
 
 <style>
@@ -15,24 +19,18 @@
         }
     }
 </style>
-
 @endsection
-
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-sm col-md-6 mb-3">
-
-            <h3> {{ Auth::user()->nombre }} {{ Auth::user()->apellido }} </h3>
-        </div>
     </div>
     <div class="row">
         <div class="col-sm col-md-6 mb-4">
             <div class="card border-0">
                 <div class="card-body text-center">
-                    <a href="{{ url('libro/') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
-                        <i class="fas fa-book"></i>
-                        <span>Libros</span>
+                    <a href="{{ url('panel/controlVenta/'. $tituloVenta->id) }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span>Inventario</span>
                     </a>
                 </div>
             </div>
@@ -41,8 +39,8 @@
             <div class="card border-0">
                 <div class="card-body text-center">
                     <a href="{{ url('institucion/') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
-                        <i class="fas fa-school"></i>
-                        <span>Instituciones</span>
+                        <i class="fa-solid fa-school-lock"></i>
+                        <span>Cierre de venta </span>
                     </a>
                 </div>
             </div>
@@ -81,8 +79,8 @@
     </div>
 </div>
 
-
-
-
-
 @endsection
+
+
+
+@section('script')

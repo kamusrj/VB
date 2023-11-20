@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     public function up(): void
     {
         Schema::create('titulo_venta', function (Blueprint $table) {
@@ -14,11 +13,15 @@ return new class extends Migration
             $table->string('institucion');
             $table->string('director', 200);
             $table->string('encargado', 200);
+            $table->foreign('encargado')->references('correo')->on('usuario');
             $table->string('telefono', 50);
             $table->string('vendedor');
             $table->foreign('vendedor')->references('correo')->on('usuario');
             $table->string('zona', 200);
             $table->string('direccion', 80);
+            $table->string('autor', 200);
+            $table->string('fecha_creacion', 200);
+            $table->set('estado', ['on', 'off'])->default('on');
         });
         Schema::create('nota_remision', function (Blueprint $table) {
             $table->id();
@@ -26,6 +29,7 @@ return new class extends Migration
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
             $table->string('fecha', 200);
             $table->string('representante', 200);
+            $table->foreign('representante')->references('correo')->on('usuario');
             $table->string('n_remision', 50);
             $table->integer('factura_i');
             $table->integer('factura_f');
@@ -56,8 +60,11 @@ return new class extends Migration
             $table->string('fecha', 200);
             $table->unsignedBigInteger('id_libro');
             $table->foreign('id_libro')->references('id')->on('libro');
-            $table->integer('stock');
-            $table->double('precio')->notNull();
+            $table->integer('stock')->default(0);
+            $table->double('precio')->default(0);
+            $table->integer('descuento')->default(0);
+            $table->double('ofrecimiento_a')->default(0);
+            $table->string('fecha_inicio', 200)->nullable();
         });
     }
     public function down(): void
