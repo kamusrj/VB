@@ -63,8 +63,8 @@ return new class extends Migration
             $table->foreign('id_libro')->references('id')->on('libro');
             $table->integer('stock')->default(0);
             $table->double('precio')->default(0);
-            $table->integer('descuento')->nullable();
-            $table->integer('ofrecimiento_a')->nullable();
+            $table->integer('descuento')->default(0);
+            $table->double('ofrecimiento_a')->default(0);
             $table->string('fecha_inicio', 200)->nullable();
         });
     }

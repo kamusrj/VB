@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Validator;
 
 class VentaController extends Controller
 {
-
-
     public function inventario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
@@ -29,38 +27,33 @@ class VentaController extends Controller
         return redirect("panel/inventario/$id");
     }
 
-    public function ventaInvario(Request $request)
+    public function ventaInventario(Request $request)
     {
-        $libros = $request->input('libros_seleccionados', []);
-        foreach ($libros as $libro_id) {
-            $in = Inventario::where('id_libro', $libro_id)->first();
+        $librosSeleccionados = $request->input('libros_seleccionados', []);
 
-            if ($in) {
+        foreach ($librosSeleccionados as $key => $libro_id) {
+            $inventario = Inventario::where('id_libro', $libro_id)->first();
 
-                $in->stock = $request->input('stock')[$libro_id];
-                $in->precio = $request->input('precio')[$libro_id];
-                $in->descuento = $request->input('descuento')[$libro_id];
-                $in->ofrecimiento_a = $request->input('ofrecimiento_a')[$libro_id];
-                $in->fecha_inicio = $request->fecha;
-                $in->save();
-                return redirect("panel/");
+            if ($inventario) {
+                $inventario->stock = $request->input('stock')[$key];
+                $inventario->precio = $request->input('precio')[$key];
+                $inventario->descuento = $request->input('descuento')[$key];
+                $inventario->ofrecimiento_a = $request->input('ofrecimiento_a')[$key];
+                $inventario->fecha_inicio = $request->fecha;
+                $inventario->save();
             } else {
-                return 'error';
+                return 'Error: No se encontró el libro en el inventario.';
             }
         }
+
+        return redirect("panel/");
     }
-
-
-
-
 
     public function CrearVenta($id)
     {
         $school = Institucion::where('codigo', $id)->first();
-
         $vendedores = Usuario::where('rol', 'v')->get();
         $encargado = Usuario::where('rol', 'e')->get();
-
         return view('ventas.CrearVenta')
             ->with('school', $school)
             ->with('vendedores', $vendedores)
@@ -71,15 +64,10 @@ class VentaController extends Controller
         $tituloVenta = TituloVenta::where('id', $id)->first();
 
         $conta = Usuario::where('rol', 'c')->get();
-
-
-
         return view('ventas/Facturas')->with('tituloVenta', $tituloVenta)->with('conta', $conta);
     }
     public function Crear(Request $request)
     {
-
-
 
         Validator::make(
             $request->all(),

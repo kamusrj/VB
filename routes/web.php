@@ -50,7 +50,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('ventac/{id}', 'CrearVenta');
         Route::get('ventaf/{id}', 'CrearFacturas');
         Route::post('libros', 'listaLibros');
-        Route::post('inventarioVenta', 'ventaInvario');
+        Route::post('inventarioVenta', 'ventaInventario');
     });
 
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {

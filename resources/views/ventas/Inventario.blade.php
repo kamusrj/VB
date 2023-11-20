@@ -60,17 +60,15 @@
                     @foreach($inventario as $item)
                     <tr>
                         <th scope="row">{{$item->nombre_libro}}</th>
-                        <input class="form-check-input" type="hidden" name="libros_seleccionados[]" value="{{ $item->id_libro}}">
-                        <td><input type="number" name="stock[]" value="{{$item->stock}}"></td>
-                        <td class="precio">$<input type="number" name="precio[]" value="{{$item->precio}}"></td>
-                        <td><input type="number" name="descuento[]" min="0" value="{{$item->descuento}}"></td>
-                        <td><input type="number" name="ofrecimiento_a[]" min="0" value="{{$item->reintegro}}"></td>
+                        <input class="form-check-input" type="text" name="libros_seleccionados[]" value="{{ $item->id_libro}}" require>
+                        <td><input type="number" name="stock[]" require></td>
+                        <td class="precio">$<input type="number" name="precio[]" step="any" require></td>
+                        <td><input type="number" name="descuento[]" min="0"></td>
+                        <td><input type="number" name="ofrecimiento_a[]" min="0" step="any" value="0" require></td>
                     </tr>
                     @endforeach
 
                 </tbody>
-
-
             </table>
 
         </div><br>
@@ -79,43 +77,3 @@
 </div>
 @endsection
 @section('script')
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Obtener el elemento de fecha y hora
-        var fechaInput = document.getElementById('fecha');
-        var horaInput = document.getElementById('hora');
-
-        // Obtener la fecha y hora actual
-        var now = new Date();
-
-        // Formatear la fecha como "YYYY-MM-DD"
-        var fechaFormatted = now.toISOString().split('T')[0];
-
-        // Formatear la hora como "HH:mm"
-        var horaFormatted = now.toTimeString().split(' ')[0];
-
-        // Establecer los valores predeterminados en los campos de entrada
-        fechaInput.value = fechaFormatted;
-        horaInput.value = horaFormatted;
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var precios = document.querySelectorAll('td.precio input');
-        var totalPrecio = Array.from(precios).reduce(function(sum, precio) {
-            return sum + parseFloat(precio.value);
-        }, 0);
-        document.getElementById('totalPrecio').textContent = totalPrecio.toFixed(2);
-        precios.forEach(function(precio) {
-            precio.addEventListener('input', function() {
-                totalPrecio = Array.from(precios).reduce(function(sum, precio) {
-                    return sum + parseFloat(precio.value);
-                }, 0);
-                document.getElementById('totalPrecio').textContent = totalPrecio.toFixed(2);
-            });
-        });
-    });
-</script>
-@endsection
