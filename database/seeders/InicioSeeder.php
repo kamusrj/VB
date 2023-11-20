@@ -14,7 +14,6 @@ class InicioSeeder extends Seeder
      */
     public function run(): void
     {
-
         //usuario
         DB::table('usuario')->insert(
             [
@@ -72,39 +71,70 @@ class InicioSeeder extends Seeder
                     'clave' => Hash::make('password8'),
                     'nombre' => 'Laura',
                     'apellido' => 'Sánchez',
-                    'rol' => 'c'
+                    'rol' => 'e'
                 ],
                 [
                     'correo' => 'usuario9',
                     'clave' => Hash::make('password9'),
                     'nombre' => 'Miguel',
                     'apellido' => 'González',
-                    'rol' => 'g'
+                    'rol' => 'e'
                 ],
                 [
                     'correo' => 'usuario10',
                     'clave' => Hash::make('password10'),
                     'nombre' => 'Carmen',
                     'apellido' => 'Díaz',
-                    'rol' => 'b'
+                    'rol' => 'e'
+                ],
+                [
+                    'correo' => 'RQSS',
+                    'clave' => Hash::make('password8'),
+                    'nombre' => 'R',
+                    'apellido' => 'S',
+                    'rol' => 'c'
+                ],
+                [
+                    'correo' => 'Ylmj',
+                    'clave' => Hash::make('password9'),
+                    'nombre' => 'Y',
+                    'apellido' => 'M',
+                    'rol' => 'c'
+                ],
+                [
+                    'correo' => 'BDRO',
+                    'clave' => Hash::make('password10'),
+                    'nombre' => 'B',
+                    'apellido' => 'R',
+                    'rol' => 'c'
                 ]
             ]
         );
 
 
-        DB::table('libro')->insert([[
-            'nombre' => 'Libro 1',
-            'editorial' => 'ed',
-            'descripcion' => 'Descripción del libro 1',
-        ], [
-            'nombre' => 'Libro 2',
-            'editorial' => 'mdf',
-            'descripcion' => 'Descripción del libro 1',
-        ], [
-            'nombre' => 'Libro 3',
-            'editorial' => 'eng',
-            'descripcion' => 'Descripción del libro 1',
-        ]]);
+        DB::table('libro')->insert([
+            [
+                'nombre' => 'Libro 1',
+                'editorial' => 'ed',
+                'descripcion' => 'Descripción del libro 1',
+            ], [
+                'nombre' => 'Libro 2',
+                'editorial' => 'mdf',
+                'descripcion' => 'Descripción del libro 1',
+            ], [
+                'nombre' => 'Libro 3',
+                'editorial' => 'eng',
+                'descripcion' => 'Descripción del libro 1',
+            ], [
+                'nombre' => 'Libro 4',
+                'editorial' => 'info',
+                'descripcion' => 'Descripción del libro 1',
+            ]
+
+
+
+
+        ]);
 
         DB::table('institucion')->insert([[
             'codigo' => '00001',

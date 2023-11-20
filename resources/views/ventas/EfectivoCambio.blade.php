@@ -38,7 +38,7 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
                     <table class="table table-bordered">
-                        <h2>Denominacion</h2>
+                        <h5>Denominacion</h5>
                         <tbody class="table table-bordered table-sm">
                             <tr>
                                 <th scope="row" class="col-4">$0.01</th>

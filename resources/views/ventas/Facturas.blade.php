@@ -25,7 +25,7 @@
 
             <div class="form-group">
                 <label for="Primaria"></label>
-                <input type="text" name="id_venta" style="background-color: #f6f6f6;" class="form-control" id="id_venta" value="{{$tituloVenta->id}}" readonly>
+                <input type="hidden" name="id_venta" style="background-color: #f6f6f6;" class="form-control" id="id_venta" value="{{$tituloVenta->id}}" readonly>
             </div>
             <div class="form-group">
                 <label for="Primaria">Institución</label>
@@ -34,7 +34,13 @@
 
             <div class="form-group">
                 <label for="Director">Departamento de credito venta asignada a: </label>
-                <input type="text" name="representante" class="form-control" id="director">
+
+                <select name="representante" class="form-control" id="representante">
+                    <option value="">Selecciona un Encargado</option>
+                    @foreach($conta as $c)
+                    <option value="{{ $c->correo }}">{{ $c->nombre }} {{ $c->apellido }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
                 <label for="Encargado">Nota / Notas de remisión</label>
@@ -65,7 +71,7 @@
             <div class="form-group">
                 <label for="Zona">Total de Cupones</label>
                 <input type="text" name="cupon_t" class="form-control" id="Total" readonly>
-            </div>
+            </div><br>
 
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
@@ -106,7 +112,7 @@
             // Captura los campos de cupon inicial y cupon final
             var cuponInicialInput = $("input[name='cupon_i']");
             var cuponFinalInput = $("input[name='cupon_f']");
-            var totalCuponesInput = $("input[name='total_c']");
+            var totalCuponesInput = $("input[name='cupon_t']");
 
             // Agrega un evento de cambio a ambos campos
             cuponInicialInput.on('input', calcularTotalCupones);
