@@ -17,6 +17,7 @@
     {{ Auth::user()->nombre }} {{ Auth::user()->apellido}}
     @endif
 
+    @include('errorMj')
     @section('content')
     @show
 

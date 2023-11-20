@@ -12,6 +12,25 @@ class PanelControl extends Controller
 {
     use HasFactory;
 
+
+    public function controlVenta($id)
+    {
+
+        $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
+            ->select(
+                'inventario.*',
+                'lb.nombre as nombre_libro'
+            )
+            ->where('id_venta', $id)->get();
+
+
+        return view('dashboard.inventarioVenta')->with('inventario', $inventario);
+        
+    }
+
+
+
+
     public function ListarVentas()
     {
         $ventas = TituloVenta::join('usuario as enc', 'titulo_venta.encargado', '=', 'enc.correo')

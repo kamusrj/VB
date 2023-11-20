@@ -12,6 +12,7 @@ class Inventario extends Model
 
 
     protected $table = "inventario";
+    protected $fillable = ['stock', 'precio', 'descuento', 'ofrecimiento_a', 'fecha_inicio'];
     public $timestamps = false;
 
 
@@ -19,14 +20,20 @@ class Inventario extends Model
     static function ruleCreate(): array
     {
         return [
-            'id_libro' => "required",
+
+
+            'fecha' => 'required',
 
         ];
     }
     static function attrCreate(): array
     {
         return [
-            'id_libro' => "Libro",
+
+            'stock[]' => 'Cantidad',
+            'precio[]' => 'Precio',
+            'fecha' => 'fecha de inicio',
+
 
         ];
     }

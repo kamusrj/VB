@@ -84,6 +84,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
         //dashboard
 
+        Route::get('controlVenta/{id}', 'controlVenta');
         Route::get('perfilVenta/{id}', 'perfilVenta');
         Route::get('/', 'ListarVentas');
 

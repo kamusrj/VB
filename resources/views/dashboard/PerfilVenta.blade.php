@@ -28,7 +28,7 @@
         <div class="col-sm col-md-6 mb-4">
             <div class="card border-0">
                 <div class="card-body text-center">
-                    <a href="{{ url('panel/inventario/'. $tituloVenta->id) }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
+                    <a href="{{ url('panel/controlVenta/'. $tituloVenta->id) }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
                         <i class="fa-solid fa-boxes-stacked"></i>
                         <span>Inventario</span>
                     </a>

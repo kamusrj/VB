@@ -6,7 +6,6 @@ use App\Models\Institucion;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use App\Models\Usuario;
-use Exception;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
@@ -15,6 +14,7 @@ class VentaController extends Controller
 {
     public function inventario(Request $request)
     {
+
         $libros = $request->input('libros_seleccionados', []);
         foreach ($libros as $libro_id) {
             $in = new Inventario();
@@ -30,9 +30,13 @@ class VentaController extends Controller
     public function ventaInventario(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
+        $idVenta = $request->id;
 
         foreach ($librosSeleccionados as $key => $libro_id) {
-            $inventario = Inventario::where('id_libro', $libro_id)->first();
+
+            $inventario = Inventario::where('id_venta', $idVenta)
+                ->where('id_libro', $libro_id)
+                ->first();
 
             if ($inventario) {
                 $inventario->stock = $request->input('stock')[$key];
@@ -40,14 +44,16 @@ class VentaController extends Controller
                 $inventario->descuento = $request->input('descuento')[$key];
                 $inventario->ofrecimiento_a = $request->input('ofrecimiento_a')[$key];
                 $inventario->fecha_inicio = $request->fecha;
+
                 $inventario->save();
             } else {
-                return 'Error: No se encontró el libro en el inventario.';
+                return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
 
         return redirect("panel/");
     }
+
 
     public function CrearVenta($id)
     {
@@ -66,6 +72,7 @@ class VentaController extends Controller
         $conta = Usuario::where('rol', 'c')->get();
         return view('ventas/Facturas')->with('tituloVenta', $tituloVenta)->with('conta', $conta);
     }
+
     public function Crear(Request $request)
     {
 

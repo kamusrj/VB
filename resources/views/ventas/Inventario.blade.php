@@ -60,10 +60,11 @@
                     @foreach($inventario as $item)
                     <tr>
                         <th scope="row">{{$item->nombre_libro}}</th>
-                        <input class="form-check-input" type="text" name="libros_seleccionados[]" value="{{ $item->id_libro}}" require>
-                        <td><input type="number" name="stock[]" require></td>
-                        <td class="precio">$<input type="number" name="precio[]" step="any" require></td>
-                        <td><input type="number" name="descuento[]" min="0"></td>
+                        <input class="form-check-input" type="hidden" name="id" value="{{ $item->id_venta}}" required>
+                        <input class="form-check-input" type="hidden" name="libros_seleccionados[]" value="{{ $item->id_libro}}" require>
+                        <td><input type="number" name="stock[]" value="0" require></td>
+                        <td class="precio">$<input type="number" value="0" name="precio[]" step="any" require></td>
+                        <td><input type="number" name="descuento[]" min="0" value="0"></td>
                         <td><input type="number" name="ofrecimiento_a[]" min="0" step="any" value="0" require></td>
                     </tr>
                     @endforeach
