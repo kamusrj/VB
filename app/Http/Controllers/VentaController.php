@@ -115,4 +115,12 @@ class VentaController extends Controller
             ->with('libro', $libro)
             ->with('tituloVenta', $tituloVenta);
     }
+
+
+    public function perfilBodega(){
+
+
+return view('dashboard.Bodega')
+
+    }
 }

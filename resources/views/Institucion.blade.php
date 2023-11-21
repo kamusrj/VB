@@ -3,40 +3,38 @@
 @section('title', 'Instituciones')
 
 @section('content')
-    <div class="container">
+<div class="container">
 
-        <div class="row">
-            <div class="col my-3">
-                <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-                <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
-            </div>
+    <div class="row">
+        <div class="col my-3">
+            <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
+            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
         </div>
+    </div>
 
-        @include('errorMj')
-        <h2> <i class="fas fa-school"></i> Instituciones </h2><br>
+    @include('errorMj')
+    <h2> <i class="fas fa-school"></i> Instituciones </h2><br>
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
-                    <button type="button" class="btn btn-primary" style="background-color: #34ac54; border: none;"
-                        data-bs-toggle="modal" data-bs-target="#modalCrear">
-                        Nueva Institucion
-                    </button><br><br>
-                @endif
-                <thead>
-                    <tr>
-                        <th>Cod.</th>
-                        <th>Nombre</th>
-                        <th>Acciones</th>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
+            <button type="button" class="btn btn-primary" style="background-color: #34ac54; border: none;" data-bs-toggle="modal" data-bs-target="#modalCrear">
+                Nueva Institucion
+            </button><br><br>
+            @endif
+            <thead>
+                <tr>
+                    <th>Cod.</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($instituciones as $item)
-                        <tr>
-                            <td>{{ $item->codigo }}</td>
-                            <td>{{ $item->nombre }}</td>
-
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($instituciones as $item)
+                <tr>
+                    <td>{{ $item->codigo }}</td>
+                    <td>{{ $item->nombre }}</td>
                             <td>
                                 @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
                                     @if ($item->codigo != '00001')
@@ -103,6 +101,7 @@
             </div>
         </div>
     </div>
+</div>
 
     <div class="modal fade" id="modalEditar">
         <div class="modal-dialog">
@@ -120,97 +119,98 @@
                             <input type="text" class="form-control" id="Unombre" name="nombre">
                         </div>
 
-                        <div class="col-12 mb-3 g-1">
-                            <button class="w-100 btn btn-success" type="submit">Actualizar</button>
-                        </div>
-                    </form>
-                </div>
+
+                    <div class="col-12 mb-3 g-1">
+                        <button class="w-100 btn btn-success" type="submit">Actualizar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modalEliminar">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalEliminarTitle">Eliminar instituci&oacute;n</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ url('institucion/eliminar') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="codigo" id="eliminarId">
-                        <div class="col-auto mb-3">
-                            <p>¿Seguro que quieres eliminar la instituci&oacute;n <span id="eliminarNombre"></span>?
-                            </p>
-                        </div>
-                        <div class="col-12 mb-3 g-1">
-                            <button class="w-100 btn btn-danger" type="submit">Eliminar</button>
-                        </div>
-                    </form>
-                </div>
+</div>
+<div class="modal fade" id="modalEliminar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalEliminarTitle">Eliminar instituci&oacute;n</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url('institucion/eliminar') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="codigo" id="eliminarId">
+                    <div class="col-auto mb-3">
+                        <p>¿Seguro que quieres eliminar la instituci&oacute;n <span id="eliminarNombre"></span>?
+                        </p>
+                    </div>
+                    <div class="col-12 mb-3 g-1">
+                        <button class="w-100 btn btn-danger" type="submit">Eliminar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @section('script')
-    <script>
-        const modal_editar = new bootstrap.Modal("#modalEditar");
-        const modal_editar_component = document.getElementById("modalEditar");
-        const modal_editar_title = document.getElementById('modalEditarTitle');
-        const button_editar = document.querySelectorAll("[data-value-editar]");
-        const codigo = document.getElementById("Ucodigo");
-        const nombre = document.getElementById("Unombre");
+<script>
+    const modal_editar = new bootstrap.Modal("#modalEditar");
+    const modal_editar_component = document.getElementById("modalEditar");
+    const modal_editar_title = document.getElementById('modalEditarTitle');
+    const button_editar = document.querySelectorAll("[data-value-editar]");
+    const codigo = document.getElementById("Ucodigo");
+    const nombre = document.getElementById("Unombre");
 
-        //  modal_editar_component.addEventListener("hidden.bs.modal", () => {
-        //     document.location.href = "l/ ";
-        //  });
-        [].slice.call(button_editar).forEach(async function(item) {
-            item.addEventListener('click', async () => {
-                await fetch("{{ url('institucion/obtener') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content')
-                        },
-                        body: JSON.stringify({
-                            "codigo": item.getAttribute("data-value-editar")
-                        }),
-                    }).then((response) => response.json())
-                    .then((data) => {
-                        modal_editar_title.innerText = "Edición para " + data.codigo;
-                        codigo.value = data.codigo;
-                        nombre.value = data.nombre;
-                        modal_editar.show();
-                    });
-            });
+    //  modal_editar_component.addEventListener("hidden.bs.modal", () => {
+    //     document.location.href = "l/ ";
+    //  });
+    [].slice.call(button_editar).forEach(async function(item) {
+        item.addEventListener('click', async () => {
+            await fetch("{{ url('institucion/obtener') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        "codigo": item.getAttribute("data-value-editar")
+                    }),
+                }).then((response) => response.json())
+                .then((data) => {
+                    modal_editar_title.innerText = "Edición para " + data.codigo;
+                    codigo.value = data.codigo;
+                    nombre.value = data.nombre;
+                    modal_editar.show();
+                });
         });
+    });
 
-        const modal_eliminar = new bootstrap.Modal("#modalEliminar");
-        const button_delete = document.querySelectorAll("[data-value-delete]");
-        const eliminarId = document.getElementById("eliminarId");
-        const eliminarNombre = document.getElementById("eliminarNombre");
+    const modal_eliminar = new bootstrap.Modal("#modalEliminar");
+    const button_delete = document.querySelectorAll("[data-value-delete]");
+    const eliminarId = document.getElementById("eliminarId");
+    const eliminarNombre = document.getElementById("eliminarNombre");
 
-        [].slice.call(button_delete).forEach(async function(item) {
-            item.addEventListener('click', async () => {
-                await fetch("{{ url('institucion/obtener') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content')
-                        },
-                        body: JSON.stringify({
-                            "codigo": item.getAttribute("data-value-delete")
-                        }),
-                    }).then((response) => response.json())
-                    .then((data) => {
-                        eliminarId.value = data.codigo;
-                        eliminarNombre.innerText = data.nombre;
-                        modal_eliminar.show();
-                    });
-            });
+    [].slice.call(button_delete).forEach(async function(item) {
+        item.addEventListener('click', async () => {
+            await fetch("{{ url('institucion/obtener') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        "codigo": item.getAttribute("data-value-delete")
+                    }),
+                }).then((response) => response.json())
+                .then((data) => {
+                    eliminarId.value = data.codigo;
+                    eliminarNombre.innerText = data.nombre;
+                    modal_eliminar.show();
+                });
         });
-    </script>
+    });
+</script>
 @endsection

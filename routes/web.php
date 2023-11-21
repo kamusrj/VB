@@ -44,7 +44,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
-        Route::post('inventario', 'inventario');
+
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
         Route::get('nueva/{id}', 'NuevaVenta');
@@ -52,6 +52,9 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('libros', 'ListaLibros');
         Route::get('libros/{id}', 'ListaLibros');
         Route::post('inventarioVenta', 'ventaInventario');
+        Route::post('inventario', 'inventario');
+
+        Route::post('bodega', 'perfilBodega');
     });
 
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {
