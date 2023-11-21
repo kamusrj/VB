@@ -67,6 +67,20 @@ return new class extends Migration
             $table->double('ofrecimiento_a')->default(0);
             $table->string('fecha_inicio', 200)->nullable();
         });
+
+
+        Schema::create('detalleFactura', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('id_venta');
+            $table->foreign('id_venta')->references('id')->on('titulo_venta');
+            $table->integer('correlativo');
+            $table->unsignedBigInteger('id_inventario'); 
+            $table->foreign('id_inventario')->references('id')->on('inventario');
+            $table->string('padre', 200);
+            $table->string('encargado', 200);
+            $table->foreign('encargado')->references('correo')->on('usuario');
+            $table->string('fecha');
+        });
     }
     public function down(): void
     {
@@ -74,5 +88,6 @@ return new class extends Migration
         Schema::dropIfExists('nota_remision');
         Schema::dropIfExists('efectivo_c');
         Schema::dropIfExists('inventario');
+        Schema::dropIfExists('detalleFactura');
     }
 };
