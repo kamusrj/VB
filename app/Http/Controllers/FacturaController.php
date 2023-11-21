@@ -14,15 +14,13 @@ use Illuminate\Support\Facades\Validator;
 class FacturaController extends Controller
 {
 
-
-    public function efectuviCambio($id)
+    public function EfectivoCambio($id)
     {
         $tituloVenta = TituloVenta::where('id', $id)->first();
-
         return view('ventas/EfectivoCambio')->with('tituloVenta', $tituloVenta);
     }
 
-    public function createEfectivo(Request $request)
+    public function CrearEfectivo(Request $request)
     {
         Validator::make(
             $request->all(),
@@ -44,46 +42,35 @@ class FacturaController extends Controller
         $ec->dolar_cinco = $request->dolar_cinco;
         $ec->dolar_diez = $request->dolar_diez;
         $ec->dolar_veinte = $request->dolar_veinte;
-        $ec->total = $request->total;
 
         $ec->save();
 
         $id = $request->id_venta;
-        $tituloVenta = TituloVenta::where('id', $id)->first();
-        $libro = Libro::all();
-
-        return view("ventas/Libros")
-            ->with('libro', $libro)
-            ->with('tituloVenta', $tituloVenta);
+        return redirect("venta/libros/" . $id);
     }
-
-
-
-
 
     public function CrearFactura(Request $request)
     {
         Validator::make(
             $request->all(),
-            Facturas::ruleCreate()
+            Facturas::ruleCrear()
         )->addCustomAttributes(
-            Facturas::attrCreate()
+            Facturas::attrCrear()
         )->validate();
 
         $f = new Facturas();
         $f->id_venta = $request->id_venta;
 
-        $f->fecha = Carbon::now()->format('d-m-Y');
+        $f->fecha = date("Y-m-d");
         $f->representante = $request->representante;
         $f->n_remision = $request->n_remision;
         $f->factura_i = $request->factura_i;
         $f->factura_f = $request->factura_f;
-        $f->total_f = $request->total_f;
         $f->cupon_i = $request->cupon_i;
         $f->cupon_f = $request->cupon_f;
-        $f->total_c = $request->tota_c;
         $f->save();
         $data = $f->id_venta;
         return redirect("factura/efectivoCambio/$data");
     }
+
 }

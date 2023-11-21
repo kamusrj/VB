@@ -29,27 +29,28 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         //crud Usuario
         Route::controller(AdminController::class)->prefix('admin')->group(function () {
             Route::get('log', 'verLogs');
-            Route::get('listar', 'listar');
-            Route::post("up", "Obtener");
+            Route::get('listar', 'Listar');
+            Route::post("obtener", "Obtener");
             Route::post('crear', 'CrearUsuario');
             Route::post('actualizar', 'actualizarUsuario');
-            Route::post('delete', 'EliminarUsuario');
+            Route::post('eliminar', 'EliminarUsuario');
         });
     });
 
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
-        Route::post("create", "CrearFactura");
-        Route::get('efectivoCambio/{id}', 'efectuviCambio');
-        Route::post('createEfectivo', 'createEfectivo');
+        Route::post("crear", "CrearFactura");
+        Route::get('efectivoCambio/{id}', 'EfectivoCambio');
+        Route::post('crearEfectivo', 'CrearEfectivo');
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
 
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
-        Route::get('ventac/{id}', 'CrearVenta');
-        Route::get('ventaf/{id}', 'CrearFacturas');
-        Route::post('libros', 'listaLibros');
+        Route::get('nueva/{id}', 'NuevaVenta');
+        Route::get('facturar/{id}', 'CrearFacturas');
+        Route::post('libros', 'ListaLibros');
+        Route::get('libros/{id}', 'ListaLibros');
         Route::post('inventarioVenta', 'ventaInventario');
         Route::post('inventario', 'inventario');
 
@@ -64,17 +65,13 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post("actualizar", "actualizarLibro");
         Route::post('eliminar', 'EliminarLibro');
     });
-
-
-
-    //crud instituciones
-    Route::controller(InstitucionController::class)->prefix('institucion')->group(function () {
+    Route::controller(Institucioncontroller::class)->prefix('institucion')->group(function () {
         Route::get("/", "ListarInstitucion");
-        Route::post("obtener", "ObtenerInstitucion");
+        Route::post("obtener", "Obtener");
         Route::post("crear", "CrearInstitucion");
         Route::post("actualizar", "ActualizarInstitucion");
         Route::post('eliminar', 'EliminarInstitucion');
-        Route::get('venta/{id}', 'venta');
+        Route::get('venta/{id}', 'Venta');
     });
 
 

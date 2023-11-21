@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Institucion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,9 +17,9 @@ class Institucioncontroller extends Controller
         return view('institucion')->with('instituciones', $instituciones);
     }
 
-
-    function ObtenerInstitucion(Request $request)
+    function Obtener(Request $request)
     {
+
         $institucion = Institucion::where("codigo", $request->codigo)->first();
         return json_encode($institucion);
     }

@@ -4,11 +4,9 @@
 
 
 <div class="container">
-    <br>
     <form action="{{ url('venta/inventario/') }}" method="post">
-        @csrf
         @include('errorMj')
-
+        @csrf
         <div class="form-group">
             <label for="Primaria"></label>
             <input type="hidden" name="id_venta" style="background-color: #f6f6f6;" class="form-control" id="id_venta" value="{{$tituloVenta->id}}" readonly>

@@ -15,11 +15,9 @@ class TituloVenta extends Model
     public $timestamps = false;
 
 
-    static function ruleCreate(): array
+    static function ruleCrear(): array
     {
         return [
-         
-            'institucion' => "required",
             'director' => "required",
             'encargado' => "required",
             'telefono' => "required",
@@ -28,11 +26,9 @@ class TituloVenta extends Model
             'direccion' => "required",
         ];
     }
-    static function attrCreate(): array
+    static function attrCrear(): array
     {
         return [
-    
-            'institucion' => "Institución",
             'director' => "Director / Responsable",
             'encargado' => "Operador",
             'telefono' => "Teléfono",
@@ -41,10 +37,9 @@ class TituloVenta extends Model
             'direccion' => "Dirección",
         ];
     }
-    static function ruleUpdate(): array
+    static function ruleActualizar(): array
     {
         return [
-            'institucion' => "required",
             'director' => "required",
             'encargado' => "required",
             'telefono' => "required|min:8",
@@ -53,10 +48,9 @@ class TituloVenta extends Model
             'direccion' => "required|min:8",
         ];
     }
-    static function attrUpdate(): array
+    static function attrActualizar(): array
     {
         return [
-            'institucion' => "Institución",
             'director' => "Director / Responsable",
             'encargado' => "Operador",
             'telefono' => "Teléfono",
