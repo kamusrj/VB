@@ -59,6 +59,8 @@ class FacturaController extends Controller
 
 
 
+
+
     public function CrearFactura(Request $request)
     {
         Validator::make(

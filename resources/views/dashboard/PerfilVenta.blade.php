@@ -49,8 +49,8 @@
             <div class="card border-0">
                 <div class="card-body text-center">
                     <a href="{{ url('admin/listar') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
-                        <i class="fas fa-user"></i>
-                        <span>Usuarios</span>
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Documentos</span>
                     </a>
                 </div>
             </div>
