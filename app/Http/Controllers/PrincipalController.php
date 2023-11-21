@@ -18,7 +18,10 @@ class PrincipalController extends Controller
         if (Auth::check())
             if (in_array(Auth::user()->rol, ['a', 'g', 'c'])) {
                 return view('perfil');
+            } elseif (in_array(Auth::user()->rol, ['b'])) {
+                return redirect('venta.Bodega');
             } else {
+
                 return view('dashboard.panel');
             }
         return view("login");

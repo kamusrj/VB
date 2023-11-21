@@ -16,7 +16,12 @@
             <div class="table table-striped">
                 <table class="table table-bordered table-striped">
                     <thead>
+
+                        @php
+                        $numero = 1;
+                        @endphp
                         <tr>
+                            <th scope="col">N°</th>
                             <th scope="col">Libro</th>
                             <th scope="col">cantidad</th>
                             <th scope="col">precio</th>
@@ -33,6 +38,7 @@
                     <tbody>
                         @foreach($inventario as $item)
                         <tr>
+                            <td>{{ $numero }}</td>
                             <td>{{ $item->nombre_libro }}</td>
                             <td>
                                 <input name="id" value="{{ $item->id_venta }}" required hidden>
@@ -46,7 +52,7 @@
                                 <input type="number" name="venta[]" min="0" max="{{ $item->stock }}" value="" oninput="calculateTotal(this, {{$item->precio}}, {{$item->descuento}},{{ $item->ofrecimiento_a }} )" required>
                             </td>
                             <td>
-                                <input type="number" name="totalvendio[]" min="0" value="" readonly>
+                                <input type="number" id="total" name="totalvendio[]" min="0" value="" readonly>
                             </td>
                             <td>
                                 <span>{{ $item->descuento }}</span>
@@ -65,10 +71,15 @@
                                 <input type="number" name="Totalofrecimiento_a[]" min="0" value="" readonly>
                             </td>
                         </tr>
+                        @php
+                        $numero++;
+                        @endphp
+
                         @endforeach
                     </tbody>
                     </tbody>
                 </table>
+                <div id="sumaTotal">Suma Total: $0</div>
             </div>
         </div>
     </div>
@@ -80,7 +91,6 @@
 @section('script')
 <script>
     function calculateTotal(input, precio, descuento, ofrecimiento_a) {
-
         var venta = parseFloat(input.value) || 0;
         var totalVendido = venta * precio;
         var descuentoAplicado = precio * (descuento / 100);
@@ -97,4 +107,5 @@
         input.closest('tr').querySelector('[name="Totalofrecimiento_a[]"]').value = totalof.toFixed(2);
     }
 </script>
+
 @endsection

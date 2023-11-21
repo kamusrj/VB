@@ -98,4 +98,12 @@ class VentaController extends Controller
         $data = $vd->id;
         return redirect("venta/ventaf/$data");
     }
+
+
+    public function perfilBodega(){
+
+
+return view('dashboard.Bodega')
+
+    }
 }

@@ -44,13 +44,16 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
-        Route::post('inventario', 'inventario');
+
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
         Route::get('ventac/{id}', 'CrearVenta');
         Route::get('ventaf/{id}', 'CrearFacturas');
         Route::post('libros', 'listaLibros');
         Route::post('inventarioVenta', 'ventaInventario');
+        Route::post('inventario', 'inventario');
+
+        Route::post('bodega', 'perfilBodega');
     });
 
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {

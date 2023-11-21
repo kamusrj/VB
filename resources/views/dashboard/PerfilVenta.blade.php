@@ -1,13 +1,8 @@
 @extends('layouts.master')
-
 @section('title', 'Perfil de venta')
-
 @section('content')
-
-
 <h1> {{$tituloVenta->institucion}} </h1>
 @section('style')
-
 <style>
     a.btn.btn-info.w-100 {
         font-size: 40px;
@@ -75,12 +70,7 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
 @endsection
-
-
-
 @section('script')
