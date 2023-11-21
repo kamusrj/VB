@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Institucion;
 use App\Models\Inventario;
+use App\Models\Libro;
 use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class VentaController extends Controller
@@ -55,7 +56,7 @@ class VentaController extends Controller
     }
 
 
-    public function CrearVenta($id)
+    public function NuevaVenta($id)
     {
         $school = Institucion::where('codigo', $id)->first();
         $vendedores = Usuario::where('rol', 'v')->get();
@@ -68,9 +69,12 @@ class VentaController extends Controller
     public function CrearFacturas($id)
     {
         $tituloVenta = TituloVenta::where('id', $id)->first();
-
+        $institucion = Institucion::where("codigo", $tituloVenta->institucion)->first();
         $conta = Usuario::where('rol', 'c')->get();
-        return view('ventas/Facturas')->with('tituloVenta', $tituloVenta)->with('conta', $conta);
+        return view('ventas/Facturas')
+            ->with('tituloVenta', $tituloVenta)
+            ->with('conta', $conta)
+            ->with('institucion', $institucion);
     }
 
     public function Crear(Request $request)
@@ -78,24 +82,37 @@ class VentaController extends Controller
 
         Validator::make(
             $request->all(),
-            TituloVenta::ruleCreate()
+            TituloVenta::ruleCrear()
         )->addCustomAttributes(
-            TituloVenta::attrCreate()
+            TituloVenta::attrCrear()
         )->validate();
-        $vd = new TituloVenta();
 
-        $vd->institucion = $request->institucion;
+        $usuario = Auth::user();
+
+        $vd = new TituloVenta();
+        $vd->institucion = $request->codigo;
         $vd->director = $request->director;
         $vd->encargado = $request->encargado;
         $vd->telefono = $request->telefono;
         $vd->vendedor = $request->vendedor;
         $vd->zona = $request->zona;
         $vd->direccion = $request->direccion;
-        $vd->autor = $request->autor;
+        $vd->autor = $usuario->correo;
         $vd->fecha_creacion = date('d-m-Y');
         $vd->save();
         Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
         $data = $vd->id;
-        return redirect("venta/ventaf/$data");
+        return redirect("venta/facturar/$data");
+    }
+
+    function ListaLibros(Request $request)
+    {
+
+        $tituloVenta = TituloVenta::where('id', $request->id)->first();
+        $libro = Libro::all();
+
+        return view("ventas/Libros")
+            ->with('libro', $libro)
+            ->with('tituloVenta', $tituloVenta);
     }
 }

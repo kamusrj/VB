@@ -50,7 +50,7 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     @if ($item->estado === 'off')
-                                        <a href="{{ url('venta/ventac/' . $item->codigo) }}" class="btn btn-info"
+                                        <a href="{{ url('venta/nueva/' . $item->codigo) }}" class="btn btn-info"
                                             data-toggle="tooltip" data-placement="top" title="Nueva venta">
                                             <i class="fa-regular fa-calendar-plus"></i>
                                         </a>

@@ -38,18 +38,19 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     });
 
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
-        Route::post("create", "CrearFactura");
-        Route::get('efectivoCambio/{id}', 'efectuviCambio');
-        Route::post('createEfectivo', 'createEfectivo');
+        Route::post("crear", "CrearFactura");
+        Route::get('efectivoCambio/{id}', 'EfectivoCambio');
+        Route::post('crearEfectivo', 'CrearEfectivo');
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
         Route::post('inventario', 'inventario');
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
-        Route::get('ventac/{id}', 'CrearVenta');
-        Route::get('ventaf/{id}', 'CrearFacturas');
-        Route::post('libros', 'listaLibros');
+        Route::get('nueva/{id}', 'NuevaVenta');
+        Route::get('facturar/{id}', 'CrearFacturas');
+        Route::post('libros', 'ListaLibros');
+        Route::get('libros/{id}', 'ListaLibros');
         Route::post('inventarioVenta', 'ventaInventario');
     });
 
