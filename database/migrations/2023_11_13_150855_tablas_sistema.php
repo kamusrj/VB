@@ -10,18 +10,19 @@ return new class extends Migration
     {
         Schema::create('titulo_venta', function (Blueprint $table) {
             $table->id();
-            $table->string('institucion');
+            $table->string('institucion', 6);
             $table->string('director', 200);
             $table->string('encargado', 200);
-            $table->foreign('encargado')->references('correo')->on('usuario');
             $table->string('telefono', 50);
             $table->string('vendedor');
-            $table->foreign('vendedor')->references('correo')->on('usuario');
             $table->string('zona', 200);
             $table->string('direccion', 80);
             $table->string('autor', 200);
             $table->string('fecha_creacion', 200);
             $table->set('estado', ['on', 'off'])->default('on');
+            $table->foreign('encargado')->references('correo')->on('usuario');
+            $table->foreign('vendedor')->references('correo')->on('usuario');
+            $table->foreign('institucion')->references('codigo')->on('institucion');
         });
         Schema::create('nota_remision', function (Blueprint $table) {
             $table->id();

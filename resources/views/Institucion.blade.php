@@ -50,7 +50,7 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     @if ($item->estado === 'off')
-                                        <a href="{{ url('venta/ventac/' . $item->codigo) }}" class="btn btn-info"
+                                        <a href="{{ url('venta/nueva/' . $item->codigo) }}" class="btn btn-info"
                                             data-toggle="tooltip" data-placement="top" title="Nueva venta">
                                             <i class="fa-regular fa-calendar-plus"></i>
                                         </a>
@@ -84,7 +84,7 @@
                     <form id="userForm" action="{{ url('institucion/crear') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="nombre">Codigo:</label>
+                            <label for="codigo">Codigo:</label>
                             <input type="text" id="codigo" name="codigo" required class="form-control">
                         </div>
                         <div class="form-group">
@@ -112,11 +112,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('institucion/update') }}" method="post">
+                    <form action="{{ url('institucion/actualizar') }}" method="post">
                         @csrf
                         <input type="hidden" name="codigo" id="Ucodigo">
                         <div class="col-auto mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
+                            <label for="Unombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="Unombre" name="nombre">
                         </div>
 

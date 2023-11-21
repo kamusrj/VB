@@ -14,30 +14,25 @@ class Facturas extends Model
 
 
 
-    static function ruleCreate(): array
+    static function ruleCrear(): array
     {
         return [
             'representante' => "required",
             'n_remision' => "required ",
             'factura_i' => "required",
             'factura_f' => "required",
-            'total_f' => "required",
-
-
-
         ];
     }
-    static function attrCreate(): array
+    static function attrCrear(): array
     {
         return [
             'representante' => "Encargado",
             'n_remision' => "Nota de remisión",
             'factura_i' => "Factura inicial",
             'factura_f' => "Factura final"
-
         ];
     }
-    static function ruleUpdate(): array
+    static function ruleActualizar(): array
     {
         return [
             'representante' => "required",
@@ -48,7 +43,7 @@ class Facturas extends Model
 
         ];
     }
-    static function attrUpdate(): array
+    static function attrActualizar(): array
     {
         return [
             'representante' => "Encargado",

@@ -19,7 +19,8 @@ class AdminController extends Controller
 
     function Obtener(Request $request)
     {
-        return json_encode(DB::select("select * from usuario where correo = ?", [$request->correo]));
+        $usuario = Usuario::where("correo", $request->correo)->first();
+        return json_encode($usuario);
     }
 
     public function CrearUsuario(Request $request)
