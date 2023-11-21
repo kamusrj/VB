@@ -117,10 +117,20 @@ class VentaController extends Controller
     }
 
 
-    public function perfilBodega(){
-
-
-return view('dashboard.Bodega')
-
+    public function perfilBodega()
+    {
+        $ventas = TituloVenta::join('usuario as enc', 'titulo_venta.encargado', '=', 'enc.correo')
+            ->join('usuario as ven', 'titulo_venta.vendedor', '=', 'ven.correo')
+            ->join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')
+            ->select(
+                'titulo_venta.*',
+                'enc.nombre as nombre_encargado',
+                'enc.apellido as apellido_encargado',
+                'ven.nombre as nombre_vendedor',
+                'ven.apellido as apellido_vendedor',
+                'ins.nombre as institucion_n'
+            )
+            ->get();
+        return view('dashboard.bodega')->with('ventas', $ventas);
     }
 }

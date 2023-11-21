@@ -15,16 +15,24 @@ class PrincipalController extends Controller
     public function Home()
     {
 
-        if (Auth::check())
-            if (in_array(Auth::user()->rol, ['a', 'g', 'c'])) {
-                return view('perfil');
-            } elseif (in_array(Auth::user()->rol, ['b'])) {
-                return redirect('venta.Bodega');
-            } else {
+        if (Auth::check()) {
+            $userRole = Auth::user()->rol;
 
-                return view('dashboard.panel');
+            switch ($userRole) {
+                case 'a':
+                case 'g':
+                case 'c':
+                    return view('perfil');
+
+                case 'b':
+                    return redirect('venta/bodega');
+
+                default:
+                    return view('dashboard.panel');
             }
-        return view("login");
+        } else {
+            return view('login');
+        }
     }
 
 

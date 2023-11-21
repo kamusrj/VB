@@ -54,7 +54,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('inventarioVenta', 'ventaInventario');
         Route::post('inventario', 'inventario');
 
-        Route::post('bodega', 'perfilBodega');
+        Route::get('bodega', 'perfilBodega');
     });
 
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {
@@ -73,27 +73,15 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('eliminar', 'EliminarInstitucion');
         Route::get('venta/{id}', 'Venta');
     });
-
-
-
-
     //  Panel de control ventas
-
-
     Route::controller(PanelControl::class)->prefix('panel')->group(function () {
 
         //dashboard
-
         Route::get('controlVenta/{id}', 'controlVenta');
         Route::get('perfilVenta/{id}', 'perfilVenta');
         Route::get('/', 'ListarVentas');
-
         Route::get('inventario/{id}', 'inventarioVenta');
-
-
         //Cierre de venta 
-
-
 
     });
 });
