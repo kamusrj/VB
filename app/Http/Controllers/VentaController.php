@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Validator;
 
 class VentaController extends Controller
 {
-
-
     public function inventario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
@@ -114,9 +112,20 @@ class VentaController extends Controller
 
     public function bodegaBuscar(Request $request)
     {
-        $inventario  = Inventario::where("titulo_venta", $request->id)->first();
-        return json_encode($inventario);
+
+
+        $data = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
+            ->join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
+            ->select(
+                'inventario.*',
+                'lb.nombre as nombre_libro',
+
+            )
+            ->where('id_venta', $request->id)->get();
+
+        return json_encode($data);
     }
+
     public function perfilBodega()
     {
         $ventas = TituloVenta::join('usuario as enc', 'titulo_venta.encargado', '=', 'enc.correo')

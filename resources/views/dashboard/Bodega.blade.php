@@ -36,7 +36,7 @@
                         <td>{{ $item->nombre_encargado }} {{ $item->apellido_encargado }}</td>
                         <td>{{ $item->nombre_vendedor }} {{ $item->apellido_vendedor }}</td>
                         <td>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-venta="{{ $item->id }}">
+                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-venta="{{ $item->id }}" data-institucion-n="{{ $item->institucion_n }}">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
                         </td>
@@ -51,7 +51,7 @@
             <!--                    Modal                           -->
 
             <div class="modal fade" id="modalVenta" tabindex="-1">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="modalVentaTitle">Modal title</h1>
@@ -68,22 +68,10 @@
                                         <th>Retorno</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @php
-                                    $numero = 1;
-                                    @endphp
-                                    @foreach ($ventas as $item)
-                                    <tr>
-                                        <td>{{ $numero }}</td>
-                                        <td>{{ $item->institucion_n}}</td>
-                                        <td>{{ $item->nombre_encargado }} {{ $item->apellido_encargado }}</td>
-                                        <td>{{ $item->nombre_vendedor }} {{ $item->apellido_vendedor }}</td>
-                                    </tr>
-                                    @php
-                                    $numero++;
-                                    @endphp
-                                    @endforeach
+
+                                <tbody id="modalTableBody">
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -96,31 +84,34 @@
 @section('script')
 <script>
     const modal_venta = new bootstrap.Modal("#modalVenta");
-    const modal_venta_component = document.getElementById("modalVenta");
     const modal_venta_title = document.getElementById('modalVentaTitle');
-    const button_venta = document.querySelectorAll("[data-value-venta]");
+    const tableBody = document.querySelector('#modalTableBody');
+    const buttons_venta = document.querySelectorAll("[data-value-venta]");
 
-    [].slice.call(button_venta).forEach(async function(item) {
-        item.addEventListener('click', async () => {
-            await fetch("{{ url('venta/bodegaBuscar') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        "id": item.getAttribute("data-value-editar")
-                    }),
-                }).then((response) => response.json())
-                .then((data) => {
-                    modal_venta_title.innerText = "Edición para " + data.nombre;
-                    codigo.value = data.id;
-                    enombre.value = data.nombre;
-                    eeditorial.value = data.editorial;
-                    edescripcion.value = data.descripcion;
-                    modal_editar.show();
-                });
+    [].slice.call(buttons_venta).forEach(async function(button) {
+        button.addEventListener('click', async () => {
+            const institucionNombre = button.getAttribute("data-institucion-n");
+            const response = await fetch("{{ url('venta/bodegaBuscar') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    "id": button.getAttribute("data-value-venta")
+                }),
+            });
+            if (!response.ok) {
+                throw new Error('Error al obtener datos del servidor');
+            }
+            const data = await response.json();
+            tableBody.innerHTML = '';
+            modal_venta_title.innerText = "Venta " + institucionNombre;
+            data.forEach(item => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `<td>${item.nombre_libro}</td><td>${item.stock}</td> <td>${item.stock - item.stock_venta}</td><td>${item.stock_venta}</td>`;
+            });
+            modal_venta.show();
         });
     });
 </script>
