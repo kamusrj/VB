@@ -10,23 +10,29 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
-{
-    public function Listar()
-    {
-        $listar = Usuario::where('rol', '<>', 'a')->paginate(6);
-        return view('usuario', compact('listar'));
-    }
 
+{
+
+
+    //funsion para js 
     function Obtener(Request $request)
     {
         $usuario = Usuario::where("correo", $request->correo)->first();
         return json_encode($usuario);
     }
 
+    
+    //crud
+
+    public function Listar()
+    {
+        $listar = Usuario::where('rol', '<>', 'a')->paginate(6);
+        return view('usuario', compact('listar'));
+    }
+
+
     public function CrearUsuario(Request $request)
     {
-
-     
         Validator::make(
             $request->all(),
             Usuario::ruleCreate()

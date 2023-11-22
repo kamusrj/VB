@@ -9,11 +9,10 @@ use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\VentaController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UsuarioMiddleware;
-
 use Illuminate\Support\Facades\Route;
 
 
-
+//Inicio 
 Route::controller(PrincipalController::class)->group(function () {
     Route::get('/', 'Home');
     Route::post('iniciar', 'Iniciar');
@@ -24,8 +23,6 @@ Route::controller(PrincipalController::class)->group(function () {
 Route::middleware(UsuarioMiddleware::class)->group(function () {
 
     Route::middleware(AdminMiddleware::class)->group(function () {
-
-
         //crud Usuario
         Route::controller(AdminController::class)->prefix('admin')->group(function () {
             Route::get('log', 'verLogs');
@@ -37,6 +34,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         });
     });
 
+    
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
         Route::post("crear", "CrearFactura");
         Route::get('efectivoCambio/{id}', 'EfectivoCambio');
@@ -44,7 +42,6 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
-
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
         Route::get('nueva/{id}', 'NuevaVenta');
@@ -55,6 +52,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('inventario', 'inventario');
 
         Route::get('bodega', 'perfilBodega');
+        Route::post('bodegaBuscar', 'bodegaBuscar');
     });
 
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {
@@ -65,6 +63,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post("actualizar", "actualizarLibro");
         Route::post('eliminar', 'EliminarLibro');
     });
+
     Route::controller(Institucioncontroller::class)->prefix('institucion')->group(function () {
         Route::get("/", "ListarInstitucion");
         Route::post("obtener", "Obtener");
@@ -73,6 +72,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('eliminar', 'EliminarInstitucion');
         Route::get('venta/{id}', 'Venta');
     });
+
     //  Panel de control ventas
     Route::controller(PanelControl::class)->prefix('panel')->group(function () {
 
@@ -81,10 +81,14 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('perfilVenta/{id}', 'perfilVenta');
         Route::get('/', 'ListarVentas');
         Route::get('inventario/{id}', 'inventarioVenta');
+        Route::post('stockventa', 'stockVenta');
+
         //Cierre de venta 
+
 
     });
 });
+
 
 /*Route::fallback(function () {
     return view("error");

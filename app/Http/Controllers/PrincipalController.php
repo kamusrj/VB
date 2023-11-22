@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Validator;
 class PrincipalController extends Controller
 {
 
+    //inicio
     public function Home()
     {
-
         if (Auth::check()) {
             $userRole = Auth::user()->rol;
 
@@ -23,7 +23,6 @@ class PrincipalController extends Controller
                 case 'g':
                 case 'c':
                     return view('perfil');
-
                 case 'b':
                     return redirect('venta/bodega');
 
@@ -35,10 +34,9 @@ class PrincipalController extends Controller
         }
     }
 
-
+    // recibe los datos del login
     public function Iniciar(Request $request)
     {
-        //Validador
         Validator::make(
             $request->all(),
             Usuario::ruleLogin()
@@ -48,28 +46,23 @@ class PrincipalController extends Controller
 
         $user = Usuario::where("correo", $request->username)->first();
 
-        // Auntenticador
-        /**
-         * Clase Usuario, el middleware, Login 
-         */
         if ($user)
             if (Hash::check($request->password, $user->clave))
                 Auth::login($user);
 
-        //Autorizador Clase Auth = Null = False
         if (Auth::check())
             $request->session()->regenerate();
         else
             return redirect()->back()->withErrors('Usuario o Contraseña no validos');
 
-
         return redirect()->back();
     }
+
+    //cerrar sesion  
     public function Salir()
     {
         if (Auth::check())
             Auth::logout();
-
         return redirect("/");
     }
 }

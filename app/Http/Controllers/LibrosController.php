@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Validator;
 class LibrosController extends Controller
 {
 
-
     public function Listar()
     {
         $user = Libro::paginate(10);
-
         return view('catalogo', compact('user'));
     }
 
@@ -25,6 +23,7 @@ class LibrosController extends Controller
         $libro  = Libro::where("id", $request->id)->first();
         return json_encode($libro);
     }
+
     public function CrearLibro(Request $request)
     {
         Validator::make(
@@ -40,7 +39,6 @@ class LibrosController extends Controller
         $book->descripcion = $request->descripcion;
         $book->save();
         Session::flash('success', 'Libro creado correctamente');
-
         return redirect()->back();
     }
 

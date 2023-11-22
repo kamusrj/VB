@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Validator;
 class FacturaController extends Controller
 {
 
+
     public function EfectivoCambio($id)
     {
         $tituloVenta = TituloVenta::where('id', $id)->first();
         return view('ventas/EfectivoCambio')->with('tituloVenta', $tituloVenta);
     }
+
 
     public function CrearEfectivo(Request $request)
     {
@@ -28,10 +30,7 @@ class FacturaController extends Controller
         )->addCustomAttributes(
             EfectivoCambio::attrCreate()
         )->validate();
-
-
         $ec = new EfectivoCambio();
-
         $ec->id_venta = $request->id_venta;
         $ec->fecha = date('d-m-Y');
         $ec->centavo_uno = $request->centavo_uno;
@@ -42,9 +41,7 @@ class FacturaController extends Controller
         $ec->dolar_cinco = $request->dolar_cinco;
         $ec->dolar_diez = $request->dolar_diez;
         $ec->dolar_veinte = $request->dolar_veinte;
-
         $ec->save();
-
         $id = $request->id_venta;
         return redirect("venta/libros/" . $id);
     }

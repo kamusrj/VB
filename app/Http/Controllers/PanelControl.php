@@ -7,27 +7,41 @@ use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class PanelControl extends Controller
 {
     use HasFactory;
 
 
+    public function stockVenta(Request $request)
+    {
+        $librosSeleccionados = $request->input('libros_seleccionados', []);
+        $idVenta = $request->id;
+        foreach ($librosSeleccionados as $key => $libro_id) {
+            $inventario = Inventario::where('id_venta', $idVenta)
+                ->where('id_libro', $libro_id)
+                ->first();
+            if ($inventario) {
+                $inventario->stock_venta -= $request->input('venta')[$key];
+                $inventario->save();
+            } else {
+                return 'Error: No se encontró el libro en el inventario para la venta especificada.';
+            }
+        }
+        return redirect()->back();
+    }
+
     public function controlVenta($id)
     {
-
         $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
             ->select(
                 'inventario.*',
                 'lb.nombre as nombre_libro'
             )
             ->where('id_venta', $id)->get();
-
-
         return view('dashboard.inventarioVenta')->with('inventario', $inventario);
     }
-
-
 
 
     public function ListarVentas()
