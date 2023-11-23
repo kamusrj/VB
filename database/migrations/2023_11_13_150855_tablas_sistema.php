@@ -72,12 +72,12 @@ return new class extends Migration
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
             $table->integer('correlativo');
-            $table->unsignedBigInteger('id_inventario');
-            $table->foreign('id_inventario')->references('id')->on('inventario');
+            $table->unsignedBigInteger('id_libro');
+            $table->foreign('id_libro')->references('id')->on('libro');
             $table->string('padre', 200);
-            $table->string('encargado', 200);
-            $table->foreign('encargado')->references('correo')->on('usuario');
             $table->string('fecha');
+            $table->string('hora');
+            $table->set('anulada', ['on', 'off'])->default('off');
         });
     }
     public function down(): void

@@ -43,7 +43,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         //gestion de facturas 
 
         Route::get('facturasLista/{id}', 'listarFacturas');
-
+        Route::post('guardarfactura', 'guardarFactura');
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {

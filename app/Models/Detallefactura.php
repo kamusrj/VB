@@ -11,4 +11,31 @@ class Detallefactura extends Model
     protected $table = "detallefactura";
     public $timestamps = false;
 
+    static function ruleCrear(): array
+    {
+        return [
+            'correlativo' => "required|unique:detallefactura,correlativo",
+            'padre' => "required",
+        ];
+    }
+    static function attrCrear(): array
+    {
+        return [
+            'correlativo' => "Correlativo",
+            'padre' => "Padre",
+        ];
+    }
+    static function ruleActualizar(): array
+    {
+        return [
+            'padre' => "required",
+        ];
+    }
+    static function attrActualizar(): array
+    {
+        return [
+            'correlativo' => "Correlativo",
+            'padre' => "Padre",
+        ];
+    }
 }

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\detallefactura;
-use App\Models\Detallefactura as ModelsDetallefactura;
+use App\Models\Detallefactura;
 use App\Models\EfectivoCambio;
 use App\Models\Facturas;
 use App\Models\Institucion;
@@ -12,6 +11,7 @@ use App\Models\Libro;
 use App\Models\TituloVenta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class FacturaController extends Controller
@@ -22,16 +22,52 @@ class FacturaController extends Controller
     public function listarFacturas($id)
     {
 
+        //modal
         $inventario = Inventario::join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
             ->join('libro', 'inventario.id_libro', '=', 'libro.id')
             ->where('tv.id', '=', $id)
-            ->select('inventario.*', 'libro.nombre as nombre_libro') 
+            ->select(
+                'inventario.*',
+                'libro.nombre as nombre_libro'
+            )
             ->get();
-
-            
-        return view('dashboard/facturasControl')->with('inventario', $inventario);
-
+        $facturas = Facturas::where('id_venta', $id)->get();
+        return view('dashboard/facturasControl')
+            ->with('inventario', $inventario)
+            ->with('facturas', $facturas);
     }
+
+
+    public function guardarFactura(Request $request)
+    {
+
+        Validator::make(
+            $request->all(),
+            Detallefactura::ruleCrear()
+        )->addCustomAttributes(
+            Detallefactura::attrCrear()
+        )->validate();
+
+        $libros = $request->input('libros_seleccionados', []);
+
+        foreach ($libros as $libro_id) {
+
+            $in = new Detallefactura();
+            $in->id_venta = $request->id_venta;
+            $in->fecha = date('Y-m-d');
+            $in->id_libro = $libro_id;
+            $in->correlativo = $request->correlativo;
+            $in->padre = $request->padre;
+            $in->hora = date("h:i A", time());
+
+            $in->save();
+        }
+
+        dd($in);
+        Session::flash('success', 'Factura guardada');
+        return redirect()->back();
+    }
+
 
 
 
