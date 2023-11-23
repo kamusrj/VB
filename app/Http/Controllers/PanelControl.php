@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PanelControl extends Controller
 {
@@ -29,6 +30,8 @@ class PanelControl extends Controller
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
+
+        Session::flash('success', 'Inventario actualizado');
         return redirect()->back();
     }
 

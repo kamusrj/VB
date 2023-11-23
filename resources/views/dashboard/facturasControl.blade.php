@@ -13,22 +13,46 @@
                 Nueva Factura
             </button>
 
+            <br><br>
 
+            <!--  tabla  -->
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Correlativo</th>
+                            <th>Padre</th>
+                            <th>Hora / Fecha</th>
+                            <th>Detalles</th>
 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $numero = 1;
+                        @endphp
+                        @foreach($detalle as $item)
+                        <tr>
+                            <td>{{$numero}}</td>
+                            <td>{{$item->correlativo}}</td>
+                            <td>{{$item->padre }}</td>
+                            <td>{{$item->hora}} / {{ $item->fecha }}</td>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-factura="{{ $item->correlativo }}"">
+                                    <i class=" fa-solid fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        @php
+                        $numero++;
+                        @endphp
 
-
-
-
-
-
-
-
-
-
-
-
-
-            
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             <!-- Modal Creacion de Factura  -->
             <div class="modal" id="seleccionLibrosModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -43,7 +67,7 @@
                                 @foreach($facturas as $factura)
                                 <div class="col-auto mb-3">
                                     <label for="correlativo" class="form-label">N° Correlativo</label>
-                                    <input type="number" min="{{ $factura->factura_i }}" max="{{ $factura->factura_f }}" class="form-control" id="correlativo" name="correlativo">
+                                    <input type="number" min="{{ $factura->factura_i }}" max="{{ $factura->factura_f }}" class="form-control" name="correlativo">
                                 </div>
                                 @endforeach
                                 <div class="col-auto mb-3">
@@ -53,14 +77,14 @@
 
 
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>Seleccionar</th>
-                                                <th>Nombre del Libro</th>
+                                                <th>Libro</th>
                                                 <th>Precio</th>
                                                 <th>cantidad</th>
-                                                <th>existencias</th>
+                                                <th>Inventario</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tablaInventario">
@@ -74,7 +98,7 @@
                                                 <td>{{ $item->nombre_libro }}</td>
                                                 <td>${{ $item->precio }}</td>
                                                 <td>
-                                                    <input type="number" min="0" max="{{ $item->stock_venta }}" name="cantidad[]" style="width: 60%;" value="0" onchange="calcularTotal()">
+                                                    <input type="number" min="0" max="{{ $item->stock_venta }}" name="cantidad[{{ $item->id_libro }}]" style="width: 60%;" value="0" onchange="calcularTotal()">
                                                 </td>
                                                 <td>{{ $item->stock_venta }}</td>
                                             </tr>
@@ -93,6 +117,38 @@
                     </div>
                 </div>
             </div>
+
+            <!--       datos de factura modal          -->
+            <div class="modal fade" id="modalFactura" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modalFsacturaTitle">Detalles de la factura</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <table class="table table-bordered  table-sm  table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>correlativo</th>
+                                        <th>Libro</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>total Libro</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="modalTableBody">
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
     </div>
@@ -115,12 +171,61 @@
                 total += cantidad * precio;
             }
         }
-
         document.getElementById('total').innerText = 'Total: $' + total.toFixed(2);
     }
     window.onload = function() {
         calcularTotal();
     };
+
+    //Modal Detalle de factura 
+
+    const modal_factura = new bootstrap.Modal("#modalFactura");
+    const modal_factura_title = document.getElementById('modalFacturaTitle');
+    const tableBody = document.querySelector('#modalTableBody');
+    const buttons_factura = document.querySelectorAll("[data-value-factura]");
+
+    [].slice.call(buttons_factura).forEach(async function(button) {
+        button.addEventListener('click', async () => {
+            const response = await fetch("{{ url('factura/facturaBuscar') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    "correlativo": button.getAttribute("data-value-factura")
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al obtener datos del servidor');
+            }
+
+            const data = await response.json();
+            tableBody.innerHTML = '';
+            let totalPrecio = 0;
+
+            data.forEach(item => {
+                const row = tableBody.insertRow();
+                const total = parseFloat(item.precio_libro) * parseInt(item.cantidad); // Multiplicar precio por cantidad
+                row.innerHTML = `
+        <td>${item.correlativo}</td>
+        <td>${item.nombre_libro}</td>                 
+        <td>$${item.precio_libro}</td> 
+        <td>${item.cantidad}</td> 
+        <td>$${total.toFixed(2)}</td>
+        <td>${item.fecha}</td>`;
+                if (!isNaN(item.precio_libro)) {
+                    totalPrecio += total;
+                }
+            });
+
+            const totalRow = tableBody.insertRow();
+            totalRow.innerHTML = `<td colspan="5">Total: $${totalPrecio.toFixed(2)}</td>`; // Ajustar el colspan según el número de columnas
+            modal_factura.show();
+
+        });
+    });
 </script>
 
 

@@ -32,9 +32,28 @@ class FacturaController extends Controller
             )
             ->get();
         $facturas = Facturas::where('id_venta', $id)->get();
+
+
+        //llenar tabla
+        $detalleFactura = Detallefactura::all();
+        $totalPorLibro = [];
+
+        foreach ($detalleFactura as $detalle) {
+            $libroId = $detalle->id_libro;
+            $precio = $detalle->precio;
+            $cantidad = $detalle->cantidad;       
+            $total = $precio * $cantidad;
+            $totalPorLibro[$libroId] = $total;
+        }
+
+
+        $dt =  $detalleFactura->unique('correlativo');
+
+
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
-            ->with('facturas', $facturas);
+            ->with('facturas', $facturas)
+            ->with('detalle', $dt);
     }
 
 
@@ -51,26 +70,38 @@ class FacturaController extends Controller
         $libros = $request->input('libros_seleccionados', []);
 
         foreach ($libros as $libro_id) {
-
-            $in = new Detallefactura();
-            $in->id_venta = $request->id_venta;
-            $in->fecha = date('Y-m-d');
-            $in->id_libro = $libro_id;
-            $in->correlativo = $request->correlativo;
-            $in->padre = $request->padre;
-            $in->hora = date("h:i A", time());
-
-            $in->save();
+            $dt = new Detallefactura();
+            $dt->id_venta = $request->id_venta;
+            $dt->correlativo = $request->correlativo;
+            $dt->id_libro = $libro_id;
+            $dt->cantidad = $request->cantidad[$libro_id];
+            $dt->padre = $request->padre;
+            $dt->fecha = date('Y-m-d');
+            $dt->hora = date("H:i A", time());
+            $dt->save();
         }
 
-        dd($in);
+
         Session::flash('success', 'Factura guardada');
         return redirect()->back();
     }
 
 
 
-
+    public function facturaBuscar(Request $request)
+    {
+        $data = Detallefactura::join('titulo_venta as tv', 'detallefactura.id_venta', '=', 'tv.id')
+            ->join('libro as lb', 'detallefactura.id_libro', '=', 'lb.id')
+            ->join('inventario as inv', 'lb.id', '=', 'inv.id_libro')
+            ->select(
+                'detallefactura.*',
+                'lb.nombre as nombre_libro',
+                'inv.precio as precio_libro'
+            )
+            ->where('correlativo', $request->correlativo)
+            ->get();
+        return json_encode($data);
+    }
 
 
 

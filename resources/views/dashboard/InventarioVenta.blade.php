@@ -11,78 +11,80 @@
     </div>
     <form action="{{url('panel/stockventa')}}" method="post">
         @csrf
-        
 
-                <h3>Listado de ventas <i class="fas fa-basket-shopping"></i> </h3>
-                <div class="table table-striped">
-                    <table class="table  table-sm table-bordered table-striped">
-                        <thead>
+        @include('errorMj')
 
-                            @php
-                            $numero = 1;
-                            @endphp
-                            <tr>
-                                <th scope="col">N°</th>
-                                <th scope="col">Libro</th>
-                                <th scope="col">cantidad</th>
-                                <th scope="col">precio</th>
-                                <th scope="col">unidades vendidas</th>
-                                <th scope="col">total vendido</th>
-                                <th scope="col">Descuento %</th>
-                                <th scope="col">Reintegro <br>por libro</th>
-                                <th scope="col">Total Reintegro</th>
-                                <th scope="col">O/A</th>
-                                <th scope="col">Total O/A</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tbody>
-                            @foreach($inventario as $item)
-                            <tr>
-                                <td>{{ $numero }}</td>
-                                <td>{{ $item->nombre_libro }}</td>
-                                <td>
-                                    <input name="id" value="{{ $item->id_venta }}" required hidden>
-                                    <input name="libros_seleccionados[]" value="{{ $item->id_libro }}" required hidden>
-                                    <span>{{ $item->stock_venta }}</span>
-                                </td>
-                                <td class="precio">
-                                    $<span class="precio">{{ $item->precio }}</span>
-                                </td>
-                                <td>
-                                    <input type="number" name="venta[]" min="0" max="{{ $item->stock_venta }}" value="0" oninput="calculateTotal(this, {{$item->precio}}, {{$item->descuento}},{{ $item->ofrecimiento_a }} )" required>
-                                </td>
-                                <td>
-                                    <input type="number" id="total" name="totalvendio[]" min="0" value="0" readonly>
-                                </td>
-                                <td>
-                                    <span>{{ $item->descuento }}</span>
-                                </td>
-                                <td>
-                                    <input type="number" name="reintegro[]" min="0" value="0" readonly>
-                                </td>
-                                <td>
-                                    <input type="number" name="TotalReintegro[]" min="0" value="0" readonly>
-                                </td>
 
-                                <td>
-                                    <span>{{ $item->ofrecimiento_a }}</span>
-                                </td>
-                                <td>
-                                    <input type="number" name="Totalofrecimiento_a[]" min="0" value="" readonly>
-                                </td>
-                            </tr>
-                            @php
-                            $numero++;
-                            @endphp
+        <h3>Listado de ventas <i class="fas fa-basket-shopping"></i> </h3>
+        <div class="table table-striped">
+            <table class="table  table-sm table-bordered table-striped">
+                <thead>
 
-                            @endforeach
-                        </tbody>
-                        </tbody>
-                    </table>
+                    @php
+                    $numero = 1;
+                    @endphp
+                    <tr>
+                        <th scope="col">N°</th>
+                        <th scope="col">Libro</th>
+                        <th scope="col">cantidad</th>
+                        <th scope="col">precio</th>
+                        <th scope="col">unidades vendidas</th>
+                        <th scope="col">total vendido</th>
+                        <th scope="col">Descuento %</th>
+                        <th scope="col">Reintegro <br>por libro</th>
+                        <th scope="col">Total Reintegro</th>
+                        <th scope="col">O/A</th>
+                        <th scope="col">Total O/A</th>
+                    </tr>
+                </thead>
+               
+                <tbody>
+                    @foreach($inventario as $item)
+                    <tr>
+                        <td>{{ $numero }}</td>
+                        <td>{{ $item->nombre_libro }}</td>
+                        <td>
+                            <input name="id" value="{{ $item->id_venta }}" required hidden>
+                            <input name="libros_seleccionados[]" value="{{ $item->id_libro }}" required hidden>
+                            <span>{{ $item->stock_venta }}</span>
+                        </td>
+                        <td class="precio">
+                            $<span class="precio">{{ $item->precio }}</span>
+                        </td>
+                        <td>
+                            <input type="number" name="venta[]" min="0" max="{{ $item->stock_venta }}" value="0" oninput="calculateTotal(this, {{$item->precio}}, {{$item->descuento}},{{ $item->ofrecimiento_a }} )" required>
+                        </td>
+                        <td>
+                            <input type="number" id="total" name="totalvendio[]" min="0" value="0" readonly>
+                        </td>
+                        <td>
+                            <span>{{ $item->descuento }}</span>
+                        </td>
+                        <td>
+                            <input type="number" name="reintegro[]" min="0" value="0" readonly>
+                        </td>
+                        <td>
+                            <input type="number" name="TotalReintegro[]" min="0" value="0" readonly>
+                        </td>
 
-                </div>
-       
+                        <td>
+                            <span>{{ $item->ofrecimiento_a }}</span>
+                        </td>
+                        <td>
+                            <input type="number" name="Totalofrecimiento_a[]" min="0" value="" readonly>
+                        </td>
+                    </tr>
+                    @php
+                    $numero++;
+                    @endphp
+
+                    @endforeach
+                </tbody>
+              
+            </table>
+
+        </div>
+
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
     <div class="col-md-3"> </div>

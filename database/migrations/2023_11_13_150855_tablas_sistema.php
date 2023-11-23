@@ -74,10 +74,10 @@ return new class extends Migration
             $table->integer('correlativo');
             $table->unsignedBigInteger('id_libro');
             $table->foreign('id_libro')->references('id')->on('libro');
+            $table->integer('cantidad');
             $table->string('padre', 200);
             $table->string('fecha');
             $table->string('hora');
-            $table->set('anulada', ['on', 'off'])->default('off');
         });
     }
     public function down(): void

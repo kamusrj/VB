@@ -11,6 +11,14 @@ class Detallefactura extends Model
     protected $table = "detallefactura";
     public $timestamps = false;
 
+
+    public function libro()
+    {
+        return $this->belongsTo(Libro::class, 'id_libro');
+    }
+
+
+
     static function ruleCrear(): array
     {
         return [
@@ -22,6 +30,7 @@ class Detallefactura extends Model
     {
         return [
             'correlativo' => "Correlativo",
+
             'padre' => "Padre",
         ];
     }

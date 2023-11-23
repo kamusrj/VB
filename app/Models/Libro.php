@@ -11,6 +11,11 @@ class Libro extends Model
     protected $table = "libro";
     public $timestamps = false;
 
+    public function inventario()
+    {
+        return $this->hasOne(Inventario::class, 'id_libro');
+    }
+
     static function ruleCreate(): array
     {
         return [
