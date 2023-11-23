@@ -112,14 +112,11 @@ class VentaController extends Controller
 
     public function bodegaBuscar(Request $request)
     {
-
-
         $data = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
             ->join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
             ->select(
                 'inventario.*',
                 'lb.nombre as nombre_libro',
-
             )
             ->where('id_venta', $request->id)->get();
 
@@ -139,6 +136,7 @@ class VentaController extends Controller
                 'ven.apellido as apellido_vendedor',
                 'ins.nombre as institucion_n'
             )
+            ->where('titulo_venta.estado', 'off')
             ->get();
         return view('dashboard.bodega')->with('ventas', $ventas);
     }

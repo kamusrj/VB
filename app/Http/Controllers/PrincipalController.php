@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Roles;
+use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class PrincipalController extends Controller
@@ -23,18 +25,24 @@ class PrincipalController extends Controller
                 case 'g':
                 case 'c':
                     return view('perfil');
+
                 case 'b':
                     return redirect('venta/bodega');
-
                 default:
-                    return view('dashboard.panel');
+                    //redirecciona al encargado a su venta asignada
+
+                    $titulo = TituloVenta::where('encargado', Auth::user()->correo)
+                        ->where('estado', 'on')
+                        ->first();
+                    $tituloVenta = $titulo->id;
+                    return redirect('panel/perfilVenta/' . $tituloVenta);
             }
         } else {
             return view('login');
         }
     }
 
-    // recibe los datos del login
+    // recivelogin
     public function Iniciar(Request $request)
     {
         Validator::make(

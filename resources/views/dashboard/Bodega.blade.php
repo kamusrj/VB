@@ -59,11 +59,11 @@
                         </div>
                         <div class="modal-body">
 
-                            <table class="table table-bordered  table-sm ">
+                            <table class="table table-bordered  table-sm  table-striped">
                                 <thead>
                                     <tr>
                                         <th>Libro</th>
-                                        <th>Inventario Inical</th>
+                                        <th>Inventario Inicial</th>
                                         <th>vendido</th>
                                         <th>Retorno</th>
                                     </tr>
@@ -109,7 +109,7 @@
             modal_venta_title.innerText = "Venta " + institucionNombre;
             data.forEach(item => {
                 const row = tableBody.insertRow();
-                row.innerHTML = `<td>${item.nombre_libro}</td><td>${item.stock}</td> <td>${item.stock - item.stock_venta}</td><td>${item.stock_venta}</td>`;
+                row.innerHTML = `<td>${item.nombre_libro}</td><td>${item.stock}</td> <td>${item.stock - item.stock_venta}</td><td  style="font-weight: bold;">${item.stock_venta}</td>`;
             });
             modal_venta.show();
         });
