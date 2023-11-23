@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\detallefactura;
+use App\Models\Detallefactura as ModelsDetallefactura;
 use App\Models\EfectivoCambio;
 use App\Models\Facturas;
 use App\Models\Institucion;
+use App\Models\Inventario;
 use App\Models\Libro;
 use App\Models\TituloVenta;
 use Carbon\Carbon;
@@ -14,14 +17,38 @@ use Illuminate\Support\Facades\Validator;
 class FacturaController extends Controller
 {
 
+    //gestion de facturas 
 
+    public function listarFacturas($id)
+    {
+
+        $inventario = Inventario::join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
+            ->join('libro', 'inventario.id_libro', '=', 'libro.id')
+            ->where('tv.id', '=', $id)
+            ->select('inventario.*', 'libro.nombre as nombre_libro') 
+            ->get();
+
+            
+        return view('dashboard/facturasControl')->with('inventario', $inventario);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //cracion de venta diracta
     public function EfectivoCambio($id)
     {
         $tituloVenta = TituloVenta::where('id', $id)->first();
         return view('ventas/EfectivoCambio')->with('tituloVenta', $tituloVenta);
     }
-
-
     public function CrearEfectivo(Request $request)
     {
         Validator::make(
@@ -57,7 +84,6 @@ class FacturaController extends Controller
 
         $f = new Facturas();
         $f->id_venta = $request->id_venta;
-
         $f->fecha = date("Y-m-d");
         $f->representante = $request->representante;
         $f->n_remision = $request->n_remision;
@@ -69,5 +95,4 @@ class FacturaController extends Controller
         $data = $f->id_venta;
         return redirect("factura/efectivoCambio/$data");
     }
-
 }

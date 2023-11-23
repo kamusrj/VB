@@ -34,11 +34,16 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         });
     });
 
-    
+
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
         Route::post("crear", "CrearFactura");
         Route::get('efectivoCambio/{id}', 'EfectivoCambio');
         Route::post('crearEfectivo', 'CrearEfectivo');
+
+        //gestion de facturas 
+
+        Route::get('facturasLista/{id}', 'listarFacturas');
+
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
@@ -82,6 +87,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('/', 'ListarVentas');
         Route::get('inventario/{id}', 'inventarioVenta');
         Route::post('stockventa', 'stockVenta');
+
 
         //Cierre de venta 
 
