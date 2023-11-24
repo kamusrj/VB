@@ -6,15 +6,20 @@
 <br><br>
 
 <div class="container">
+
+    <div class="row">
+        <div class="col my-3">
+            <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
+            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             @include('errorMj')
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seleccionLibrosModal">
                 Nueva Factura
             </button>
-
             <br><br>
-
             <!--  tabla  -->
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
@@ -24,8 +29,7 @@
                             <th>Correlativo</th>
                             <th>Padre</th>
                             <th>Hora / Fecha</th>
-                            <th>Detalles</th>
-
+                            <th>Ver Factura</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,7 +42,7 @@
                             <td>{{$item->correlativo}}</td>
                             <td>{{$item->padre }}</td>
                             <td>{{$item->hora}} / {{ $item->fecha }}</td>
-                            <td></td>
+
                             <td>
                                 <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-factura="{{ $item->correlativo }}"">
                                     <i class=" fa-solid fa-eye"></i>
@@ -63,7 +67,6 @@
                         <div class="modal-body">
                             <form method="post" action="{{ url('factura/guardarfactura') }}">
                                 @csrf
-
                                 @foreach($facturas as $factura)
                                 <div class="col-auto mb-3">
                                     <label for="correlativo" class="form-label">N° Correlativo</label>
@@ -74,8 +77,6 @@
                                     <label for="padre" class="form-label">Padre de familia</label>
                                     <input type="text" class="form-control" id="padre" name="padre">
                                 </div>
-
-
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered">
                                         <thead>
@@ -91,7 +92,6 @@
                                             @foreach($inventario as $item)
                                             <tr id="fila_{{ $item->id_libro }}">
                                                 <input type="text" value="{{$item->id_venta}}" name="id_venta" hidden>
-
                                                 <td>
                                                     <input class="form-check-input" type="checkbox" name="libros_seleccionados[]" value="{{ $item->id_libro }}" onchange="calcularTotal()">
                                                 </td>
@@ -106,9 +106,7 @@
                                             <tr>
                                                 <td id="total" colspan="4">Total: $0.00</td>
                                             </tr>
-
                                         </tbody>
-
                                     </table>
                                     <button type="submit" class="btn btn-primary">Enviar</button>
                                 </div>
@@ -117,7 +115,6 @@
                     </div>
                 </div>
             </div>
-
             <!--       datos de factura modal          -->
             <div class="modal fade" id="modalFactura" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -135,27 +132,22 @@
                                         <th>Libro</th>
                                         <th>Precio</th>
                                         <th>Cantidad</th>
-                                        <th>total Libro</th>
-                                        <th>Fecha</th>
+                                        <th>Total Libro</th>
+                                        <th>Hora</th>
                                     </tr>
                                 </thead>
 
                                 <tbody id="modalTableBody">
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
-
 @endsection
-
 @section('script')
 <script>
     function calcularTotal() {
@@ -214,12 +206,11 @@
         <td>$${item.precio_libro}</td> 
         <td>${item.cantidad}</td> 
         <td>$${total.toFixed(2)}</td>
-        <td>${item.fecha}</td>`;
+        <td>${item.hora}</td>`;
                 if (!isNaN(item.precio_libro)) {
                     totalPrecio += total;
                 }
             });
-
             const totalRow = tableBody.insertRow();
             totalRow.innerHTML = `<td colspan="5">Total: $${totalPrecio.toFixed(2)}</td>`; // Ajustar el colspan según el número de columnas
             modal_factura.show();

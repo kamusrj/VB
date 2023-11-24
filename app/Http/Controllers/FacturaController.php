@@ -49,7 +49,6 @@ class FacturaController extends Controller
 
         $dt =  $detalleFactura->unique('correlativo');
 
-
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
             ->with('facturas', $facturas)
