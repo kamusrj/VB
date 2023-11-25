@@ -20,12 +20,12 @@ class InicioSeeder extends Seeder
                 [
                     'correo' => 'kamus',
                     'clave' => Hash::make('1234'),
-                    'nombre' => 'Usuario',
-                    'apellido' => 'Uno',
+                    'nombre' => 'Administrado',
+                    'apellido' => 'Principal',
                     'rol' => 'a',
                 ],
                 [
-                    'correo' => 'kamus7',
+                    'correo' => 'tonyb',
                     'clave' => Hash::make('1234'),
                     'nombre' => 'Antonio',
                     'apellido' => 'Hernández',

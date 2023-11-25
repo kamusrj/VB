@@ -15,7 +15,6 @@ class VentaController extends Controller
 {
     public function inventario(Request $request)
     {
-
         $libros = $request->input('libros_seleccionados', []);
         foreach ($libros as $libro_id) {
             $in = new Inventario();
@@ -28,19 +27,18 @@ class VentaController extends Controller
         return redirect("panel/inventario/$id");
     }
 
+
     public function ventaInventario(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
         $idVenta = $request->id;
-
         foreach ($librosSeleccionados as $key => $libro_id) {
-
             $inventario = Inventario::where('id_venta', $idVenta)
                 ->where('id_libro', $libro_id)
                 ->first();
-
             if ($inventario) {
                 $inventario->stock = $request->input('stock')[$key];
+                $inventario->stock_venta = $request->input('stock')[$key];
                 $inventario->precio = $request->input('precio')[$key];
                 $inventario->descuento = $request->input('descuento')[$key];
                 $inventario->ofrecimiento_a = $request->input('ofrecimiento_a')[$key];
@@ -51,10 +49,8 @@ class VentaController extends Controller
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
-
         return redirect("panel/");
     }
-
 
     public function NuevaVenta($id)
     {
@@ -66,6 +62,7 @@ class VentaController extends Controller
             ->with('vendedores', $vendedores)
             ->with('encargado', $encargado);
     }
+
     public function CrearFacturas($id)
     {
         $tituloVenta = TituloVenta::where('id', $id)->first();
@@ -79,16 +76,13 @@ class VentaController extends Controller
 
     public function Crear(Request $request)
     {
-
         Validator::make(
             $request->all(),
             TituloVenta::ruleCrear()
         )->addCustomAttributes(
             TituloVenta::attrCrear()
         )->validate();
-
         $usuario = Auth::user();
-
         $vd = new TituloVenta();
         $vd->institucion = $request->codigo;
         $vd->director = $request->director;
@@ -107,18 +101,42 @@ class VentaController extends Controller
 
     function ListaLibros(Request $request)
     {
-
         $tituloVenta = TituloVenta::where('id', $request->id)->first();
         $libro = Libro::orderByRaw('FIELD(editorial, "ed", "mdf", "eng", "info")')->get();
-
         return view("ventas/Libros")
             ->with('libro', $libro)
             ->with('tituloVenta', $tituloVenta);
     }
 
+    // --------- Bodega-----------------
+    public function bodegaBuscar(Request $request)
+    {
+        $data = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
+            ->join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
+            ->select(
+                'inventario.*',
+                'lb.nombre as nombre_libro',
+            )
+            ->where('id_venta', $request->id)->get();
+
+        return json_encode($data);
+    }
 
     public function perfilBodega()
     {
-        return view('dashboard.Bodega');
+        $ventas = TituloVenta::join('usuario as enc', 'titulo_venta.encargado', '=', 'enc.correo')
+            ->join('usuario as ven', 'titulo_venta.vendedor', '=', 'ven.correo')
+            ->join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')
+            ->select(
+                'titulo_venta.*',
+                'enc.nombre as nombre_encargado',
+                'enc.apellido as apellido_encargado',
+                'ven.nombre as nombre_vendedor',
+                'ven.apellido as apellido_vendedor',
+                'ins.nombre as institucion_n'
+            )
+            ->where('titulo_venta.estado', 'off')
+            ->get();
+        return view('dashboard.bodega')->with('ventas', $ventas);
     }
 }

@@ -34,10 +34,8 @@ return new class extends Migration
             $table->string('n_remision', 50);
             $table->integer('factura_i');
             $table->integer('factura_f');
-            $table->integer('total_f');
             $table->integer('cupon_i')->nullable();
             $table->integer('cupon_f')->nullable();
-            $table->integer('total_c')->nullable();
         });
         Schema::create('efectivo_c', function (Blueprint $table) {
             $table->id();
@@ -52,7 +50,6 @@ return new class extends Migration
             $table->double('dolar_cinco')->notNull();
             $table->double('dolar_diez')->notNull();
             $table->double('dolar_veinte')->notNull();
-            $table->double('total')->notNull();
         });
         Schema::create('inventario', function (Blueprint $table) {
             $table->id();
@@ -62,6 +59,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_libro');
             $table->foreign('id_libro')->references('id')->on('libro');
             $table->integer('stock')->default(0);
+            $table->integer('stock_venta')->default(0);
             $table->double('precio')->default(0);
             $table->integer('descuento')->default(0);
             $table->double('ofrecimiento_a')->default(0);
@@ -74,12 +72,12 @@ return new class extends Migration
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
             $table->integer('correlativo');
-            $table->unsignedBigInteger('id_inventario'); 
-            $table->foreign('id_inventario')->references('id')->on('inventario');
+            $table->unsignedBigInteger('id_libro');
+            $table->foreign('id_libro')->references('id')->on('libro');
+            $table->integer('cantidad');
             $table->string('padre', 200);
-            $table->string('encargado', 200);
-            $table->foreign('encargado')->references('correo')->on('usuario');
             $table->string('fecha');
+            $table->string('hora');
         });
     }
     public function down(): void
