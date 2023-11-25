@@ -24,9 +24,6 @@ Route::controller(PrincipalController::class)->group(function () {
 Route::middleware(UsuarioMiddleware::class)->group(function () {
 
     Route::middleware(AdminMiddleware::class)->group(function () {
-
-
-        //crud Usuario
         Route::controller(AdminController::class)->prefix('admin')->group(function () {
             Route::get('log', 'verLogs');
             Route::get('listar', 'Listar');

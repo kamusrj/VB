@@ -3,7 +3,7 @@
 @section('title', 'Venta Directa')
 
 @section('content')
-    <div class="d-flex" style="height: 100vh;width: 100vw;">
+    <div class="d-flex w-100" style="height:60vh;">
         <div class="m-auto">
             <div class="card shadow">
                 <div class="card-body" style="width: 420px;">

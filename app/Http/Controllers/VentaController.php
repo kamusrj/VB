@@ -109,7 +109,7 @@ class VentaController extends Controller
     {
 
         $tituloVenta = TituloVenta::where('id', $request->id)->first();
-        $libro = Libro::all();
+        $libro = Libro::orderByRaw('FIELD(editorial, "ed", "mdf", "eng", "info")')->get();
 
         return view("ventas/Libros")
             ->with('libro', $libro)
@@ -117,10 +117,8 @@ class VentaController extends Controller
     }
 
 
-    public function perfilBodega(){
-
-
-return view('dashboard.Bodega')
-
+    public function perfilBodega()
+    {
+        return view('dashboard.Bodega');
     }
 }
