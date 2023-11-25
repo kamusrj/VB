@@ -39,7 +39,7 @@
                         @foreach ($ventas as $item)
                         <tr>
                             <td>{{ $numero }}</td>
-                            <td>{{ $item->institucion}}</td>
+                            <td>{{ $item->institucion_n}}</td>
                             <td>{{ $item->director }}</td>
                             <td>{{ $item->nombre_encargado }} {{ $item->apellido_encargado }}</td>
                             <td>{{ $item->telefono }}</td>
@@ -73,4 +73,3 @@
 </div>
 @endsection
 @section('script')
-

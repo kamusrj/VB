@@ -35,89 +35,93 @@
                 <tr>
                     <td>{{ $item->codigo }}</td>
                     <td>{{ $item->nombre }}</td>
-                            <td>
-                                @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
-                                    @if ($item->codigo != '00001')
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn btn-danger"
-                                                data-value-delete="{{ $item->codigo }}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                    @endif
-                                    <button type="button" class="btn btn-primary" data-value-editar="{{ $item->codigo }}">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    @if ($item->estado === 'off')
-                                        <a href="{{ url('venta/nueva/' . $item->codigo) }}" class="btn btn-info"
-                                            data-toggle="tooltip" data-placement="top" title="Nueva venta">
-                                            <i class="fa-regular fa-calendar-plus"></i>
-                                        </a>
-                                    @endif
-                                    @if ($item->estado === 'on')
-                                        <a href="{{ url('institucion/salir') }}" class="btn btn-warning"
-                                            data-toggle="tooltip" data-placement="top" title="Ver venta">
-                                            <i class="fa-solid fa-truck fa-xl"></i>
-                                        </a>
-                                    @endif
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    <td>
+                        @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
+
+                        @if ($item->codigo != '00001')
+
+
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            @if ($item->estado === 'off')
+                            <button type="button" class="btn btn-danger" data-value-delete="{{ $item->codigo }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            @endif
+
+                            @endif
+
+
+                            <button type="button" class="btn btn-primary" data-value-editar="{{ $item->codigo }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            @if ($item->estado === 'off')
+                            <a href="{{ url('venta/nueva/' . $item->codigo) }}" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Nueva venta">
+                                <i class="fa-regular fa-calendar-plus"></i>
+                            </a>
+                            @endif
+                            @if ($item->estado === 'on')
+                            <a href="{{ url('institucion/salir') }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta">
+                                <i class="fa-solid fa-truck fa-xl"></i>
+                            </a>
+                            @endif
+                            @endif
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
-    <div class="modal fade" id="modalCrear">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #563d7c !important;">
-                    <h6 class="modal-title" style="color: #fff; text-align: center;">
-                        Crear Institución
-                    </h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"></span>
-                    </button>
-                </div>
-                <div class="modal-body" id="cont_modal">
-                    <form id="userForm" action="{{ url('institucion/crear') }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="codigo">Codigo:</label>
-                            <input type="text" id="codigo" name="codigo" required class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="nombre">Nombre:</label>
-                            <input type="text" id="nombre" name="nombre" required class="form-control">
-                        </div>
-                        <div class="form-group">
-                        </div>
-                        <div class="modal-footer">
-                            <a href="#" class="btn btn-secondary" data-bs-dismiss="modal" style="border: none;"
-                                aria-label="Close">Cerrar</a>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </form>
-                </div>
+</div>
+<div class="modal fade" id="modalCrear">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #563d7c !important;">
+                <h6 class="modal-title" style="color: #fff; text-align: center;">
+                    Crear Institución
+                </h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body" id="cont_modal">
+                <form id="userForm" action="{{ url('institucion/crear') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="codigo">Codigo:</label>
+                        <input type="text" id="codigo" name="codigo" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-secondary" data-bs-dismiss="modal" style="border: none;" aria-label="Close">Cerrar</a>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+</div>
 
-    <div class="modal fade" id="modalEditar">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalEditarTitle">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ url('institucion/actualizar') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="codigo" id="Ucodigo">
-                        <div class="col-auto mb-3">
-                            <label for="Unombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="Unombre" name="nombre">
-                        </div>
+<div class="modal fade" id="modalEditar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalEditarTitle">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url('institucion/actualizar') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="codigo" id="Ucodigo">
+                    <div class="col-auto mb-3">
+                        <label for="Unombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="Unombre" name="nombre">
+                    </div>
 
 
                     <div class="col-12 mb-3 g-1">

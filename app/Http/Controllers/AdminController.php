@@ -10,18 +10,26 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
+
 {
+
+
+    //funsion para js 
+    function Obtener(Request $request)
+    {
+        $usuario = Usuario::where("correo", $request->correo)->first();
+        return json_encode($usuario);
+    }
+
+    
+    //crud
+
     public function Listar()
     {
         $listar = Usuario::where('rol', '<>', 'a')->paginate(6);
         return view('usuario', compact('listar'));
     }
 
-    function Obtener(Request $request)
-    {
-        $usuario = Usuario::where("correo", $request->correo)->first();
-        return json_encode($usuario);
-    }
 
     public function CrearUsuario(Request $request)
     {
@@ -40,6 +48,7 @@ class AdminController extends Controller
         $usuario->apellido = $request->apellido;
         $usuario->rol = $request->rol;
         $usuario->save();
+
         Session::flash('success', 'Usuario creado correctamente');
 
         return redirect()->back();
@@ -74,7 +83,7 @@ class AdminController extends Controller
     public function EliminarUsuario(Request $request)
     {
         $id = $request->id;
-        
+
         $book = Usuario::find($id);
         if ($book) {
             $book->delete();

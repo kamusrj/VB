@@ -3,34 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Roles;
+use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class PrincipalController extends Controller
 {
 
+    //inicio
     public function Home()
     {
+        if (Auth::check()) {
+            $userRole = Auth::user()->rol;
 
-        if (Auth::check())
-            if (in_array(Auth::user()->rol, ['a', 'g', 'c'])) {
-                return view('perfil');
-            } elseif (in_array(Auth::user()->rol, ['b'])) {
-                return redirect('venta.Bodega');
-            } else {
+            switch ($userRole) {
+                case 'a':
+                case 'g':
+                case 'c':
+                    return view('perfil');
 
-                return view('dashboard.panel');
+                case 'b':
+                    return redirect('venta/bodega');
+                default:
+                    //redirecciona al encargado a su venta asignada
+
+                    $titulo = TituloVenta::where('encargado', Auth::user()->correo)
+                        ->where('estado', 'on')
+                        ->first();
+                    $tituloVenta = $titulo->id;
+                    return redirect('panel/perfilVenta/' . $tituloVenta);
             }
-        return view("login");
+        } else {
+            return view('login');
+        }
     }
 
-
+    // recivelogin
     public function Iniciar(Request $request)
     {
-        //Validador
         Validator::make(
             $request->all(),
             Usuario::ruleLogin()
@@ -40,28 +54,23 @@ class PrincipalController extends Controller
 
         $user = Usuario::where("correo", $request->username)->first();
 
-        // Auntenticador
-        /**
-         * Clase Usuario, el middleware, Login 
-         */
         if ($user)
             if (Hash::check($request->password, $user->clave))
                 Auth::login($user);
 
-        //Autorizador Clase Auth = Null = False
         if (Auth::check())
             $request->session()->regenerate();
         else
             return redirect()->back()->withErrors('Usuario o Contraseña no validos');
 
-
         return redirect()->back();
     }
+
+    //cerrar sesion  
     public function Salir()
     {
         if (Auth::check())
             Auth::logout();
-
         return redirect("/");
     }
 }
