@@ -102,14 +102,13 @@ class VentaController extends Controller
     function ListaLibros(Request $request)
     {
         $tituloVenta = TituloVenta::where('id', $request->id)->first();
-        $libro = Libro::all();
+        $libro = Libro::orderByRaw('FIELD(editorial, "ed", "mdf", "eng", "info")')->get();
         return view("ventas/Libros")
             ->with('libro', $libro)
             ->with('tituloVenta', $tituloVenta);
     }
 
     // --------- Bodega-----------------
-
     public function bodegaBuscar(Request $request)
     {
         $data = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
