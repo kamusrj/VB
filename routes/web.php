@@ -91,7 +91,8 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
         //Cierre de venta 
 
-
+        Route::get('cierre/{id}', 'cierreVenta');
+        
     });
 });
 

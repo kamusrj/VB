@@ -15,6 +15,29 @@ class PanelControl extends Controller
     use HasFactory;
 
 
+
+    //Cierre de vena 
+    public function cierreVenta($id)
+    {
+
+
+        return view('/');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function stockVenta(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
@@ -37,13 +60,10 @@ class PanelControl extends Controller
 
     public function controlVenta($id)
     {
-        $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
-            ->select(
-                'inventario.*',
-                'lb.nombre as nombre_libro'
-            )
-            ->where('id_venta', $id)->get();
-        return view('dashboard.inventarioVenta')->with('inventario', $inventario);
+        $inventario = DB::select('SELECT * FROM datoventa WHERE id_venta = ?', [$id]);
+
+        return view('dashboard.inventarioVenta')
+            ->with('inventario', $inventario);
     }
 
 

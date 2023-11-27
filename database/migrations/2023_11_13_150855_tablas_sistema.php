@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -79,7 +80,33 @@ return new class extends Migration
             $table->string('fecha');
             $table->string('hora');
         });
+
+        DB::statement(' CREATE OR REPLACE VIEW DatoVenta AS
+        SELECT
+            dv.id_venta,
+            dv.fecha,
+            dv.id_libro,
+            dv.stock,
+            dv.stock_venta,
+            dv.precio,
+            dv.descuento,
+            dv.ofrecimiento_a,
+            dv.fecha_inicio,
+            dv.stock - dv.stock_venta AS vendido,
+            CAST((dv.stock - dv.stock_venta) * dv.precio AS DECIMAL(10, 2)) AS totalventa,
+            CAST((dv.precio * dv.descuento / 100) AS DECIMAL(10, 2)) AS reintegro,
+            CAST((dv.stock - dv.stock_venta) * (dv.precio * dv.descuento / 100) AS DECIMAL(10, 2)) AS totalReintegro,
+            CAST((dv.stock - dv.stock_venta) * ofrecimiento_a AS DECIMAL(10, 2)) AS totaloa,
+            lb.nombre AS nombre_libro
+        FROM
+            inventario dv
+        JOIN
+            libro lb ON dv.id_libro = lb.id;
+            
+            
+    ');
     }
+
     public function down(): void
     {
         Schema::dropIfExists('titulo_venta');

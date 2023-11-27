@@ -42,7 +42,6 @@
                             <td>{{$item->correlativo}}</td>
                             <td>{{$item->padre }}</td>
                             <td>{{$item->hora}} / {{ $item->fecha }}</td>
-
                             <td>
                                 <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-factura="{{ $item->correlativo }}"">
                                     <i class=" fa-solid fa-eye"></i>
@@ -95,12 +94,12 @@
                                                 <td>
                                                     <input class="form-check-input" type="checkbox" name="libros_seleccionados[]" value="{{ $item->id_libro }}" onchange="calcularTotal()">
                                                 </td>
-                                                <td>{{ $item->nombre_libro }}</td>
-                                                <td>${{ $item->precio }}</td>
+                                                <td>{{$item->nombre_libro}}</td>
+                                                <td>${{$item->precio}}</td>
                                                 <td>
                                                     <input type="number" min="0" max="{{ $item->stock_venta }}" name="cantidad[{{ $item->id_libro }}]" style="width: 60%;" value="0" onchange="calcularTotal()">
                                                 </td>
-                                                <td>{{ $item->stock_venta }}</td>
+                                                <td>{{$item->stock_venta}}</td>
                                             </tr>
                                             @endforeach
                                             <tr>
@@ -136,7 +135,6 @@
                                         <th>Hora</th>
                                     </tr>
                                 </thead>
-
                                 <tbody id="modalTableBody">
                                 </tbody>
                             </table>
@@ -157,7 +155,6 @@
             var checkbox = filas[i].getElementsByTagName('input')[0];
             var cantidadInput = filas[i].getElementsByTagName('input')[1];
             var precio = parseFloat(filas[i].getElementsByTagName('td')[2].innerText.slice(1));
-
             if (checkbox.checked) {
                 var cantidad = parseFloat(cantidadInput.value);
                 total += cantidad * precio;
@@ -170,7 +167,6 @@
     };
 
     //Modal Detalle de factura 
-
     const modal_factura = new bootstrap.Modal("#modalFactura");
     const modal_factura_title = document.getElementById('modalFacturaTitle');
     const tableBody = document.querySelector('#modalTableBody');
@@ -199,7 +195,7 @@
 
             data.forEach(item => {
                 const row = tableBody.insertRow();
-                const total = parseFloat(item.precio_libro) * parseInt(item.cantidad); // Multiplicar precio por cantidad
+                const total = parseFloat(item.precio_libro) * parseInt(item.cantidad);
                 row.innerHTML = `
         <td>${item.correlativo}</td>
         <td>${item.nombre_libro}</td>                 
@@ -212,12 +208,10 @@
                 }
             });
             const totalRow = tableBody.insertRow();
-            totalRow.innerHTML = `<td colspan="5">Total: $${totalPrecio.toFixed(2)}</td>`; // Ajustar el colspan según el número de columnas
+            totalRow.innerHTML = `<td colspan="5">Total: $${totalPrecio.toFixed(2)}</td>`;
             modal_factura.show();
 
         });
     });
 </script>
-
-
 @endsection

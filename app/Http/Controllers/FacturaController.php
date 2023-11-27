@@ -21,7 +21,6 @@ class FacturaController extends Controller
 
     public function listarFacturas($id)
     {
-
         //modal
         $inventario = Inventario::join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
             ->join('libro', 'inventario.id_libro', '=', 'libro.id')
@@ -32,23 +31,8 @@ class FacturaController extends Controller
             )
             ->get();
         $facturas = Facturas::where('id_venta', $id)->get();
-
-
-        //llenar tabla
-        $detalleFactura = Detallefactura::all();
-        $totalPorLibro = [];
-
-        foreach ($detalleFactura as $detalle) {
-            $libroId = $detalle->id_libro;
-            $precio = $detalle->precio;
-            $cantidad = $detalle->cantidad;       
-            $total = $precio * $cantidad;
-            $totalPorLibro[$libroId] = $total;
-        }
-
-
+        $detalleFactura = Detallefactura::where('id_venta', $id)->get();
         $dt =  $detalleFactura->unique('correlativo');
-
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
             ->with('facturas', $facturas)
@@ -58,7 +42,6 @@ class FacturaController extends Controller
 
     public function guardarFactura(Request $request)
     {
-
         Validator::make(
             $request->all(),
             Detallefactura::ruleCrear()
@@ -78,14 +61,18 @@ class FacturaController extends Controller
             $dt->fecha = date('Y-m-d');
             $dt->hora = date("H:i A", time());
             $dt->save();
+
+            $inventario = Inventario::where('id_venta', $request->id_venta)
+                ->where('id_libro', $libro_id)
+                ->first();
+                
+            if ($inventario) {
+                $inventario->decrement('stock_venta', $request->cantidad[$libro_id]);
+            }
         }
-
-
         Session::flash('success', 'Factura guardada');
         return redirect()->back();
     }
-
-
 
     public function facturaBuscar(Request $request)
     {
