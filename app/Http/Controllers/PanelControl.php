@@ -21,7 +21,7 @@ class PanelControl extends Controller
     {
 
 
-        return view('/');
+        return view('dashboard/CierreVenta');
     }
 
 

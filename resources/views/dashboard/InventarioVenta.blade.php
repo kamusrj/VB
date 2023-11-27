@@ -87,14 +87,19 @@
 
                         @endforeach
                     </tbody>
-
+                    <tfoot>
+                        <tr>
+                            <td>Sum</td>
+                            <td>$180</td>
+                        </tr>
+                    </tfoot>
                 </table>
                 <div>
-                    <strong>Total Venta: $<span id="totalVenta"></span> </strong><br>
-                    <strong>Total Reintegro: $<span id="totalVenta"></span> </strong><br>
-                    <strong>Total Total O/A: $<span id="totalVenta"></span> </strong>
+                    <strong> Venta: $<span id="totalVenta"></span> </strong><br>
+                    <strong> Reintegro: $<span id="totalReintegro"></span> </strong><br>
+                    <strong> Total O/A: $<span id="totalOA"></span> </strong>
                     <hr>
-                    <strong>Total: $<span id="totalfinal"></span> </strong>
+                    <strong>Total: $<span id="totalFinal"></span> </strong>
                 </div>
 
 
@@ -132,7 +137,7 @@
         var totalFinal = totalVenta - (totalReintegro + totalOA);
 
         document.getElementById('totalVenta').innerText = totalVenta.toFixed(2);
-       // document.getElementById('totalReintegro').innerText = totalReintegro.toFixed(2);
+        document.getElementById('totalReintegro').innerText = totalReintegro.toFixed(2);
         document.getElementById('totalOA').innerText = totalOA.toFixed(2);
         document.getElementById('totalFinal').innerText = totalFinal.toFixed(2);
     });
