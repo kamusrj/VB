@@ -40,7 +40,6 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('crearEfectivo', 'CrearEfectivo');
 
         //gestion de facturas 
-
         Route::get('facturasLista/{id}', 'listarFacturas');
         Route::post('guardarfactura', 'guardarFactura');
         Route::post('facturaBuscar', 'facturaBuscar');

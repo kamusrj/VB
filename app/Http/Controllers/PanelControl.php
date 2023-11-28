@@ -13,31 +13,11 @@ use Illuminate\Support\Facades\Session;
 class PanelControl extends Controller
 {
     use HasFactory;
-
-
-
     //Cierre de vena 
     public function cierreVenta($id)
     {
-
-
         return view('dashboard/CierreVenta');
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function stockVenta(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
@@ -53,11 +33,9 @@ class PanelControl extends Controller
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
-
         Session::flash('success', 'Inventario actualizado');
         return redirect()->back();
     }
-
     public function controlVenta($id)
     {
         $inventario = DB::select('SELECT * FROM datoventa WHERE id_venta = ?', [$id]);
@@ -65,8 +43,6 @@ class PanelControl extends Controller
         return view('dashboard.inventarioVenta')
             ->with('inventario', $inventario);
     }
-
-
     public function ListarVentas()
     {
         $ventas = TituloVenta::join('usuario as enc', 'titulo_venta.encargado', '=', 'enc.correo')
@@ -85,7 +61,6 @@ class PanelControl extends Controller
             ->get();
         return view('dashboard.panel')->with('ventas', $ventas);
     }
-
     public function perfilVenta($id)
     {
         $tituloVenta = TituloVenta::join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')

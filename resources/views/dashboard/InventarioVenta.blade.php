@@ -32,11 +32,8 @@
                 <table class="table  table-sm table-bordered table-striped">
                     <thead>
 
-                        @php
-                        $numero = 1;
-                        @endphp
                         <tr>
-                            <th scope="col">N°</th>
+
                             <th scope="col">Libro</th>
                             <th scope="col">precio</th>
                             <th scope="col">unidades vendidas</th>
@@ -52,7 +49,7 @@
                     <tbody>
                         @foreach($inventario as $item)
                         <tr>
-                            <td>{{ $numero }}</td>
+
                             <td>{{ $item->nombre_libro }}</td>
                             <td>
                                 $<span>{{ $item->precio }}</span>
@@ -81,18 +78,11 @@
                                 <span>{{ $item->totaloa }}</span>
                             </td>
                         </tr>
-                        @php
-                        $numero++;
-                        @endphp
+
 
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td>Sum</td>
-                            <td>$180</td>
-                        </tr>
-                    </tfoot>
+
                 </table>
                 <div>
                     <strong> Venta: $<span id="totalVenta"></span> </strong><br>
@@ -118,9 +108,9 @@
         var totalReintegro = 0;
         var totalOA = 0;
 
-        var totalVentaElements = document.querySelectorAll('tbody td:nth-child(5) span');
-        var totalReintegroElements = document.querySelectorAll('tbody td:nth-child(8) span');
-        var totalOAElements = document.querySelectorAll('tbody td:nth-child(10) span');
+        var totalVentaElements = document.querySelectorAll('tbody td:nth-child(4) span');
+        var totalReintegroElements = document.querySelectorAll('tbody td:nth-child(7) span');
+        var totalOAElements = document.querySelectorAll('tbody td:nth-child(9) span');
 
         totalVentaElements.forEach(function(element) {
             totalVenta += parseFloat(element.innerText.replace('$', ''));

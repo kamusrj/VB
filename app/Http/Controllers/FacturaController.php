@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Validator;
 
 class FacturaController extends Controller
 {
-
     //gestion de facturas 
 
     public function listarFacturas($id)
@@ -39,7 +38,6 @@ class FacturaController extends Controller
             ->with('detalle', $dt);
     }
 
-
     public function guardarFactura(Request $request)
     {
         Validator::make(
@@ -59,13 +57,15 @@ class FacturaController extends Controller
             $dt->cantidad = $request->cantidad[$libro_id];
             $dt->padre = $request->padre;
             $dt->fecha = date('Y-m-d');
-            $dt->hora = date("H:i A", time());
+            $dt->hora = date("H:i");
             $dt->save();
+
+            $dt->concepto = 'venta';
 
             $inventario = Inventario::where('id_venta', $request->id_venta)
                 ->where('id_libro', $libro_id)
                 ->first();
-                
+
             if ($inventario) {
                 $inventario->decrement('stock_venta', $request->cantidad[$libro_id]);
             }
@@ -89,19 +89,13 @@ class FacturaController extends Controller
         return json_encode($data);
     }
 
-
-
-
-
-
-
-
     //cracion de venta diracta
     public function EfectivoCambio($id)
     {
         $tituloVenta = TituloVenta::where('id', $id)->first();
         return view('ventas/EfectivoCambio')->with('tituloVenta', $tituloVenta);
     }
+
     public function CrearEfectivo(Request $request)
     {
         Validator::make(
@@ -110,8 +104,10 @@ class FacturaController extends Controller
         )->addCustomAttributes(
             EfectivoCambio::attrCreate()
         )->validate();
+        
         $ec = new EfectivoCambio();
         $ec->id_venta = $request->id_venta;
+        $ec->tipo = 'c';
         $ec->fecha = date('d-m-Y');
         $ec->centavo_uno = $request->centavo_uno;
         $ec->centavo_cinco = $request->centavo_cinco;
