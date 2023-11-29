@@ -35,6 +35,7 @@ class FacturaController extends Controller
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
             ->with('facturas', $facturas)
+            ->with('id', $id)
             ->with('detalle', $dt);
     }
 
@@ -76,6 +77,8 @@ class FacturaController extends Controller
 
     public function facturaBuscar(Request $request)
     {
+
+
         $data = Detallefactura::join('titulo_venta as tv', 'detallefactura.id_venta', '=', 'tv.id')
             ->join('libro as lb', 'detallefactura.id_libro', '=', 'lb.id')
             ->join('inventario as inv', 'lb.id', '=', 'inv.id_libro')
@@ -84,7 +87,9 @@ class FacturaController extends Controller
                 'lb.nombre as nombre_libro',
                 'inv.precio as precio_libro'
             )
+            ->where('inv.id_venta', $request->id)
             ->where('correlativo', $request->correlativo)
+
             ->get();
         return json_encode($data);
     }
@@ -104,10 +109,11 @@ class FacturaController extends Controller
         )->addCustomAttributes(
             EfectivoCambio::attrCreate()
         )->validate();
-        
+
         $ec = new EfectivoCambio();
+
         $ec->id_venta = $request->id_venta;
-        $ec->tipo = 'c';
+        $ec->tipo = $request->tipo;
         $ec->fecha = date('d-m-Y');
         $ec->centavo_uno = $request->centavo_uno;
         $ec->centavo_cinco = $request->centavo_cinco;
@@ -117,9 +123,16 @@ class FacturaController extends Controller
         $ec->dolar_cinco = $request->dolar_cinco;
         $ec->dolar_diez = $request->dolar_diez;
         $ec->dolar_veinte = $request->dolar_veinte;
+        $ec->dolar_cincuenta =$request->dolar_cincuenta ?? 0;
+        $ec->dolar_cien = $request->dolar_cien  ?? 0;
         $ec->save();
         $id = $request->id_venta;
-        return redirect("venta/libros/" . $id);
+
+        if ($request->tipo === 'c') {
+            return redirect("venta/libros/" . $id);
+        } else {
+            return redirect()->back();
+        }
     }
 
     public function CrearFactura(Request $request)
@@ -136,8 +149,11 @@ class FacturaController extends Controller
         $f->fecha = date("Y-m-d");
         $f->representante = $request->representante;
         $f->n_remision = $request->n_remision;
-        $f->factura_i = $request->factura_i;
-        $f->factura_f = $request->factura_f;
+
+        $f->factura_i = str_pad($request->factura_i, 5, '0', STR_PAD_LEFT);
+        $f->factura_f = str_pad($request->factura_f, 5, '0', STR_PAD_LEFT);
+
+
         $f->cupon_i = $request->cupon_i;
         $f->cupon_f = $request->cupon_f;
         $f->save();
