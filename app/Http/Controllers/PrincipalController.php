@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Roles;
 use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class PrincipalController extends Controller
@@ -56,8 +55,10 @@ class PrincipalController extends Controller
 
         if (Auth::check())
             $request->session()->regenerate();
-        else
-            return redirect()->back()->withErrors('Usuario o Contraseña no validos');
+        else{
+            Session::flash('type', 'danger');
+            Session::flash('message', 'Usuario o Contraseña no valido');
+        }
 
         return redirect()->back();
     }
