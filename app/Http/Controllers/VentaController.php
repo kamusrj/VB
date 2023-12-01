@@ -101,7 +101,7 @@ class VentaController extends Controller
         $vd->zona = $request->zona;
         $vd->direccion = $request->direccion;
         $vd->autor = $usuario->correo;
-        $vd->fecha_creacion = date('d-m-Y');
+        $vd->fecha_creacion = date('Y-m-d');
         $vd->save();
         Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
         $data = $vd->id;
@@ -127,7 +127,6 @@ class VentaController extends Controller
                 'lb.nombre as nombre_libro',
             )
             ->where('id_venta', $request->id)->get();
-
         return json_encode($data);
     }
 

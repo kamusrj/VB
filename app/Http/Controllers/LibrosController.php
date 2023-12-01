@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 class LibrosController extends Controller
 {
-
     public function Listar()
     {
         $user = Libro::paginate(10);
@@ -49,15 +48,11 @@ class LibrosController extends Controller
         )->addCustomAttributes(
             Libro::attrUpdate()
         )->validate();
-
         $book = Libro::where('id', $request->id)->first();
-
         if ($book) {
             $book->nombre = $request->nombre;
-
             $book->editorial = $request->editorial;
             $book->descripcion = $request->descripcion;
-
             $book->save();
             Session::flash('type', 'success');
             Session::flash('message', 'Actulalizado correctamente');
