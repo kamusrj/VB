@@ -18,7 +18,6 @@ class PrincipalController extends Controller
     {
         if (Auth::check()) {
             $userRole = Auth::user()->rol;
-
             switch ($userRole) {
                 case 'a':
                 case 'g':
@@ -40,7 +39,6 @@ class PrincipalController extends Controller
             return view('login');
         }
     }
-
     // recivelogin
     public function Iniciar(Request $request)
     {
@@ -50,9 +48,7 @@ class PrincipalController extends Controller
         )->setAttributeNames(
             Usuario::attrLogin()
         )->validate();
-
         $user = Usuario::where("correo", $request->username)->first();
-
         if ($user)
             if (Hash::check($request->password, $user->clave))
                 Auth::login($user);
@@ -66,7 +62,6 @@ class PrincipalController extends Controller
 
         return redirect()->back();
     }
-
     //cerrar sesion  
     public function Salir()
     {
