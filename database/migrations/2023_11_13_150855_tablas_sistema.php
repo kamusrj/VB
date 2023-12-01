@@ -33,10 +33,10 @@ return new class extends Migration
             $table->string('representante', 200);
             $table->foreign('representante')->references('correo')->on('usuario');
             $table->string('n_remision', 50);
-            $table->string('factura_i');
-            $table->string('factura_f');
-            $table->string('cupon_i')->nullable();
-            $table->string('cupon_f')->nullable();
+            $table->integer('factura_i');
+            $table->integer('factura_f');
+            $table->integer('cupon_i')->nullable();
+            $table->integer('cupon_f')->nullable();
         });
         Schema::create('efectivo_c', function (Blueprint $table) {
             $table->id();

@@ -15,7 +15,9 @@
             
         </div>
     </div>
-
+    @if (Auth::check())
+    {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}
+    @endif
     <div class="row">
         <div class="col">
             <div class="table-responsive">
