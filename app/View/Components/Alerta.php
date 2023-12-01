@@ -6,14 +6,13 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class errors extends Component
+class Alerta extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -21,6 +20,6 @@ class errors extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.errors');
+        return view('components.alerta');
     }
 }

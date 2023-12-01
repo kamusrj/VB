@@ -52,13 +52,13 @@ class VentaController extends Controller
         return redirect("panel/");
     }
 
-    public function NuevaVenta($id)
+    public function NuevaVenta(Request $request)
     {
-        $school = Institucion::where('codigo', $id)->first();
+        $escuela = Institucion::where('codigo', $request->id)->first();
         $vendedores = Usuario::where('rol', 'v')->get();
         $encargado = Usuario::where('rol', 'e')->get();
         return view('ventas.CrearVenta')
-            ->with('school', $school)
+            ->with('escuela', $escuela)
             ->with('vendedores', $vendedores)
             ->with('encargado', $encargado);
     }
@@ -82,6 +82,15 @@ class VentaController extends Controller
         )->addCustomAttributes(
             TituloVenta::attrCrear()
         )->validate();
+
+        $institucion = Institucion::where("codigo", $request->codigo)->first();
+        if(!$institucion){
+            $institucion = new Institucion();
+            $institucion->codigo = $request->codigo;
+            $institucion->nombre = $request->nombre;
+            $institucion->save();
+        }
+
         $usuario = Auth::user();
         $vd = new TituloVenta();
         $vd->institucion = $request->codigo;

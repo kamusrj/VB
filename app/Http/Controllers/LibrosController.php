@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Institucion;
 use App\Models\Libro;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -38,7 +36,8 @@ class LibrosController extends Controller
         $book->editorial = $request->editorial;
         $book->descripcion = $request->descripcion;
         $book->save();
-        Session::flash('success', 'Libro creado correctamente');
+        Session::flash('type', 'success');
+        Session::flash('message', 'Libro creado correctamente');
         return redirect()->back();
     }
 
@@ -60,10 +59,11 @@ class LibrosController extends Controller
             $book->descripcion = $request->descripcion;
 
             $book->save();
-            Session::flash('success', 'Actulalizado correctamente');
+            Session::flash('type', 'success');
+            Session::flash('message', 'Actulalizado correctamente');
             return redirect()->back();
         }
-        return redirect()->back()->withErrors('Error al actualizar los datos');
+        return redirect()->back()->withErrors('Error al actualizar los datos.');
     }
 
     public function EliminarLibro(Request $request)
@@ -72,8 +72,10 @@ class LibrosController extends Controller
         $book = Libro::find($id);
         if ($book) {
             $book->delete();
-            Session::flash('delete', 'Libro eliminado');
+            Session::flash('type', 'success');
+            Session::flash('message', 'Libro eliminado correctamente');
+            return redirect()->back();
         }
-        return redirect()->back();
+        return redirect()->back()->withErrors('Error: no se pudo realizar la acción.');
     }
 }
