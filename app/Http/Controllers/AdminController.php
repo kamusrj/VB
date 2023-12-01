@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -13,23 +12,17 @@ class AdminController extends Controller
 
 {
 
-
-    //funsion para js 
     function Obtener(Request $request)
     {
         $usuario = Usuario::where("correo", $request->correo)->first();
         return json_encode($usuario);
     }
 
-    
-    //crud
-
     public function Listar()
     {
         $listar = Usuario::where('rol', '<>', 'a')->paginate(6);
         return view('usuario', compact('listar'));
     }
-
 
     public function CrearUsuario(Request $request)
     {
@@ -49,7 +42,8 @@ class AdminController extends Controller
         $usuario->rol = $request->rol;
         $usuario->save();
 
-        Session::flash('success', 'Usuario creado correctamente');
+        Session::flash('type', 'success');
+        Session::flash('message', 'Usuario creado correctamente');
 
         return redirect()->back();
     }
@@ -72,7 +66,8 @@ class AdminController extends Controller
             $usuario->apellido = $request->apellido;
 
             $usuario->save();
-            Session::flash('success', 'Actulalizado correctamente');
+            Session::flash('type', 'success');
+            Session::flash('message', 'Actulalizado correctamente');
             return redirect()->back();
         } else {
 
