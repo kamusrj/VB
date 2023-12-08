@@ -14,7 +14,10 @@ class PanelControl extends Controller
 {
     use HasFactory;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of e8d6a97 (el kamus imortal)
     public function stockVenta(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);

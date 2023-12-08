@@ -44,7 +44,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
         Route::get('facturasLista/{id}', 'listarFacturas');
         Route::post('guardarfactura', 'guardarFactura');
-        Route::post('facturaBuscar', 'facturaBuscar');
+        Route::post('facturaBuscar/{id}', 'facturaBuscar');
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
@@ -92,7 +92,11 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
         //Cierre de venta 
 
+<<<<<<< HEAD
 
+=======
+        Route::get('cierre/{id}', 'cierreVenta');
+>>>>>>> parent of e8d6a97 (el kamus imortal)
     });
 });
 

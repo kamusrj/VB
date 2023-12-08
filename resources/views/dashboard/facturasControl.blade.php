@@ -104,9 +104,14 @@
                                             </tr>
                                             @endforeach
                                             <tr>
+<<<<<<< HEAD
                                                 <td id="total" colspan="4">Total: $0.00</td>
+=======
+                                                <td id="total" colspan=4">Total: $0.00</td>
+>>>>>>> parent of e8d6a97 (el kamus imortal)
                                             </tr>
                                         </tbody>
+
                                     </table>
                                     <button type="submit" class="btn btn-primary">Enviar</button>
                                 </div>
@@ -178,7 +183,7 @@
 
     [].slice.call(buttons_factura).forEach(async function(button) {
         button.addEventListener('click', async () => {
-            const response = await fetch("{{ url('factura/facturaBuscar') }}", {
+            const response = await fetch("{{ url('factura/facturaBuscar/'.$id) }}", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
