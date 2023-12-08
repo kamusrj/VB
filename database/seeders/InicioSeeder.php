@@ -18,7 +18,7 @@ class InicioSeeder extends Seeder
         DB::table('usuario')->insert(
             [
                 [
-                    'correo' => 'edisal',
+                    'correo' => 'kamus',
                     'clave' => Hash::make('1234'),
                     'nombre' => 'Administrado',
                     'apellido' => 'Principal',
