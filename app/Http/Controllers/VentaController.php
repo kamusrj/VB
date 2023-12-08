@@ -92,7 +92,7 @@ class VentaController extends Controller
         $vd->zona = $request->zona;
         $vd->direccion = $request->direccion;
         $vd->autor = $usuario->correo;
-        $vd->fecha_creacion = date('d-m-Y');
+        $vd->fecha_creacion = date('Y-m-d');
         $vd->save();
         Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
         $data = $vd->id;
@@ -102,14 +102,13 @@ class VentaController extends Controller
     function ListaLibros(Request $request)
     {
         $tituloVenta = TituloVenta::where('id', $request->id)->first();
-        $libro = Libro::all();
+        $libro = Libro::orderByRaw('FIELD(editorial, "ed", "mdf", "eng", "info")')->get();
         return view("ventas/Libros")
             ->with('libro', $libro)
             ->with('tituloVenta', $tituloVenta);
     }
 
     // --------- Bodega-----------------
-
     public function bodegaBuscar(Request $request)
     {
         $data = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
@@ -119,7 +118,6 @@ class VentaController extends Controller
                 'lb.nombre as nombre_libro',
             )
             ->where('id_venta', $request->id)->get();
-
         return json_encode($data);
     }
 

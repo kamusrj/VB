@@ -5,16 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class PanelControl extends Controller
 {
     use HasFactory;
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     //Cierre de vena
 
     public function cierreVenta($id)
@@ -24,12 +22,11 @@ class PanelControl extends Controller
         return view('dashboard/CierreVenta')->with('id', $id);
     }
 
-=======
->>>>>>> parent of 3e16a00 (datos corregidos)
-=======
->>>>>>> parent of 3e16a00 (datos corregidos)
-=======
->>>>>>> parent of 3e16a00 (datos corregidos)
+
+
+
+
+
     public function stockVenta(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
@@ -45,24 +42,22 @@ class PanelControl extends Controller
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
-
-        Session::flash('type', 'success');
-        Session::flash('message', 'Inventario actualizado');
+        Session::flash('success', 'Inventario actualizado');
         return redirect()->back();
     }
 
+
+
+
+
+
     public function controlVenta($id)
     {
-        $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
-            ->select(
-                'inventario.*',
-                'lb.nombre as nombre_libro'
-            )
-            ->where('id_venta', $id)->get();
-        return view('dashboard.inventarioVenta')->with('inventario', $inventario);
+        $inventario = DB::select('SELECT * FROM datoventa WHERE id_venta = ?', [$id]);
+
+        return view('dashboard.inventarioVenta')
+            ->with('inventario', $inventario);
     }
-
-
     public function ListarVentas()
     {
         $ventas = TituloVenta::join('usuario as enc', 'titulo_venta.encargado', '=', 'enc.correo')
@@ -81,7 +76,6 @@ class PanelControl extends Controller
             ->get();
         return view('dashboard.panel')->with('ventas', $ventas);
     }
-
     public function perfilVenta($id)
     {
         $tituloVenta = TituloVenta::join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')
