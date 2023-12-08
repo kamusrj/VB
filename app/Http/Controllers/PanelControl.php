@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EfectivoCambio;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -87,9 +88,16 @@ class PanelControl extends Controller
             ->orderBy('nombre_libro')
             ->get();
 
+        $cambio = EfectivoCambio::where('id_venta', $id)
+            ->where('tipo', '=', 'c')
+            ->first();
+
+
 
         return view('dashboard.registroVenta')
-            ->with('inventario', $inventario)->with('id', $id);
+            ->with('inventario', $inventario)
+            ->with('id', $id)
+            ->with('cambio', $cambio);
     }
 
     public function ListarVentas()

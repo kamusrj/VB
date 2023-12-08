@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col my-3">
             <a href="{{ url('panel/perfilVenta/ '.$id) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -13,7 +13,7 @@
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Venta</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Inventario</button>
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Cambio</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Cambio</button>
@@ -138,16 +138,23 @@
                 </div>
 
             </div>
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                ...</div>
-            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-                ...</div>
-            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+
         </div>
+        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+
+            @include('dashboard.componentesDetalleVenta.cambio')
+        </div>
+        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            satos</div>
+        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
     </div>
 </div>
+
 @endsection
 @section('script')
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var totalVenta = 0;
@@ -229,5 +236,24 @@
                 });
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const total = document.getElementById('total');
+        const campos = document.querySelectorAll("[data-denominacion]");
+
+        function calcularTotal() {
+            let total_actual = 0;
+            [].slice.call(campos).forEach(function(campo) {
+                let denominacion = campo.getAttribute("data-denominacion");
+                total_actual += campo.value * denominacion;
+            });
+            total.innerText = parseFloat(total_actual).toFixed(2);
+        }
+
+
+        calcularTotal();
+    });
+
+    //----------------------------------------------
 </script>
 @endsection

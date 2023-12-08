@@ -8,9 +8,9 @@
 <div class="container">
 
     <div class="row">
-        <div class="col my-3">
+        <div class="col my-4">
             <a href="{{ url('panel/perfilVenta/ '.$id) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+
         </div>
     </div>
     <div class="row">

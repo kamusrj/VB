@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col my-3">
                     <a href="{{ url('panel/perfilVenta/ '.$id) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-                    <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+
                 </div>
             </div>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
