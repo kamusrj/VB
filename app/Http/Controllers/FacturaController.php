@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Detallefactura;
 use App\Models\EfectivoCambio;
 use App\Models\Facturas;
+use App\Models\Institucion;
 use App\Models\Inventario;
+use App\Models\Libro;
 use App\Models\TituloVenta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +41,7 @@ class FacturaController extends Controller
         foreach ($detalleFactura as $detalle) {
             $libroId = $detalle->id_libro;
             $precio = $detalle->precio;
-            $cantidad = $detalle->cantidad;
+            $cantidad = $detalle->cantidad;       
             $total = $precio * $cantidad;
             $totalPorLibro[$libroId] = $total;
         }
@@ -76,8 +79,9 @@ class FacturaController extends Controller
             $dt->hora = date("H:i A", time());
             $dt->save();
         }
-        Session::flash('type', 'success');
-        Session::flash('message', 'Factura guardada');
+
+
+        Session::flash('success', 'Factura guardada');
         return redirect()->back();
     }
 

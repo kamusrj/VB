@@ -52,13 +52,13 @@ class VentaController extends Controller
         return redirect("panel/");
     }
 
-    public function NuevaVenta(Request $request)
+    public function NuevaVenta($id)
     {
-        $escuela = Institucion::where('codigo', $request->id)->first();
+        $school = Institucion::where('codigo', $id)->first();
         $vendedores = Usuario::where('rol', 'v')->get();
         $encargado = Usuario::where('rol', 'e')->get();
         return view('ventas.CrearVenta')
-            ->with('escuela', $escuela)
+            ->with('school', $school)
             ->with('vendedores', $vendedores)
             ->with('encargado', $encargado);
     }
@@ -82,15 +82,6 @@ class VentaController extends Controller
         )->addCustomAttributes(
             TituloVenta::attrCrear()
         )->validate();
-
-        $institucion = Institucion::where("codigo", $request->codigo)->first();
-        if(!$institucion){
-            $institucion = new Institucion();
-            $institucion->codigo = $request->codigo;
-            $institucion->nombre = $request->nombre;
-            $institucion->save();
-        }
-
         $usuario = Auth::user();
         $vd = new TituloVenta();
         $vd->institucion = $request->codigo;
@@ -101,7 +92,7 @@ class VentaController extends Controller
         $vd->zona = $request->zona;
         $vd->direccion = $request->direccion;
         $vd->autor = $usuario->correo;
-        $vd->fecha_creacion = date('Y-m-d');
+        $vd->fecha_creacion = date('d-m-Y');
         $vd->save();
         Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
         $data = $vd->id;
@@ -127,6 +118,7 @@ class VentaController extends Controller
                 'lb.nombre as nombre_libro',
             )
             ->where('id_venta', $request->id)->get();
+
         return json_encode($data);
     }
 

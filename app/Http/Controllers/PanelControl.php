@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class PanelControl extends Controller
 {
     use HasFactory;
+
 
     public function stockVenta(Request $request)
     {
@@ -28,8 +31,7 @@ class PanelControl extends Controller
             }
         }
 
-        Session::flash('type', 'success');
-        Session::flash('message', 'Inventario actualizado');
+        Session::flash('success', 'Inventario actualizado');
         return redirect()->back();
     }
 
