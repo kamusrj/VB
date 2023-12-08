@@ -3,60 +3,89 @@
 @section('content')
 
 
-    <div class="container">
-        <div class="row">
-            <div class="col my-3">
-                <form action="{{ url('venta/inventario/') }}" method="post">
-                    
-                    @csrf
-                    <input type="number" name="id_venta" value="{{ $tituloVenta->id }}" hidden>
-                    <h3>Institución: {{ $tituloVenta->institucion }}</h3>
-
-                    <div class="row" style="min-height: 70vh;overflow: auto;">
-                        <div class="row">
-                            @php
-                                $nombre_coleccion = '';
-                            @endphp
-                            @foreach ($libro as $l)
-                                @if ($nombre_coleccion != $l->editorial)
-                                    <hr>
-                                    @php
-                                        $nombre_coleccion = $l->editorial;
-                                    @endphp
-                                    @if ($nombre_coleccion == 'ed')
-                                        <h4>Edisal</h4>
-                                    @endif
-                                    @if ($nombre_coleccion == 'mdf')
-                                        <h4>Montañas de fuego</h4>
-                                    @endif
-                                    @if ($nombre_coleccion == 'eng')
-                                        <h4>Ingl&eacute;s</h4>
-                                    @endif
-                                    @if ($nombre_coleccion == 'info')
-                                        <h4>Inform&aacute;tica</h4>
-                                    @endif
-                                    @if ($nombre_coleccion == 'any')
-                                        <h4>Otros</h4>
-                                    @endif
-                                @endif
-
-                                <div class="col-md-3">
-                                    <input class="form-check-input" type="checkbox" name="libros_seleccionados[]"
-                                        value="{{ $l->id }}">
-                                    <label class="form-check-label">
-                                        {{ $l->nombre }}
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary">Enviar Libros Seleccionados</button>
-                    </div>
-                </form>
-            </div>
+<div class="container">
+    <form action="{{ url('venta/inventario/') }}" method="post">
+        @include('errorMj')
+        @csrf
+        <div class="form-group">
+            <label for="Primaria"></label>
+            <input type="hidden" name="id_venta" style="background-color: #f6f6f6;" class="form-control" id="id_venta" value="{{$tituloVenta->id}}" readonly>
         </div>
-    </div>
+        <div class="form-group">
+            <label for="Primaria">Institución: {{$tituloVenta->institucion}}</label>
+
+        </div>
+
+        <label for="">
+            <h4>Edisal</h4>
+        </label>
+        <div class="row" style="max-height: 30vh;overflow: auto; border-style: groove; border-color:#e3e4e5; border-width: 8px; background-color:white">
+            <div class="row">
+                @foreach($libro as $l)
+                @if($l['editorial'] ==='ed')
+                <div class="col-md-3">
+                    <input class="form-check-input" type="checkbox" name="libros_seleccionados[]" value="{{ $l->id }}">
+                    <label class="form-check-label">
+                        {{ $l->nombre }}
+                    </label>
+                </div>
+                @endif
+                @endforeach
+            </div>
+        </div><br>
+        <label for="">
+            <h4>Montañas de fuego</h4>
+        </label>
+        <div class="row" style="max-height: 30vh;overflow: auto; border-style: groove; border-color:#e3e4e5; border-width: 8px; background-color:white">
+            <div class="row">
+                @foreach($libro as $l)
+                @if($l['editorial'] ==='mdf')
+                <div class="col-md-3">
+                    <input class="form-check-input" type="checkbox" name="libros_seleccionados[]" value="{{ $l->id }}">
+                    <label class="form-check-label">
+                        {{ $l->nombre }}
+                    </label>
+                </div>
+                @endif
+                @endforeach
+            </div>
+        </div><br>
+        <h4>Ingles</h4>
+        <div class="row" style="max-height: 30vh;overflow: auto; border-style: groove; border-color:#e3e4e5; border-width: 8px; background-color:white">
+            <div class="row">
+                @foreach($libro as $l)
+                @if($l['editorial'] ==='eng')
+                <div class="col-md-3">
+                    <input class="form-check-input" type="checkbox" name="libros_seleccionados[]" value="{{ $l->id }}">
+                    <label class="form-check-label">
+                        {{ $l->nombre }}
+                    </label>
+                </div>
+                @endif
+                @endforeach
+            </div>
+        </div><br>
+        <h4>Informatica</h4>
+        <div class="row" style="max-height: 30vh;overflow: auto; border-style: groove; border-color:#e3e4e5; border-width: 8px; background-color:white">
+            <div class="row">
+                @foreach($libro as $l)
+                @if($l['editorial'] ==='info')
+                <div class="col-md-3">
+                    <input class="form-check-input" type="checkbox" name="libros_seleccionados[]" value="{{ $l->id }}">
+                    <label class="form-check-label">
+                        {{ $l->nombre }}
+                    </label>
+                </div>
+                @endif
+                @endforeach
+            </div>
+        </div><br>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Enviar Libros Seleccionados</button>
+        </div>
+</div>
+</div>
+</div><br><br><br>
 @endsection
 @section('script')
 

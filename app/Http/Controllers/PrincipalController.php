@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Roles;
 use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class PrincipalController extends Controller
@@ -18,6 +19,7 @@ class PrincipalController extends Controller
     {
         if (Auth::check()) {
             $userRole = Auth::user()->rol;
+
             switch ($userRole) {
                 case 'a':
                 case 'g':
@@ -39,6 +41,7 @@ class PrincipalController extends Controller
             return view('login');
         }
     }
+
     // recivelogin
     public function Iniciar(Request $request)
     {
@@ -48,20 +51,21 @@ class PrincipalController extends Controller
         )->setAttributeNames(
             Usuario::attrLogin()
         )->validate();
+
         $user = Usuario::where("correo", $request->username)->first();
+
         if ($user)
             if (Hash::check($request->password, $user->clave))
                 Auth::login($user);
 
         if (Auth::check())
             $request->session()->regenerate();
-        else{
-            Session::flash('type', 'danger');
-            Session::flash('message', 'Usuario o Contraseña no valido');
-        }
+        else
+            return redirect()->back()->withErrors('Usuario o Contraseña no validos');
 
         return redirect()->back();
     }
+
     //cerrar sesion  
     public function Salir()
     {

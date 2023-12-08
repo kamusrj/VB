@@ -6,18 +6,21 @@
 <div class="container">
     <div class="row">
         <div class="col my-3">
-           <h2> <i class="fas fa-users"></i> Lista de usuarios </h2>
-        </div>
-    </div>
-   
-    <div class="row">
-        <div class="col">
-            
+            <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
+            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
         </div>
     </div>
 
     <div class="row">
         <div class="col">
+            @include('errorMj')
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h2> <i class="fas fa-users"></i> Lista de usuarios </h2>
+
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
