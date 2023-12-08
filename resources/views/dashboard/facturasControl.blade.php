@@ -100,10 +100,9 @@
                                             </tr>
                                             @endforeach
                                             <tr>
-                                                <td id="total" colspan=4">Total: $0.00</td>
+                                                <td id="total" colspan="5">Total: $0.00</td>
                                             </tr>
                                         </tbody>
-
                                     </table>
                                     <button type="submit" class="btn btn-primary">Enviar</button>
                                 </div>
@@ -172,7 +171,7 @@
 
     [].slice.call(buttons_factura).forEach(async function(button) {
         button.addEventListener('click', async () => {
-            const response = await fetch("{{ url('factura/facturaBuscar/'.$id) }}", {
+            const response = await fetch("{{ url('factura/facturaBuscar') }}", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -109,11 +109,24 @@ class FacturaController extends Controller
         )->addCustomAttributes(
             EfectivoCambio::attrCreate()
         )->validate();
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+>>>>>>> parent of ee85033 (Revert "el kamus imortal")
         $ec = new EfectivoCambio();
 
         $ec->id_venta = $request->id_venta;
+<<<<<<< HEAD
         $ec->tipo = $request->tipo;
+=======
+=======
+        
+        $ec = new EfectivoCambio();
+        $ec->id_venta = $request->id_venta;
+        $ec->tipo = 'c';
+>>>>>>> parent of b8c6738 (update 29/11/2023)
+>>>>>>> parent of ee85033 (Revert "el kamus imortal")
         $ec->fecha = date('d-m-Y');
         $ec->centavo_uno = $request->centavo_uno;
         $ec->centavo_cinco = $request->centavo_cinco;
