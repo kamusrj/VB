@@ -9,14 +9,17 @@
         <div class="row">
             <div class="col">
                 <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+                <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+
             </div>
         </div>
+
         <div class="row">
             <div class="col mb-3">
                 <h2>Nueva venta directa </h2>
             </div>
         </div>
+
         <div class="row">
             <div class="col">
                 <form method="post" action="{{ url('factura/crear') }}">
@@ -35,6 +38,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group mb-3">
                         <label for="representante">Departamento de cr&eacute;dito venta asignada a: </label>
                         <select name="representante" class="form-control" id="representante">
@@ -44,10 +48,12 @@
                             @endforeach
                         </select>
                     </div>
+
                     <div class="form-group mb-3">
                         <label for="n_remision">Nota / Notas de remisi&oacute;n</label>
                         <input type="text" name="n_remision" class="form-control" id="n_remision">
                     </div>
+
                     <div class="form-group">
                         <label for="factura_i">Factura inicial</label>
                         <input type="number" value="0" min="0" step="1" name="factura_i"
@@ -61,6 +67,7 @@
                     <div class="mb-3">
                         <p>Total de facturas: <span id="total_f"></span></p>
                     </div>
+
                     <div class="form-group">
                         <label for="cupon_i">Cup&oacute;n inicial</label>
                         <input type="number" value="0" min="0" step="1" name="cupon_i"
@@ -74,11 +81,13 @@
                     <div class="mb-3">
                         <p>Total de cupones: <span id="cupon_t"></span></p>
                     </div><br>
+
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </form>
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('script')
@@ -92,7 +101,7 @@
             let facturaInicial = facturaInicialInput.value || 0;
             let facturaFinal = facturaFinalInput.value || 0;
             let totalFacturas = facturaFinal - facturaInicial;
-            totalFacturasInput.innerText = totalFacturas +1;
+            totalFacturasInput.innerText = totalFacturas;
         }
 
         const cuponInicialInput = document.getElementById("cupon_i");
@@ -103,7 +112,7 @@
             var cuponInicial = cuponInicialInput.value || 0;
             var cuponFinal = cuponFinalInput.value || 0;
             var totalCupones = cuponFinal - cuponInicial;
-            totalCuponesInput.innerText = totalCupones + 1;
+            totalCuponesInput.innerText = totalCupones;
         }
     </script>
 @endsection
