@@ -88,6 +88,11 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('stockventa', 'stockVenta');
 
 
+
+        Route::post('buscarInventario', 'buscarInventario');
+        Route::post('actualizarIn', 'actualizarInventario');
+
+
         //Cierre de venta 
 
         Route::get('cierre/{id}', 'cierreVenta');

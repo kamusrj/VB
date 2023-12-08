@@ -24,13 +24,14 @@ class FacturaController extends Controller
         $inventario = Inventario::join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
             ->join('libro', 'inventario.id_libro', '=', 'libro.id')
             ->where('tv.id', '=', $id)
+            ->where('stock_venta', '>', 0)
             ->select(
                 'inventario.*',
                 'libro.nombre as nombre_libro'
-            )
+            )->orderBy('nombre_libro')
             ->get();
         $facturas = Facturas::where('id_venta', $id)->get();
-        $detalleFactura = Detallefactura::where('id_venta', $id)->get();
+        $detalleFactura = Detallefactura::where('id_venta', $id)->orderBy('correlativo', 'asc')->get();
         $dt =  $detalleFactura->unique('correlativo');
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
@@ -123,7 +124,7 @@ class FacturaController extends Controller
         $ec->dolar_cinco = $request->dolar_cinco;
         $ec->dolar_diez = $request->dolar_diez;
         $ec->dolar_veinte = $request->dolar_veinte;
-        $ec->dolar_cincuenta =$request->dolar_cincuenta ?? 0;
+        $ec->dolar_cincuenta = $request->dolar_cincuenta ?? 0;
         $ec->dolar_cien = $request->dolar_cien  ?? 0;
         $ec->save();
         $id = $request->id_venta;

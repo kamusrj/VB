@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col my-3">
-            <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
+            <a href="{{ url('panel/perfilVenta/ '.$id) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
             <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
         </div>
     </div>
@@ -55,10 +55,11 @@
 
             <!-- Modal Creacion de Factura  -->
             <div class="modal" id="seleccionLibrosModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Factura</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form method="post" action="{{ url('factura/guardarfactura') }}">
@@ -100,11 +101,21 @@
                                             </tr>
                                             @endforeach
                                             <tr>
-                                                <td id="total" colspan=4">Total: $0.00</td>
+                                                <td id="total" colspan=5">Total: $0.00</td>
                                             </tr>
                                         </tbody>
-
                                     </table>
+                                    <div class="col-auto mb-3">
+                                        <label for="padre" class="form-label">Factura anulada</label>
+                                        <input name="anulada" type="checkbox" aria-label="Checkbox for following text input">
+                                    </div>
+
+                                    <div class="col-auto mb-3">
+                                        <label for="padre" class="form-label">Motivo de anulación</label>
+                                        <textarea name="motivo" class="form-control" id="exampleTextarea" rows="4"></textarea>
+                                    </div>
+
+
                                     <button type="submit" class="btn btn-primary">Enviar</button>
                                 </div>
                             </form>

@@ -17,8 +17,7 @@
 @endsection
 @section('content')
 <div class="container">
-    <div class="row">
-    </div>
+
     <div class="row">
 
 
@@ -57,16 +56,7 @@
             </div>
         </div>
 
-        <div class="col-sm col-md-6 mb-4">
-            <div class="card border-0">
-                <div class="card-body text-center">
-                    <a href="{{ url('/') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
-                        <i class="fas fa-basket-shopping"></i>
-                        <span>Ventas directas</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+
         <div class="col-sm col-md-6 mb-4">
             <div class="card border-0">
                 <div class="card-body text-center">
@@ -77,6 +67,22 @@
                 </div>
             </div>
         </div>
+
+        @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
+        <div class="col-sm col-md-6 mb-4">
+            <div class="card border-0">
+
+                <div class="card-body text-center">
+                    <a href="{{ url('/') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Men&uacute; de Administrador</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endif
+
+
     </div>
 </div>
 @endsection
