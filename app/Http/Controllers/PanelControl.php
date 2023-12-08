@@ -13,6 +13,7 @@ class PanelControl extends Controller
     use HasFactory;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     //Cierre de vena
 
     public function cierreVenta($id)
@@ -22,6 +23,8 @@ class PanelControl extends Controller
         return view('dashboard/CierreVenta')->with('id', $id);
     }
 
+=======
+>>>>>>> parent of 3e16a00 (datos corregidos)
 =======
 >>>>>>> parent of 3e16a00 (datos corregidos)
     public function stockVenta(Request $request)
