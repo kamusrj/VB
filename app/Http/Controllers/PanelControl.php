@@ -11,15 +11,7 @@ use Illuminate\Support\Facades\Session;
 class PanelControl extends Controller
 {
     use HasFactory;
-<<<<<<< HEAD
 
-=======
-    //Cierre de vena 
-    public function cierreVenta($id)
-    {
-        return view('dashboard/CierreVenta');
-    }
->>>>>>> parent of b8c6738 (update 29/11/2023)
     public function stockVenta(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
@@ -40,10 +32,7 @@ class PanelControl extends Controller
         Session::flash('message', 'Inventario actualizado');
         return redirect()->back();
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of b8c6738 (update 29/11/2023)
     public function controlVenta($id)
     {
         $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
