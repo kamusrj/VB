@@ -23,7 +23,7 @@
     <div class="row">
         <div class="col">
             <form method="post" action="{{ url('factura/crearEfectivo') }}">
-                
+                @include('errorMj')
                 @csrf
                 <input type="number" name="id_venta" hidden value="{{ $tituloVenta->id }}">
 

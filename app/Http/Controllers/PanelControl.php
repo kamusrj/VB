@@ -5,21 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class PanelControl extends Controller
 {
     use HasFactory;
-<<<<<<< HEAD
 
-=======
-    //Cierre de vena 
-    public function cierreVenta($id)
-    {
-        return view('dashboard/CierreVenta');
-    }
->>>>>>> parent of b8c6738 (update 29/11/2023)
+
     public function stockVenta(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
@@ -36,14 +31,10 @@ class PanelControl extends Controller
             }
         }
 
-        Session::flash('type', 'success');
-        Session::flash('message', 'Inventario actualizado');
+        Session::flash('success', 'Inventario actualizado');
         return redirect()->back();
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of b8c6738 (update 29/11/2023)
     public function controlVenta($id)
     {
         $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
