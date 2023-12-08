@@ -48,8 +48,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
         Route::get("/", "perfil");
         Route::post("crear", "Crear");
-        Route::get('nueva', 'NuevaVenta');
-        Route::get('editar/{id}', 'EditarVenta');
+        Route::get('nueva/{id}', 'NuevaVenta');
         Route::get('facturar/{id}', 'CrearFacturas');
         Route::post('libros', 'ListaLibros');
         Route::get('libros/{id}', 'ListaLibros');

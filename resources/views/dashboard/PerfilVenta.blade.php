@@ -20,26 +20,21 @@
     <div class="row">
     </div>
     <div class="row">
+
+
+        @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
         <div class="col-sm col-md-6 mb-4">
             <div class="card border-0">
                 <div class="card-body text-center">
                     <a href="{{ url('panel/controlVenta/'. $tituloVenta->id) }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
-                        <i class="fa-solid fa-boxes-stacked"></i>
-                        <span>Inventario</span>
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Detalle de Venta</span>
                     </a>
                 </div>
             </div>
         </div>
-        <div class="col-sm col-md-6 mb-4">
-            <div class="card border-0">
-                <div class="card-body text-center">
-                    <a href="{{ url('institucion/') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
-                        <i class="fa-solid fa-school-lock"></i>
-                        <span>Cierre de venta </span>
-                    </a>
-                </div>
-            </div>
-        </div>
+        @endif
+
         <div class="col-sm col-md-6 mb-4">
             <div class="card border-0">
                 <div class="card-body text-center">
@@ -50,10 +45,22 @@
                 </div>
             </div>
         </div>
+
         <div class="col-sm col-md-6 mb-4">
             <div class="card border-0">
                 <div class="card-body text-center">
-                    <a href="{{ url('panel/') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
+                    <a href="{{ url('panel/cierre/'. $tituloVenta->id) }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
+                        <i class="fa-solid fa-school-lock"></i>
+                        <span>Cierre de venta </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm col-md-6 mb-4">
+            <div class="card border-0">
+                <div class="card-body text-center">
+                    <a href="{{ url('/') }}" class="btn btn-info w-100" data-toggle="tooltip" data-placement="bottom">
                         <i class="fas fa-basket-shopping"></i>
                         <span>Ventas directas</span>
                     </a>

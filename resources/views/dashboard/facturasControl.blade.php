@@ -15,7 +15,7 @@
     </div>
     <div class="row">
         <div class="col">
-            
+            @include('errorMj')
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seleccionLibrosModal">
                 Nueva Factura
             </button>

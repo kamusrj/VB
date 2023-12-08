@@ -12,24 +12,19 @@ use Illuminate\Support\Facades\Validator;
 class AdminController extends Controller
 
 {
-
-
     //funsion para js 
     function Obtener(Request $request)
     {
         $usuario = Usuario::where("correo", $request->correo)->first();
         return json_encode($usuario);
-    }
+    }    
 
-    
     //crud
-
     public function Listar()
     {
         $listar = Usuario::where('rol', '<>', 'a')->paginate(6);
         return view('usuario', compact('listar'));
     }
-
 
     public function CrearUsuario(Request $request)
     {
@@ -48,9 +43,7 @@ class AdminController extends Controller
         $usuario->apellido = $request->apellido;
         $usuario->rol = $request->rol;
         $usuario->save();
-
         Session::flash('success', 'Usuario creado correctamente');
-
         return redirect()->back();
     }
 
@@ -62,7 +55,6 @@ class AdminController extends Controller
         )->addCustomAttributes(
             Usuario::attrUpdate()
         )->validate();
-
         $usuario = Usuario::where('correo', $request->correo)->first();
         if ($usuario) {
 
@@ -75,7 +67,6 @@ class AdminController extends Controller
             Session::flash('success', 'Actulalizado correctamente');
             return redirect()->back();
         } else {
-
             return redirect()->back()->withErrors('Error al actualizar los datos');
         }
     }
@@ -83,13 +74,11 @@ class AdminController extends Controller
     public function EliminarUsuario(Request $request)
     {
         $id = $request->id;
-
         $book = Usuario::find($id);
         if ($book) {
             $book->delete();
             Session::flash('delete', 'Usuario eliminado');
         } else {
-
             Session::flash('delete', 'error');
         }
         return redirect()->back();
