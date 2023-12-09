@@ -17,7 +17,7 @@ class Detallefactura extends Model
         return $this->belongsTo(Libro::class, 'id_libro');
     }
 
-
+    //Creacion factura 
 
     static function ruleCrear(): array
     {
@@ -45,6 +45,25 @@ class Detallefactura extends Model
         return [
             'correlativo' => "Correlativo",
             'padre' => "Padre",
+        ];
+    }
+
+
+    //Factura anulada
+
+    static function ruleAnulada(): array
+    {
+        return [
+            'correlativo' => "required|unique:detallefactura,correlativo",
+            'motivo' => "required",
+        ];
+    }
+    static function attrAnulada(): array
+    {
+        return [
+            'correlativo' => "Correlativo",
+
+            'motivo' => "Motivo de anulación",
         ];
     }
 }

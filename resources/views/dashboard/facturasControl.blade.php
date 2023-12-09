@@ -15,7 +15,11 @@
     </div>
     <div class="row">
         <div class="col">
+
             @include('errorMj')
+            <h2><i class="fa-solid fa-file-invoice-dollar"> </i> Facturaci&oacute;n</h2><br>
+
+
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seleccionLibrosModal">
                 Nueva Factura
             </button>
@@ -27,7 +31,7 @@
                         <tr>
 
                             <th>Correlativo</th>
-                            <th>Padre</th>
+                            <th>Detalle</th>
                             <th>Fecha / Hora</th>
                             <th>Ver Factura</th>
                         </tr>
@@ -38,12 +42,25 @@
                         <tr>
 
                             <td>{{$item->correlativo}}</td>
-                            <td>{{$item->padre }}</td>
+
+                            @if($item->anulada=='no')
+                            <td>Padre: <h6>{{$item->padre }}</h6>
+                            </td>
+                            @else
+                            <td>{{$item->motivo }}</td>
+                            @endif
                             <td>{{ $item->fecha }} / {{$item->hora}}</td>
                             <td>
-                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-factura="{{ $item->correlativo }}"">
+
+                                @if($item->anulada=='no')
+                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-factura="{{ $item->correlativo }}">
                                     <i class=" fa-solid fa-eye"></i>
                                 </button>
+                                @else
+                                <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Factura Anulada">
+                                    <i class=" fa-solid fa-ban"></i>
+                                </button>
+                                @endif
                             </td>
                         </tr>
 
