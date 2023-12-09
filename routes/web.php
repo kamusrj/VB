@@ -33,7 +33,6 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         });
     });
 
-
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
         Route::post("crear", "CrearFactura");
         Route::get('efectivoCambio/{id}', 'EfectivoCambio');
@@ -54,7 +53,6 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('libros/{id}', 'ListaLibros');
         Route::post('inventarioVenta', 'ventaInventario');
         Route::post('inventario', 'inventario');
-
         Route::get('bodega', 'perfilBodega');
         Route::post('bodegaBuscar', 'bodegaBuscar');
     });
@@ -79,7 +77,6 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
     //  Panel de control ventas
     Route::controller(PanelControl::class)->prefix('panel')->group(function () {
-
         //dashboard
         Route::get('controlVenta/{id}', 'controlVenta');
         Route::get('perfilVenta/{id}', 'perfilVenta');
@@ -87,18 +84,13 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('inventario/{id}', 'inventarioVenta');
         Route::post('stockventa', 'stockVenta');
 
-
-
         Route::post('buscarInventario', 'buscarInventario');
         Route::post('actualizarIn', 'actualizarInventario');
 
-
         //Cierre de venta 
-
         Route::get('cierre/{id}', 'cierreVenta');
     });
 });
-
 
 /*Route::fallback(function () {
     return view("error");

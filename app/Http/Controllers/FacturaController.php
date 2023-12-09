@@ -33,6 +33,9 @@ class FacturaController extends Controller
         $facturas = Facturas::where('id_venta', $id)->get();
         $detalleFactura = Detallefactura::where('id_venta', $id)->orderBy('correlativo', 'asc')->get();
         $dt =  $detalleFactura->unique('correlativo');
+
+
+       
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
             ->with('facturas', $facturas)
@@ -42,34 +45,59 @@ class FacturaController extends Controller
 
     public function guardarFactura(Request $request)
     {
-        Validator::make(
-            $request->all(),
-            Detallefactura::ruleCrear()
-        )->addCustomAttributes(
-            Detallefactura::attrCrear()
-        )->validate();
 
-        $libros = $request->input('libros_seleccionados', []);
+        if ($request->anulada === 'on') {
 
-        foreach ($libros as $libro_id) {
+            Validator::make(
+                $request->all(),
+                Detallefactura::ruleAnulada()
+            )->addCustomAttributes(
+                Detallefactura::attrAnulada()
+            )->validate();
+
             $dt = new Detallefactura();
             $dt->id_venta = $request->id_venta;
             $dt->correlativo = $request->correlativo;
-            $dt->id_libro = $libro_id;
-            $dt->cantidad = $request->cantidad[$libro_id];
-            $dt->padre = $request->padre;
+
+            $dt->anulada = 'si';
+            $dt->motivo = $request->motivo;
             $dt->fecha = date('Y-m-d');
             $dt->hora = date("H:i");
             $dt->save();
+        } else {
 
-            $dt->concepto = 'venta';
+            Validator::make(
+                $request->all(),
+                Detallefactura::ruleCrear()
+            )->addCustomAttributes(
+                Detallefactura::attrCrear()
+            )->validate();
 
-            $inventario = Inventario::where('id_venta', $request->id_venta)
-                ->where('id_libro', $libro_id)
-                ->first();
 
-            if ($inventario) {
-                $inventario->decrement('stock_venta', $request->cantidad[$libro_id]);
+
+
+            $libros = $request->input('libros_seleccionados', []);
+
+            foreach ($libros as $libro_id) {
+                $dt = new Detallefactura();
+                $dt->id_venta = $request->id_venta;
+                $dt->correlativo = $request->correlativo;
+                $dt->id_libro = $libro_id;
+                $dt->cantidad = $request->cantidad[$libro_id];
+                $dt->padre = $request->padre;
+                $dt->fecha = date('Y-m-d');
+                $dt->hora = date("H:i");
+                $dt->save();
+
+                $dt->concepto = 'venta';
+
+                $inventario = Inventario::where('id_venta', $request->id_venta)
+                    ->where('id_libro', $libro_id)
+                    ->first();
+
+                if ($inventario) {
+                    $inventario->decrement('stock_venta', $request->cantidad[$libro_id]);
+                }
             }
         }
         Session::flash('success', 'Factura guardada');
