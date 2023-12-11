@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EfectivoCambio;
+use App\Models\Facturas;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,12 +15,41 @@ class PanelControl extends Controller
 {
     use HasFactory;
 
-    //Cierre de vena
+    //Cierre de venta
 
     public function cierreVenta($id)
     {
         return view('dashboard/CierreVenta')->with('id', $id);
     }
+
+    public function actualizarCambio(Request $request)
+    {
+
+        $data = EfectivoCambio::where('id_venta', $request->id_venta)
+            ->where('tipo', $request->tipo)->first();
+
+
+        if ($data) {
+            $data->centavo_uno = $request->centavo_uno;
+            $data->centavo_cinco = $request->centavo_cinco;
+            $data->centavo_diez = $request->centavo_diez;
+            $data->centavo_veinticinco = $request->centavo_veinticinco;
+            $data->dolar_uno = $request->dolar_uno;
+            $data->dolar_cinco = $request->dolar_cinco;
+            $data->dolar_diez = $request->dolar_diez;
+            $data->dolar_veinte = $request->dolar_veinte;
+
+            $data->save();
+        }
+
+        Session::flash('success', 'El cambio entregado fue actualizado');
+
+        return redirect()->back();
+    }
+
+
+
+
 
     public function buscarInventario(Request $request)
     {
@@ -38,8 +68,6 @@ class PanelControl extends Controller
     public function actualizarInventario(Request $request)
     {
 
-
-
         $data = Inventario::where('id_venta', $request->id_venta)
             ->where('id_libro', $request->id_libro)
             ->first();
@@ -49,11 +77,6 @@ class PanelControl extends Controller
         $data->ofrecimiento_a = $request->oa;
         $data->stock += $request->modificacion;
         $data->stock_venta += $request->modificacion;
-
-
-
-        // dd($data);
-        $data->save();
 
 
         Session::flash('success', 'Inventario actualizado');
@@ -83,6 +106,11 @@ class PanelControl extends Controller
     public function controlVenta($id)
     {
 
+        $facturasControl = Facturas::select('*')
+            ->from('facturascontrol')
+            ->where('id_venta', $id)
+            ->first();
+
         $inventario = DB::table('datoventa')
             ->where('id_venta', $id)
             ->orderBy('nombre_libro')
@@ -94,10 +122,12 @@ class PanelControl extends Controller
 
 
 
+
         return view('dashboard.registroVenta')
             ->with('inventario', $inventario)
             ->with('id', $id)
-            ->with('cambio', $cambio);
+            ->with('cambio', $cambio)
+            ->with('factura', $facturasControl);
     }
 
     public function ListarVentas()

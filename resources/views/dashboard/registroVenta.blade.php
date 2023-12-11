@@ -85,9 +85,9 @@
 
                 </table>
                 <div>
-                    <strong> Venta: $<span id="totalVenta"></span> </strong><br>
-                    <strong> Reintegro: $<span id="totalReintegro"></span> </strong><br>
-                    <strong> Total O/A: $<span id="totalOA"></span> </strong>
+                    <strong> Venta: $<span id="totalVenta"></span></strong><br><br>
+                    <strong style="margin-bottom: 10px;"> Reintegro: $<span id="totalReintegro"></span></strong><br><br>
+                    <strong> Total O/A: $<span id="totalOA"></span></strong>
                     <hr>
                     <strong>Total: $<span id="totalFinal"></span> </strong>
                 </div>
@@ -141,7 +141,7 @@
 
         </div>
         <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-
+            @include('dashboard.componentesDetalleVenta.Documentacion')
 
         </div>
         <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
@@ -155,7 +155,6 @@
 @section('script')
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var totalVenta = 0;
@@ -254,12 +253,5 @@
 
         calcularTotal();
     });
-
-    //----------------------------------------------
-
-
-
-
-    
 </script>
 @endsection

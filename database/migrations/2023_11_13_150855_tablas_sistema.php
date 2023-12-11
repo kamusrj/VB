@@ -110,6 +110,23 @@ return new class extends Migration
             
             
     ');
+
+        DB::statement(" CREATE OR REPLACE VIEW FacturasControl AS
+        SELECT
+         nota_remision.id_venta,
+         (nota_remision.factura_f - nota_remision.factura_i) AS total_facturas,
+         SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) AS total_anuladas,
+         SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END) AS total_no_anuladas,
+         ((nota_remision.factura_f - nota_remision.factura_i) - (SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) + SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END))) AS total_sin_utilizar,
+         COUNT(detallefactura.anulada) AS total_utilizadas
+        FROM
+        nota_remision
+        LEFT JOIN
+        detallefactura ON detallefactura.id_venta = nota_remision.id_venta
+        GROUP BY
+        nota_remision.id_venta, nota_remision.factura_f, nota_remision.factura_i;
+            
+           ");
     }
 
     public function down(): void

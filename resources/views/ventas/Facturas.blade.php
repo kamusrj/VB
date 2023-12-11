@@ -92,7 +92,7 @@
             let facturaInicial = facturaInicialInput.value || 0;
             let facturaFinal = facturaFinalInput.value || 0;
             let totalFacturas = facturaFinal - facturaInicial;
-            totalFacturasInput.innerText = totalFacturas +1;
+            totalFacturasInput.innerText = totalFacturas ;
         }
 
         const cuponInicialInput = document.getElementById("cupon_i");
