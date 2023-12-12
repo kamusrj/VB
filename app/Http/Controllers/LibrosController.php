@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detallefactura;
 use App\Models\Institucion;
 use App\Models\Libro;
 use Illuminate\Http\Request;
@@ -63,12 +64,18 @@ class LibrosController extends Controller
 
     public function EliminarLibro(Request $request)
     {
-        $id = $request->id;
+
+        $id =  $request->id;
         $book = Libro::find($id);
-        if ($book) {
+        $detalle = Detallefactura::where('id_libro', $book->id)->first();
+
+        if ($detalle == null) {
             $book->delete();
             Session::flash('delete', 'Libro eliminado');
+        } else {
+            Session::flash('delete', 'Libro no se puede borra, está asignado en una venta ');
         }
+
         return redirect()->back();
     }
 }

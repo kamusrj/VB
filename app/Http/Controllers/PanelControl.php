@@ -22,6 +22,22 @@ class PanelControl extends Controller
         return view('dashboard/CierreVenta')->with('id', $id);
     }
 
+    public function finalizarVenta($id)
+    {
+
+        $venta = TituloVenta::where('id', $id)->first();
+
+        $venta->estado = 'off';
+        $venta->save();
+        Session::flash('success', 'Venta finalizada');
+
+        return redirect()->back();
+    }
+
+
+
+
+
     public function actualizarCambio(Request $request)
     {
 

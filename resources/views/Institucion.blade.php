@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col my-3">
             <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+
         </div>
     </div>
 

@@ -10,7 +10,7 @@
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Venta</button>
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="false">Venta</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Documentaci&oacute;n</button>
@@ -74,10 +74,10 @@
                                 <span>{{ $item->totaloa }}</span>
                             </td>
                             <td>
+                                @if($item->vendido == 0)
                                 <button type="button" class="btn btn-warning" data-value-editar="{{ $item->id_libro}}">
                                     <i class="fas fa-edit"></i>
-                                </button>
-
+                                </button>@endif
                             </td>
                         </tr>
                         @endforeach
@@ -147,7 +147,10 @@
         <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
             @include('dashboard.componentesDetalleVenta.cambio')
         </div>
-        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+
+
+        </div>
     </div>
 </div>
 
