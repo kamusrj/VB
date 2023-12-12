@@ -24,52 +24,41 @@
                     Haz clic en los botones para realizar las acciones correspondientes
                 </p>
                 <ol class="list-group">
-                    <li class="list-group-item border-0 py-0">Inventario: Gestiona la lista de libros para la venta directa
+                    <li class="list-group-item border-0 py-0">Detalles: Gestiona la lista de libros para la venta directa
                     </li>
-                    <li class="list-group-item border-0 py-0">Cierre de venta: Aadministra el cambio y efectivo inicial de la venta</li>
                     <li class="list-group-item border-0 py-0">Facturas: Administra las facturas para la venta</li>
+                    <li class="list-group-item border-0 py-0">Cierre de venta: Aadministra el cambio y efectivo inicial de la
+                        venta</li>
                 </ol>
             </div>
         </div>
+
+
         <div class="row">
-            <div class="col-md-4 col-sm-6 mb-3">
-                <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;"
-                    onclick="redireccionar('{{ url("panel/controlVenta/$tituloVenta->id") }}')">
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <div class="card bg-secondary d-flex h-100"><i
-                                    class="fa-solid fa-boxes-stacked m-auto text-light" style="font-size: 3rem;"></i></div>
-                        </div>
-                        <div class="col-8">
-                            <div class="card-body">
-                                <h3 class="card-title">Inventario</h3>
+            @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
+                <div class="col-md-4 col-sm-6 mb-3">
+                    <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;"
+                        onclick="redireccionar('{{ url('panel/controlVenta/' . $tituloVenta->id) }}')">
+                        <div class="row g-0">
+                            <div class="col-4">
+                                <div class="card bg-info d-flex h-100"><i
+                                        class="fa-solid fa-list-check m-auto text-light" style="font-size: 3rem;"></i></div>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h3 class="card-title">Detalles</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
             <div class="col-md-4 col-sm-6 mb-3">
                 <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;"
-                    onclick="redireccionar('{{ url('institucion/') }}')">
+                    onclick="redireccionar('{{ url('factura/facturasLista/' . $tituloVenta->id) }}')">
                     <div class="row g-0">
                         <div class="col-4">
-                            <div class="card bg-secondary d-flex h-100"><i class="fa-solid fa-school-lock m-auto text-light"
-                                    style="font-size: 3rem;"></i></div>
-                        </div>
-                        <div class="col-8">
-                            <div class="card-body">
-                                <h3 class="card-title">Cierre de venta</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-3">
-                <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;"
-                    onclick="redireccionar('{{ url("factura/facturasLista/$tituloVenta->id") }}')">
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <div class="card bg-secondary d-flex h-100"><i class="fas fa-file-invoice m-auto text-light"
+                            <div class="card bg-dark d-flex h-100"><i class="fas fa-file-invoice m-auto text-light"
                                     style="font-size: 3rem;"></i></div>
                         </div>
                         <div class="col-8">
@@ -80,13 +69,29 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 col-sm-6 mb-3">
+                <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;"
+                    onclick="redireccionar('{{ url('panel/cierre/' . $tituloVenta->id) }}')">
+                    <div class="row g-0">
+                        <div class="col-4">
+                            <div class="card bg-warning d-flex h-100"><i class="fa-solid fa-school-lock m-auto text-light"
+                                    style="font-size: 3rem;"></i></div>
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body">
+                                <h3 class="card-title">Cierre</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
 @section('script')
-<script>
-    function redireccionar(location) {
-        document.location.href = location;
-    }
-</script>
+    <script>
+        function redireccionar(location) {
+            document.location.href = location;
+        }
+    </script>
 @endsection
