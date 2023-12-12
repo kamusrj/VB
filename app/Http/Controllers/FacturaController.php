@@ -35,7 +35,7 @@ class FacturaController extends Controller
         $dt =  $detalleFactura->unique('correlativo');
 
 
-       
+
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
             ->with('facturas', $facturas)
@@ -73,10 +73,8 @@ class FacturaController extends Controller
                 Detallefactura::attrCrear()
             )->validate();
 
-
-
-
             $libros = $request->input('libros_seleccionados', []);
+
 
             foreach ($libros as $libro_id) {
                 $dt = new Detallefactura();
@@ -87,14 +85,12 @@ class FacturaController extends Controller
                 $dt->padre = $request->padre;
                 $dt->fecha = date('Y-m-d');
                 $dt->hora = date("H:i");
+                $dt->total = $request->totalFactura;
                 $dt->save();
-
                 $dt->concepto = 'venta';
-
                 $inventario = Inventario::where('id_venta', $request->id_venta)
                     ->where('id_libro', $libro_id)
                     ->first();
-
                 if ($inventario) {
                     $inventario->decrement('stock_venta', $request->cantidad[$libro_id]);
                 }
@@ -132,6 +128,8 @@ class FacturaController extends Controller
 
     public function CrearEfectivo(Request $request)
     {
+
+
         Validator::make(
             $request->all(),
             EfectivoCambio::ruleCreate()
@@ -152,14 +150,19 @@ class FacturaController extends Controller
         $ec->dolar_cinco = $request->dolar_cinco;
         $ec->dolar_diez = $request->dolar_diez;
         $ec->dolar_veinte = $request->dolar_veinte;
+        $ec->total = $request->totalFactura;
         $ec->dolar_cincuenta = $request->dolar_cincuenta ?? 0;
         $ec->dolar_cien = $request->dolar_cien  ?? 0;
+        $ec->total = $request->totalFactura ?? 0;
+
         $ec->save();
         $id = $request->id_venta;
 
         if ($request->tipo === 'c') {
             return redirect("venta/libros/" . $id);
         } else {
+
+            Session::flash('success', 'Reporte Entregado');
             return redirect()->back();
         }
     }

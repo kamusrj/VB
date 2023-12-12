@@ -54,6 +54,7 @@ return new class extends Migration
             $table->double('dolar_veinte')->notNull();
             $table->double('dolar_cincuenta')->default(0);
             $table->double('dolar_cien')->default(0);
+            $table->double('total')->default(0);
         });
         Schema::create('inventario', function (Blueprint $table) {
             $table->id();
@@ -84,6 +85,7 @@ return new class extends Migration
             $table->string('hora');
             $table->set('anulada', ['si', 'no'])->default('no');
             $table->string('motivo', 200)->default('---');
+            $table->double('total')->default(0);
         });
 
         DB::statement(' CREATE OR REPLACE VIEW DatoVenta AS
@@ -106,15 +108,13 @@ return new class extends Migration
         FROM
             inventario dv
         JOIN
-            libro lb ON dv.id_libro = lb.id;
-            
-            
+            libro lb ON dv.id_libro = lb.id;                     
     ');
 
         DB::statement(" CREATE OR REPLACE VIEW FacturasControl AS
         SELECT
          nota_remision.id_venta,
-         (nota_remision.factura_f - nota_remision.factura_i) AS total_facturas,
+        (nota_remision.factura_f - nota_remision.factura_i) AS total_facturas,
          SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) AS total_anuladas,
          SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END) AS total_no_anuladas,
          ((nota_remision.factura_f - nota_remision.factura_i) - (SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) + SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END))) AS total_sin_utilizar,
@@ -125,7 +125,6 @@ return new class extends Migration
         detallefactura ON detallefactura.id_venta = nota_remision.id_venta
         GROUP BY
         nota_remision.id_venta, nota_remision.factura_f, nota_remision.factura_i;
-            
            ");
     }
 

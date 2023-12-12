@@ -47,7 +47,8 @@
                             <td>Padre: <h6>{{$item->padre }}</h6>
                             </td>
                             @else
-                            <td>{{$item->motivo }}</td>
+                            <td>Motivo de anulacion: <h6>{{$item->motivo }}</h6>
+                            </td>
                             @endif
                             <td>{{ $item->fecha }} / {{$item->hora}}</td>
                             <td>
@@ -80,6 +81,7 @@
                         </div>
                         <div class="modal-body">
                             <form method="post" action="{{ url('factura/guardarfactura') }}">
+                                <input type="text" value="{{$id}}" name="id_venta" hidden>
                                 @csrf
                                 @foreach($facturas as $factura)
                                 <div class="col-auto mb-3">
@@ -105,7 +107,7 @@
                                         <tbody id="tablaInventario">
                                             @foreach($inventario as $item)
                                             <tr id="fila_{{ $item->id_libro }}">
-                                                <input type="text" value="{{$item->id_venta}}" name="id_venta" hidden>
+
                                                 <td>
                                                     <input class="form-check-input" type="checkbox" name="libros_seleccionados[]" value="{{ $item->id_libro }}" onchange="calcularTotal()">
                                                 </td>
@@ -118,8 +120,9 @@
                                             </tr>
                                             @endforeach
                                             <tr>
-                                                <td id="total" colspan=5">Total: $0.00</td>
+                                                <td id="total" name="totalFactura" colspan=5">Total: $0.00</td>
                                             </tr>
+                                            <input id="totalInput" name="totalFactura" value="" hidden>
                                         </tbody>
                                     </table>
                                     <div class="col-auto mb-3">
@@ -187,9 +190,11 @@
             }
         }
         document.getElementById('total').innerText = 'Total: $' + total.toFixed(2);
+        document.getElementById('totalInput').value = total.toFixed(2);
     }
     window.onload = function() {
         calcularTotal();
+
     };
 
     //Modal Detalle de factura 

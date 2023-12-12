@@ -19,12 +19,29 @@ class PanelControl extends Controller
 
     public function cierreVenta($id)
     {
-        return view('dashboard/CierreVenta')->with('id', $id);
+
+        $factura = Facturas::select('*')
+            ->from('facturascontrol')
+            ->where('id_venta', $id)
+            ->first();
+
+        $dato = EfectivoCambio::where('id_venta', $id)
+            ->where('tipo', '=', 'v')->first();
+
+
+        $cambio = EfectivoCambio::where('id_venta', $id)
+            ->where('tipo', '=', 'c')
+            ->first();
+
+        return view('dashboard/CierreVenta')
+            ->with('id', $id)
+            ->with('dato', $dato)
+            ->with('factura', $factura)
+            ->with('cambio', $cambio);
     }
 
     public function finalizarVenta($id)
     {
-
         $venta = TituloVenta::where('id', $id)->first();
 
         $venta->estado = 'off';
@@ -34,16 +51,10 @@ class PanelControl extends Controller
         return redirect()->back();
     }
 
-
-
-
-
     public function actualizarCambio(Request $request)
     {
-
         $data = EfectivoCambio::where('id_venta', $request->id_venta)
             ->where('tipo', $request->tipo)->first();
-
 
         if ($data) {
             $data->centavo_uno = $request->centavo_uno;
@@ -57,15 +68,9 @@ class PanelControl extends Controller
 
             $data->save();
         }
-
         Session::flash('success', 'El cambio entregado fue actualizado');
-
         return redirect()->back();
     }
-
-
-
-
 
     public function buscarInventario(Request $request)
     {
@@ -83,20 +88,15 @@ class PanelControl extends Controller
 
     public function actualizarInventario(Request $request)
     {
-
         $data = Inventario::where('id_venta', $request->id_venta)
             ->where('id_libro', $request->id_libro)
             ->first();
-
         $data->precio = $request->precio;
         $data->descuento = $request->descuento;
         $data->ofrecimiento_a = $request->oa;
         $data->stock += $request->modificacion;
         $data->stock_venta += $request->modificacion;
-
-
         Session::flash('success', 'Inventario actualizado');
-
         return redirect()->back();
     }
 
@@ -121,7 +121,6 @@ class PanelControl extends Controller
 
     public function controlVenta($id)
     {
-
         $facturasControl = Facturas::select('*')
             ->from('facturascontrol')
             ->where('id_venta', $id)
@@ -135,10 +134,6 @@ class PanelControl extends Controller
         $cambio = EfectivoCambio::where('id_venta', $id)
             ->where('tipo', '=', 'c')
             ->first();
-
-
-
-
         return view('dashboard.registroVenta')
             ->with('inventario', $inventario)
             ->with('id', $id)
@@ -183,6 +178,7 @@ class PanelControl extends Controller
                 'inventario.*',
                 'lb.nombre as nombre_libro'
             )
+
             ->where('id_venta', $id)->get();
         return view('ventas.inventario')->with('inventario', $inventario);
     }
