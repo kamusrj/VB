@@ -32,8 +32,7 @@ class Institucioncontroller extends Controller
         $school->codigo = $request->codigo;
         $school->nombre = $request->nombre;
         $school->save();
-        Session::flash('type', 'success');
-        Session::flash('message', 'Institucion registrada correctamente');
+        Session::flash('success', 'Institucion registrada correctamente');
         return redirect()->back();
     }
     public function actualizarInstitucion(Request $request)
@@ -49,8 +48,7 @@ class Institucioncontroller extends Controller
         if ($school) {
             $school->nombre = $request->nombre;
             $school->save();
-            Session::flash('type', 'success');
-            Session::flash('message', 'Actulalizado correctamente');
+            Session::flash('success', 'Actulalizado correctamente');
             return redirect()->back();
         } else {
             return redirect()->back()->withErrors('Error al actualizar los datos');

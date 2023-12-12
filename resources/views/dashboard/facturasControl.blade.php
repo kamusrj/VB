@@ -8,14 +8,18 @@
 <div class="container">
 
     <div class="row">
-        <div class="col my-3">
-            <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+        <div class="col my-4">
+            <a href="{{ url('panel/perfilVenta/ '.$id) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
+
         </div>
     </div>
     <div class="row">
         <div class="col">
-            
+
+            @include('errorMj')
+            <h2><i class="fa-solid fa-file-invoice-dollar"> </i> Facturaci&oacute;n</h2><br>
+
+
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seleccionLibrosModal">
                 Nueva Factura
             </button>
@@ -27,7 +31,7 @@
                         <tr>
 
                             <th>Correlativo</th>
-                            <th>Padre</th>
+                            <th>Detalle</th>
                             <th>Fecha / Hora</th>
                             <th>Ver Factura</th>
                         </tr>
@@ -38,12 +42,25 @@
                         <tr>
 
                             <td>{{$item->correlativo}}</td>
-                            <td>{{$item->padre }}</td>
+
+                            @if($item->anulada=='no')
+                            <td>Padre: <h6>{{$item->padre }}</h6>
+                            </td>
+                            @else
+                            <td>{{$item->motivo }}</td>
+                            @endif
                             <td>{{ $item->fecha }} / {{$item->hora}}</td>
                             <td>
-                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-factura="{{ $item->correlativo }}"">
+
+                                @if($item->anulada=='no')
+                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta" data-value-factura="{{ $item->correlativo }}">
                                     <i class=" fa-solid fa-eye"></i>
                                 </button>
+                                @else
+                                <button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Factura Anulada">
+                                    <i class=" fa-solid fa-ban"></i>
+                                </button>
+                                @endif
                             </td>
                         </tr>
 
@@ -55,10 +72,11 @@
 
             <!-- Modal Creacion de Factura  -->
             <div class="modal" id="seleccionLibrosModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Factura</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form method="post" action="{{ url('factura/guardarfactura') }}">
@@ -100,11 +118,21 @@
                                             </tr>
                                             @endforeach
                                             <tr>
-                                                <td id="total" colspan=4">Total: $0.00</td>
+                                                <td id="total" colspan=5">Total: $0.00</td>
                                             </tr>
                                         </tbody>
-
                                     </table>
+                                    <div class="col-auto mb-3">
+                                        <label for="padre" class="form-label">Factura anulada</label>
+                                        <input name="anulada" type="checkbox" aria-label="Checkbox for following text input">
+                                    </div>
+
+                                    <div class="col-auto mb-3">
+                                        <label for="padre" class="form-label">Motivo de anulación</label>
+                                        <textarea name="motivo" class="form-control" id="exampleTextarea" rows="4"></textarea>
+                                    </div>
+
+
                                     <button type="submit" class="btn btn-primary">Enviar</button>
                                 </div>
                             </form>

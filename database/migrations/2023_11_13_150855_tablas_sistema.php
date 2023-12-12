@@ -76,12 +76,14 @@ return new class extends Migration
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
             $table->integer('correlativo');
-            $table->unsignedBigInteger('id_libro');
+            $table->unsignedBigInteger('id_libro')->nullable();
             $table->foreign('id_libro')->references('id')->on('libro');
-            $table->integer('cantidad');
-            $table->string('padre', 200);
+            $table->integer('cantidad')->default(0);
+            $table->string('padre', 200)->default('---');
             $table->string('fecha', 10);
             $table->string('hora');
+            $table->set('anulada', ['si', 'no'])->default('no');
+            $table->string('motivo', 200)->default('---');
         });
 
         DB::statement(' CREATE OR REPLACE VIEW DatoVenta AS
@@ -108,6 +110,23 @@ return new class extends Migration
             
             
     ');
+
+        DB::statement(" CREATE OR REPLACE VIEW FacturasControl AS
+        SELECT
+         nota_remision.id_venta,
+         (nota_remision.factura_f - nota_remision.factura_i) AS total_facturas,
+         SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) AS total_anuladas,
+         SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END) AS total_no_anuladas,
+         ((nota_remision.factura_f - nota_remision.factura_i) - (SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) + SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END))) AS total_sin_utilizar,
+         COUNT(detallefactura.anulada) AS total_utilizadas
+        FROM
+        nota_remision
+        LEFT JOIN
+        detallefactura ON detallefactura.id_venta = nota_remision.id_venta
+        GROUP BY
+        nota_remision.id_venta, nota_remision.factura_f, nota_remision.factura_i;
+            
+           ");
     }
 
     public function down(): void

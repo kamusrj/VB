@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col">
                 <form method="post" action="{{ url('factura/crear') }}">
-                    
+                    @include('errorMj')
                     @csrf
                     <input type="number" name="id_venta" value="{{ $tituloVenta->id }}" hidden>
                     <div class="form-group mb-3">
@@ -92,7 +92,7 @@
             let facturaInicial = facturaInicialInput.value || 0;
             let facturaFinal = facturaFinalInput.value || 0;
             let totalFacturas = facturaFinal - facturaInicial;
-            totalFacturasInput.innerText = totalFacturas +1;
+            totalFacturasInput.innerText = totalFacturas ;
         }
 
         const cuponInicialInput = document.getElementById("cupon_i");
