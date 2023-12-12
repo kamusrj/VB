@@ -9,8 +9,8 @@
 
     <div class="row">
         <div class="col">
-
-
+            <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
+            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
         </div>
     </div>
 
@@ -23,11 +23,9 @@
     <div class="row">
         <div class="col">
             <form method="post" action="{{ url('factura/crearEfectivo') }}">
-                @include('errorMj')
+                
                 @csrf
                 <input type="number" name="id_venta" hidden value="{{ $tituloVenta->id }}">
-
-                <input name="tipo" hidden value="c">
 
                 <div class="row">
                     <div class="col-md-4">
