@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detallefactura;
 use App\Models\Institucion;
 use App\Models\Libro;
 use Illuminate\Http\Request;
@@ -11,7 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class LibrosController extends Controller
 {
-
     public function Listar()
     {
         $user = Libro::paginate(10);
@@ -50,15 +50,11 @@ class LibrosController extends Controller
         )->addCustomAttributes(
             Libro::attrUpdate()
         )->validate();
-
         $book = Libro::where('id', $request->id)->first();
-
         if ($book) {
             $book->nombre = $request->nombre;
-
             $book->editorial = $request->editorial;
             $book->descripcion = $request->descripcion;
-
             $book->save();
             Session::flash('success', 'Actulalizado correctamente');
             return redirect()->back();
@@ -68,12 +64,18 @@ class LibrosController extends Controller
 
     public function EliminarLibro(Request $request)
     {
-        $id = $request->id;
+
+        $id =  $request->id;
         $book = Libro::find($id);
-        if ($book) {
+        $detalle = Detallefactura::where('id_libro', $book->id)->first();
+
+        if ($detalle == null) {
             $book->delete();
             Session::flash('delete', 'Libro eliminado');
+        } else {
+            Session::flash('delete', 'Libro no se puede borra, está asignado en una venta ');
         }
+
         return redirect()->back();
     }
 }

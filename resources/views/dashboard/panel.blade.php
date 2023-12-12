@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col my-3">
             <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
+
         </div>
     </div>
     <div class="card">
@@ -58,6 +58,9 @@
                                 @if ($item->estado === 'off')
                                 <i class="fa-solid fa-toggle-off fa-2xl" style="color: #eb0d68;"></i>
                                 @endif
+                                <a href="{{ url('panel/finalizarVenta/' . $item->id) }}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Finalizar Venta" onclick="return confirm('¿Estás seguro de que quieres finalizar la venta?');">
+                                    <i class="fa-solid fa-hourglass-end"></i>
+                                </a>
                             </td>
 
                         </tr>
