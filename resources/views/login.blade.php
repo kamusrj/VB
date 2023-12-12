@@ -3,6 +3,7 @@
 @section('title', 'Venta Directa')
 
 @section('content')
+
     <div class="d-flex w-100" style="height:60vh;">
         <div class="m-auto">
             <div class="card shadow">
@@ -21,7 +22,7 @@
                         <div class="d-grid gap-2 mb-3">
                             <button type="submit" class="btn btn-success">Iniciar Sesión</button>
                         </div>
-                        <x-errors />
+
                     </form>
                 </div>
             </div>

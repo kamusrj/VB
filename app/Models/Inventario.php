@@ -20,22 +20,30 @@ class Inventario extends Model
     static function ruleCreate(): array
     {
         return [
+
+
             'fecha' => 'required',
+
         ];
     }
     static function attrCreate(): array
     {
         return [
-          'stock[]' => 'Cantidad',
+
+            'stock[]' => 'Cantidad',
             'precio[]' => 'Precio',
             'fecha' => 'fecha de inicio',
+
+
         ];
     }
     static function ruleUpdate(): array
     {
         return [
+
             'stock' => 'required',
             'precio' => 'required'
+
 
         ];
     }

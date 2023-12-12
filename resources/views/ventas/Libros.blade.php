@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col my-3">
                 <form action="{{ url('venta/inventario/') }}" method="post">
-                    @include('errorMj')
+                    
                     @csrf
                     <input type="number" name="id_venta" value="{{ $tituloVenta->id }}" hidden>
                     <h3>Institución: {{ $tituloVenta->institucion }}</h3>
