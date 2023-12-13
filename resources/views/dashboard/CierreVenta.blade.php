@@ -79,7 +79,7 @@
                                                 <tr>
                                                     <th scope="row" class="col-4">$0.10</th>
                                                     <td class="col-8">
-                                                        <input type="number" min="0" value="{{ $dato && $dato->centavo_diez !== null ? $dato->centavo_diez : '0' }}" data-denominacion="0.1" step="1" oninput="calcularTotal(this)" name="centavo_diez" class="form-control">
+                                                        <input type="number" min="0" value="{{ $dato && $dato->centavo_diez !== null ? $dato->centavo_diez : '0' }}" data-denominacion="0.10" step="1" oninput="calcularTotal(this)" name="centavo_diez" class="form-control">
                                                     </td>
                                                     <td id="total_input_centavo_diez">$ 0.00</td>
                                                 </tr>
@@ -167,7 +167,84 @@
                     @include('dashboard.componentesDetalleVenta.Documentacion')
                 </div>
                 <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-                    @include('dashboard.componentesDetalleVenta.cambio')
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <table class="table table-bordered caption-top " id="tabla-cambio">
+                                <caption>
+                                    <h5>Denominacion</h5>
+                                </caption>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" class="col-4">$0.01</th>
+                                        <td class="col-8">
+                                            <input type="number" value="{{$cambio->centavo_uno}}" class="form-control" data-denominacion-c="0.01" name="dato_1" readonly onchange="cambioTotal(this.value, this.name)">
+                                        </td>
+                                        <td id="Cambio_dato_1">$ 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="col-4">$0.05</th>
+                                        <td class="col-8">
+                                            <input type="number" value="{{$cambio->centavo_cinco}}" data-denominacion-c="0.05" class="form-control" name="dato_2" readonly onchange="cambioTotal(this.value, this.name)">
+                                        </td>
+                                        <td id="Cambio_dato_2">$ 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="col-4">$0.10</th>
+                                        <td class="col-8">
+                                            <input type="number" value="{{$cambio->centavo_diez}}" data-denominacion-c="0.10" class="form-control" name="dato_3" readonly onchange="cambioTotal(this.value, this.name)">
+                                        </td>
+                                        <td id="Cambio_dato_3">$ 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="col-4">$0.25</th>
+                                        <td class="col-8">
+                                            <input type="number" value="{{$cambio->centavo_veinticinco}}" data-denominacion-c="0.25" class="form-control" name="dato_4" readonly onchange="cambioTotal(this.value, this.name)">
+                                        </td>
+                                        <td id="Cambio_dato_4">$ 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="col-4">$1.00</th>
+                                        <td class="col-8">
+                                            <input type="number" value="{{$cambio->dolar_uno}}" data-denominacion-c="1.0" class="form-control" name="dato_5" readonly onchange="cambioTotal(this.value, this.name)">
+                                        </td>
+                                        <td id="Cambio_dato_5">$ 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="col-4">$5.00</th>
+                                        <td class="col-8">
+                                            <input type="number" value="{{$cambio->dolar_cinco}}" data-denominacion-c="5.0" class="form-control" name="dato_6" readonly onchange="cambioTotal(this.value, this.name)">
+                                        </td>
+                                        <td id="Cambio_dato_6">$ 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="col-4">$10.00</th>
+                                        <td class="col-8">
+                                            <input type="number" value="{{$cambio->dolar_diez}}" data-denominacion-c="10.0" class="form-control" name="dato_7" onchange="cambioTotal(this.value, this.name)">
+                                        </td>
+                                        <td id="Cambio_dato_7">$ 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="col-4">$20.00</th>
+                                        <td class="col-8">
+                                            <input type="number" value="{{$cambio->dolar_veinte}}" data-denominacion-c="20.0" class="form-control" name="dato_8" onchange="cambioTotal(this.value, this.name)">
+                                        </td>
+                                        <td id="Cambio_dato_8">$ 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="col-4">Total</th>
+                                        <td>
+                                            <h3> <span id="totalCambio">0.0</span></h3>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+
                 </div>
                 <div class="tab-pane fade" id="return-tab-pane" role="tabpanel" aria-labelledby="return-tab" tabindex="0">
                 </div>
@@ -215,9 +292,36 @@
             });
             total.innerText = parseFloat(total_actual).toFixed(2);
         }
-
-
         calcularTotal();
     });
+
+
+
+    function cambioTotal(value, name) {
+        var denominacion = parseFloat(document.getElementsByName(name)[0].getAttribute("data-denominacion-c"));
+        var inputValue = parseFloat(value);
+        var total = denominacion * inputValue;
+        var totalCellId = "Cambio_" + name;
+        document.getElementById(totalCellId).textContent = "$ " + total.toFixed(2);
+
+        // Obtén todas las celdas de input dentro de la tabla
+        var inputs = document.querySelectorAll('#tabla-cambio.form-control');
+
+        // Inicializa la suma total
+        var totalGeneral = 0;
+
+        // Itera sobre todas las celdas de input y calcula la suma total
+        inputs.forEach(function(fila) {
+            var filaDenominacion = parseFloat(fila.getAttribute("data-denominacion-c"));
+            var filaValue = parseFloat(fila.value);
+            var filaTotal = filaDenominacion * filaValue;
+            var filaTotalCellId = "Cambio_" + fila.name;
+            document.getElementById(filaTotalCellId).textContent = "$ " + filaTotal.toFixed(2);
+            totalGeneral += filaTotal;
+        });
+
+        // Actualiza el total general en la celda correspondiente
+        document.getElementById("totalCambio").textContent = "$ " + totalGeneral.toFixed(2);
+    }
 </script>
 @endsection

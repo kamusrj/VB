@@ -69,7 +69,7 @@ class InicioSeeder extends Seeder
                 [
                     'correo' => 'encargado',
                     'clave' => Hash::make('1234'),
-                    'nombre' => 'Laura',
+                    'nombre' => 'Encargado',
                     'apellido' => 'Sánchez',
                     'rol' => 'e'
                 ],
