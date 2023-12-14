@@ -36,6 +36,22 @@ class FacturaController extends Controller
 
 
 
+
+        //llenar tabla
+        $detalleFactura = Detallefactura::all();
+        $totalPorLibro = [];
+
+        foreach ($detalleFactura as $detalle) {
+            $libroId = $detalle->id_libro;
+            $precio = $detalle->precio;
+            $cantidad = $detalle->cantidad;
+            $total = $precio * $cantidad;
+            $totalPorLibro[$libroId] = $total;
+        }
+
+
+        $dt =  $detalleFactura->unique('correlativo');
+
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
             ->with('facturas', $facturas)
@@ -64,37 +80,6 @@ class FacturaController extends Controller
             $dt->fecha = date('Y-m-d');
             $dt->hora = date("H:i");
             $dt->save();
-        } else {
-
-            Validator::make(
-                $request->all(),
-                Detallefactura::ruleCrear()
-            )->addCustomAttributes(
-                Detallefactura::attrCrear()
-            )->validate();
-
-            $libros = $request->input('libros_seleccionados', []);
-
-
-            foreach ($libros as $libro_id) {
-                $dt = new Detallefactura();
-                $dt->id_venta = $request->id_venta;
-                $dt->correlativo = $request->correlativo;
-                $dt->id_libro = $libro_id;
-                $dt->cantidad = $request->cantidad[$libro_id];
-                $dt->padre = $request->padre;
-                $dt->fecha = date('Y-m-d');
-                $dt->hora = date("H:i");
-                $dt->total = $request->totalFactura;
-                $dt->save();
-                $dt->concepto = 'venta';
-                $inventario = Inventario::where('id_venta', $request->id_venta)
-                    ->where('id_libro', $libro_id)
-                    ->first();
-                if ($inventario) {
-                    $inventario->decrement('stock_venta', $request->cantidad[$libro_id]);
-                }
-            }
         }
         Session::flash('success', 'Factura guardada');
         return redirect()->back();
@@ -128,8 +113,6 @@ class FacturaController extends Controller
 
     public function CrearEfectivo(Request $request)
     {
-
-
         Validator::make(
             $request->all(),
             EfectivoCambio::ruleCreate()
@@ -150,13 +133,9 @@ class FacturaController extends Controller
         $ec->dolar_cinco = $request->dolar_cinco;
         $ec->dolar_diez = $request->dolar_diez;
         $ec->dolar_veinte = $request->dolar_veinte;
-        $ec->total = $request->totalFactura;
-        $ec->dolar_cincuenta = $request->dolar_cincuenta ?? 0;
-        $ec->dolar_cien = $request->dolar_cien  ?? 0;
-        $ec->total = $request->totalFactura ?? 0;
-
         $ec->save();
         $id = $request->id_venta;
+<<<<<<< HEAD
 
         if ($request->tipo === 'c') {
             return redirect("venta/libros/" . $id);
@@ -165,6 +144,9 @@ class FacturaController extends Controller
             Session::flash('success', 'Reporte Entregado');
             return redirect()->back();
         }
+=======
+        return redirect("venta/libros/" . $id);
+>>>>>>> parent of 3042101 (Merge pull request #29 from kamusrj/kamus)
     }
 
     public function CrearFactura(Request $request)

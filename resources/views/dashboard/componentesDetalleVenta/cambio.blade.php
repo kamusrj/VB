@@ -2,12 +2,11 @@
     <div class="row">
         <div class="col-md-5">
             <br>
-            @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
             <button type="button" class="btn btn-primary" style="background-color: #34ac54; border: none;" data-bs-toggle="modal" data-bs-target="#modalCrear">
                 <i class="fa-regular fa-pen-to-square"></i> Actualizar
             </button>
             <br>
-            @endif
+
             <table class="table table-bordered caption-top ">
                 <caption>
                     <h5>Denominacion</h5>
@@ -145,8 +144,6 @@
 
                             </tbody>
                         </table>
-
-                        
                         <div class="col-12 mb-3 g-1">
                             <button class="w-100 btn btn-success" type="submit">Actualizar</button>
                         </div>

@@ -9,20 +9,24 @@
 
     <div class="row">
         <div class="col">
+            <a href="{{ url('/') }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
+            <a href="{{ url('/salir') }}" class="btn btn-danger"> <i class="fas fa-sign-out-alt"></i></a>
         </div>
     </div>
+
     <div class="row">
         <div class="col">
             <h2>Efectivo para Cambio de la instituci&oacute; {{ $tituloVenta->institucion }}</h2>
         </div>
     </div>
+
     <div class="row">
         <div class="col">
             <form method="post" action="{{ url('factura/crearEfectivo') }}">
                 
                 @csrf
                 <input type="number" name="id_venta" hidden value="{{ $tituloVenta->id }}">
-                <input name="tipo" hidden value="c">
+
                 <div class="row">
                     <div class="col-md-4">
                         <table class="table table-bordered caption-top">
@@ -82,17 +86,18 @@
                                     <th scope="row" class="col-4">Total</th>
                                     <td class="col-8">
                                         $<span id="total">0.0</span>
-                                        <input id="totalInput" name="totalFactura" value="0" hidden>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </form>
         </div>
     </div>
+
 </div>
 
 @endsection
@@ -109,7 +114,6 @@
             total_actual += campo.value * denominacion;
         });
         total.innerText = parseFloat(total_actual).toFixed(2);
-        document.getElementById('totalInput').value = parseFloat(total_actual).toFixed(2);
     }
 </script>
 @endsection

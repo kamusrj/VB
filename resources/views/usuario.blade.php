@@ -49,7 +49,7 @@
                                 @elseif ($item->rol === 'e')
                                 Encargado
                                 @elseif ($item->rol === 'c')
-                                Contabilidad
+                                Colaborador
                                 @elseif ($item->rol === 'b')
                                 Bodega
                                 @elseif ($item->rol === 'g')
