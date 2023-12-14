@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -19,7 +18,7 @@ return new class extends Migration
             $table->string('zona', 200);
             $table->string('direccion', 80);
             $table->string('autor', 200);
-            $table->string('fecha_creacion', 10);
+            $table->string('fecha_creacion', 200);
             $table->set('estado', ['on', 'off'])->default('on');
             $table->foreign('encargado')->references('correo')->on('usuario');
             $table->foreign('vendedor')->references('correo')->on('usuario');
@@ -29,21 +28,20 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
-            $table->string('fecha', 10);
+            $table->string('fecha', 200);
             $table->string('representante', 200);
             $table->foreign('representante')->references('correo')->on('usuario');
             $table->string('n_remision', 50);
-            $table->string('factura_i');
-            $table->string('factura_f');
-            $table->string('cupon_i')->nullable();
-            $table->string('cupon_f')->nullable();
+            $table->integer('factura_i');
+            $table->integer('factura_f');
+            $table->integer('cupon_i')->nullable();
+            $table->integer('cupon_f')->nullable();
         });
         Schema::create('efectivo_c', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
-            $table->set('tipo', ['v', 'c', 'r']);
-            $table->string('fecha', 10);
+            $table->string('fecha', 200);
             $table->double('centavo_uno')->notNull();
             $table->double('centavo_cinco')->notNull();
             $table->double('centavo_diez')->notNull();
@@ -52,15 +50,17 @@ return new class extends Migration
             $table->double('dolar_cinco')->notNull();
             $table->double('dolar_diez')->notNull();
             $table->double('dolar_veinte')->notNull();
+
             $table->double('dolar_cincuenta')->default(0);
             $table->double('dolar_cien')->default(0);
             $table->double('total')->default(0);
+
         });
         Schema::create('inventario', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
-            $table->string('fecha', 10);
+            $table->string('fecha', 200);
             $table->unsignedBigInteger('id_libro');
             $table->foreign('id_libro')->references('id')->on('libro');
             $table->integer('stock')->default(0);
@@ -77,11 +77,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
             $table->integer('correlativo');
-            $table->unsignedBigInteger('id_libro')->nullable();
+            $table->unsignedBigInteger('id_libro');
             $table->foreign('id_libro')->references('id')->on('libro');
-            $table->integer('cantidad')->default(0);
-            $table->string('padre', 200)->default('---');
-            $table->string('fecha', 10);
+            $table->integer('cantidad');
+            $table->string('padre', 200);
+            $table->string('fecha');
             $table->string('hora');
             $table->set('anulada', ['si', 'no'])->default('no');
             $table->string('motivo', 200)->default('---');
@@ -168,8 +168,8 @@ FROM
     efectivo_c c;
           
            ");
-    }
 
+    }
     public function down(): void
     {
         Schema::dropIfExists('titulo_venta');

@@ -5,8 +5,6 @@
 @section('content')
 
 <div class="container">
-
-
     <div class="row">
         <div class="col mb-3">
             <h2> Entrega de documentos </h2>
@@ -89,7 +87,6 @@
     const cuponInicialInput = document.getElementById("cupon_i");
     const cuponFinalInput = document.getElementById("cupon_f");
     const totalCuponesInput = document.getElementById("cupon_t");
-
     function calcularTotalCupones() {
         var cuponInicial = cuponInicialInput.value || 0;
         var cuponFinal = cuponFinalInput.value || 0;

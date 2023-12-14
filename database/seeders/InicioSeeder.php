@@ -25,7 +25,7 @@ class InicioSeeder extends Seeder
                     'rol' => 'a',
                 ],
                 [
-                    'correo' => 'bodega',
+                    'correo' => 'tonyb',
                     'clave' => Hash::make('1234'),
                     'nombre' => 'Antonio',
                     'apellido' => 'Hernández',

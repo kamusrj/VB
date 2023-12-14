@@ -2,15 +2,6 @@
 
 @section('title', 'Cierre de venta')
 
-
-<style>
-    td {
-        white-space: nowrap;
-    }
-</style>
-
-
-
 @section('content')
 
 <div class="containe">
