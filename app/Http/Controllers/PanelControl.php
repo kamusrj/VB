@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EfectivoCambio;
+use App\Models\Facturas;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class PanelControl extends Controller

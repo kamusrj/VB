@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Validator;
 
 class VentaController extends Controller
 {
+
+
+
+
     public function inventario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
@@ -26,7 +30,6 @@ class VentaController extends Controller
         $id = $request->id_venta;
         return redirect("panel/inventario/$id");
     }
-
 
     public function ventaInventario(Request $request)
     {
@@ -83,17 +86,24 @@ class VentaController extends Controller
             TituloVenta::attrCrear()
         )->validate();
 
-        $institucion = Institucion::where("codigo", $request->codigo)->first();
-        if(!$institucion){
+
+
+
+        $usuario = Auth::user();
+
+        $vd = TituloVenta::where('institucion', $request->codigo)
+            ->first();
+        if (!$vd) {
+
             $institucion = new Institucion();
             $institucion->codigo = $request->codigo;
             $institucion->nombre = $request->nombre;
             $institucion->save();
+
+            $vd = new TituloVenta();
+            $vd->institucion = $request->codigo;
         }
 
-        $usuario = Auth::user();
-        $vd = new TituloVenta();
-        $vd->institucion = $request->codigo;
         $vd->director = $request->director;
         $vd->encargado = $request->encargado;
         $vd->telefono = $request->telefono;
@@ -103,8 +113,12 @@ class VentaController extends Controller
         $vd->autor = $usuario->correo;
         $vd->fecha_creacion = date('d-m-Y');
         $vd->save();
+
+
         Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
         $data = $vd->id;
+
+
         return redirect("venta/facturar/$data");
     }
 

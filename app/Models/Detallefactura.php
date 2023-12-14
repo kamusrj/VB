@@ -47,4 +47,24 @@ class Detallefactura extends Model
             'padre' => "Padre",
         ];
     }
+
+
+
+    //Factura anulada
+
+    static function ruleAnulada(): array
+    {
+        return [
+            'correlativo' => "required|unique:detallefactura,correlativo",
+            'motivo' => "required",
+        ];
+    }
+    static function attrAnulada(): array
+    {
+        return [
+            'correlativo' => "Correlativo",
+
+            'motivo' => "Motivo de anulación",
+        ];
+    }
 }

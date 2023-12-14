@@ -57,6 +57,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('inventarioVenta', 'ventaInventario');
         Route::post('inventario', 'inventario');
 
+
         Route::get('bodega', 'perfilBodega');
         Route::post('bodegaBuscar', 'bodegaBuscar');
     });
