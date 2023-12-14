@@ -9,14 +9,11 @@ use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class VentaController extends Controller
 {
-
-
-
-
     public function inventario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
@@ -86,9 +83,6 @@ class VentaController extends Controller
             TituloVenta::attrCrear()
         )->validate();
 
-
-
-
         $usuario = Auth::user();
 
         $vd = TituloVenta::where('institucion', $request->codigo)
@@ -114,12 +108,12 @@ class VentaController extends Controller
         $vd->fecha_creacion = date('d-m-Y');
         $vd->save();
 
-
         Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
         $data = $vd->id;
 
-
-        return redirect("venta/facturar/$data");
+        // return redirect("venta/facturar/$data");
+        Session::flash('success', 'Institucion registrada ');
+        return redirect("panel");
     }
 
     function ListaLibros(Request $request)

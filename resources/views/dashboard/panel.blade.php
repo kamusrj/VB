@@ -16,6 +16,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
+                    @include('errorMj')
                     <h3>Listado de ventas </h3>
                     <div class="table table-striped">
                         <table class="table table-bordered table-striped" id="venta">
@@ -30,6 +31,7 @@
                                     <th>vendedor</th>
                                     <th>zona</th>
                                     <th>direccion</th>
+
                                     <th>Ver / Estado</th>
                                 </tr>
                             </thead>
@@ -48,6 +50,7 @@
                                     <td>{{ $item->nombre_vendedor }} {{ $item->apellido_vendedor }}</td>
                                     <td>{{ $item->zona }}</td>
                                     <td>{{ $item->direccion }}</td>
+
                                     <td>
                                         <a href="{{ url('panel/perfilVenta/' . $item->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta">
                                             <i class="fa-solid fa-eye"></i>

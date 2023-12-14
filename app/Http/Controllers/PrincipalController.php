@@ -18,7 +18,6 @@ class PrincipalController extends Controller
     {
         if (Auth::check()) {
             $userRole = Auth::user()->rol;
-
             switch ($userRole) {
                 case 'a':
                 case 'g':
@@ -33,8 +32,15 @@ class PrincipalController extends Controller
                     $titulo = TituloVenta::where('encargado', Auth::user()->correo)
                         ->where('estado', 'on')
                         ->first();
-                    $tituloVenta = $titulo->id;
-                    return redirect('panel/perfilVenta/' . $tituloVenta);
+
+                    if ($titulo) {
+
+                        $tituloVenta = $titulo->id;
+                        return redirect('panel/perfilVenta/' . $tituloVenta);
+                    }
+                    Session::flash('type', 'info');
+                    Session::flash('message', 'Usuario sin Venta asignada ');
+                    return view('login');
             }
         } else {
             return view('login');
@@ -59,7 +65,7 @@ class PrincipalController extends Controller
 
         if (Auth::check())
             $request->session()->regenerate();
-        else{
+        else {
             Session::flash('type', 'danger');
             Session::flash('message', 'Usuario o Contraseña no valido');
         }

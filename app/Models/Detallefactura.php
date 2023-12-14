@@ -48,8 +48,6 @@ class Detallefactura extends Model
         ];
     }
 
-
-
     //Factura anulada
 
     static function ruleAnulada(): array
