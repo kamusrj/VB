@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detallefactura;
+use App\Models\Institucion;
 use App\Models\Libro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class LibrosController extends Controller
 {
-
     public function Listar()
     {
         $user = Libro::paginate(10);
@@ -36,8 +38,7 @@ class LibrosController extends Controller
         $book->editorial = $request->editorial;
         $book->descripcion = $request->descripcion;
         $book->save();
-        Session::flash('type', 'success');
-        Session::flash('message', 'Libro creado correctamente');
+        Session::flash('success', 'Libro creado correctamente');
         return redirect()->back();
     }
 
@@ -49,33 +50,32 @@ class LibrosController extends Controller
         )->addCustomAttributes(
             Libro::attrUpdate()
         )->validate();
-
         $book = Libro::where('id', $request->id)->first();
-
         if ($book) {
             $book->nombre = $request->nombre;
-
             $book->editorial = $request->editorial;
             $book->descripcion = $request->descripcion;
-
             $book->save();
-            Session::flash('type', 'success');
-            Session::flash('message', 'Actulalizado correctamente');
+            Session::flash('success', 'Actulalizado correctamente');
             return redirect()->back();
         }
-        return redirect()->back()->withErrors('Error al actualizar los datos.');
+        return redirect()->back()->withErrors('Error al actualizar los datos');
     }
 
     public function EliminarLibro(Request $request)
     {
-        $id = $request->id;
+
+        $id =  $request->id;
         $book = Libro::find($id);
-        if ($book) {
+        $detalle = Detallefactura::where('id_libro', $book->id)->first();
+
+        if ($detalle == null) {
             $book->delete();
-            Session::flash('type', 'success');
-            Session::flash('message', 'Libro eliminado correctamente');
-            return redirect()->back();
+            Session::flash('delete', 'Libro eliminado');
+        } else {
+            Session::flash('delete', 'Libro no se puede borra, está asignado en una venta ');
         }
-        return redirect()->back()->withErrors('Error: no se pudo realizar la acción.');
+
+        return redirect()->back();
     }
 }

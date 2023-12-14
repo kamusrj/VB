@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -127,9 +128,8 @@ return new class extends Migration
         nota_remision.id_venta, nota_remision.factura_f, nota_remision.factura_i;
            ");
 
-
         DB::statement(" CREATE OR REPLACE VIEW Cambio AS
-      
+    
         SELECT
         c.id_venta,
         c.tipo,

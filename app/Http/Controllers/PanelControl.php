@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EfectivoCambio;
+use App\Models\Facturas;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -112,9 +115,7 @@ class PanelControl extends Controller
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
-
-        Session::flash('type', 'success');
-        Session::flash('message', 'Inventario actualizado');
+        Session::flash('success', 'Inventario actualizado');
         return redirect()->back();
     }
 
@@ -139,7 +140,6 @@ class PanelControl extends Controller
             ->with('cambio', $cambio)
             ->with('factura', $facturasControl);
     }
-
 
     public function ListarVentas()
     {
@@ -170,6 +170,7 @@ class PanelControl extends Controller
             ->where('id', $id)->first();
         return view('dashboard.PerfilVenta')->with('tituloVenta', $tituloVenta);
     }
+
     public function inventarioVenta($id)
     {
         $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')

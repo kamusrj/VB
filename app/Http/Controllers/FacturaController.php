@@ -5,59 +5,64 @@ namespace App\Http\Controllers;
 use App\Models\Detallefactura;
 use App\Models\EfectivoCambio;
 use App\Models\Facturas;
+use App\Models\Institucion;
 use App\Models\Inventario;
+use App\Models\Libro;
 use App\Models\TituloVenta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class FacturaController extends Controller
 {
-
     //gestion de facturas 
 
     public function listarFacturas($id)
     {
-
         //modal
         $inventario = Inventario::join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
             ->join('libro', 'inventario.id_libro', '=', 'libro.id')
             ->where('tv.id', '=', $id)
+            ->where('stock_venta', '>', 0)
             ->select(
                 'inventario.*',
                 'libro.nombre as nombre_libro'
-            )
+            )->orderBy('nombre_libro')
             ->get();
         $facturas = Facturas::where('id_venta', $id)->get();
+        $detalleFactura = Detallefactura::where('id_venta', $id)->orderBy('correlativo', 'asc')->get();
+        $dt =  $detalleFactura->unique('correlativo');
+
+
 
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
             ->with('facturas', $facturas)
+            ->with('id', $id)
             ->with('detalle', $dt);
     }
-
 
     public function guardarFactura(Request $request)
     {
 
-        Validator::make(
-            $request->all(),
-            Detallefactura::ruleCrear()
-        )->addCustomAttributes(
-            Detallefactura::attrCrear()
-        )->validate();
+        if ($request->anulada === 'on') {
 
-        $libros = $request->input('libros_seleccionados', []);
+            Validator::make(
+                $request->all(),
+                Detallefactura::ruleAnulada()
+            )->addCustomAttributes(
+                Detallefactura::attrAnulada()
+            )->validate();
 
-        foreach ($libros as $libro_id) {
             $dt = new Detallefactura();
             $dt->id_venta = $request->id_venta;
             $dt->correlativo = $request->correlativo;
-            $dt->id_libro = $libro_id;
-            $dt->cantidad = $request->cantidad[$libro_id];
-            $dt->padre = $request->padre;
+
+            $dt->anulada = 'si';
+            $dt->motivo = $request->motivo;
             $dt->fecha = date('Y-m-d');
-            $dt->hora = date("H:i A", time());
+            $dt->hora = date("H:i");
             $dt->save();
         } else {
 
@@ -91,15 +96,14 @@ class FacturaController extends Controller
                 }
             }
         }
-        Session::flash('type', 'success');
-        Session::flash('message', 'Factura guardada');
+        Session::flash('success', 'Factura guardada');
         return redirect()->back();
     }
 
-
-
     public function facturaBuscar(Request $request)
     {
+
+
         $data = Detallefactura::join('titulo_venta as tv', 'detallefactura.id_venta', '=', 'tv.id')
             ->join('libro as lb', 'detallefactura.id_libro', '=', 'lb.id')
             ->join('inventario as inv', 'lb.id', '=', 'inv.id_libro')
@@ -108,17 +112,12 @@ class FacturaController extends Controller
                 'lb.nombre as nombre_libro',
                 'inv.precio as precio_libro'
             )
+            ->where('inv.id_venta', $request->id)
             ->where('correlativo', $request->correlativo)
+
             ->get();
         return json_encode($data);
     }
-
-
-
-
-
-
-
 
     //cracion de venta diracta
     public function EfectivoCambio($id)
@@ -126,6 +125,7 @@ class FacturaController extends Controller
         $tituloVenta = TituloVenta::where('id', $id)->first();
         return view('ventas/EfectivoCambio')->with('tituloVenta', $tituloVenta);
     }
+
     public function CrearEfectivo(Request $request)
     {
 
@@ -136,8 +136,11 @@ class FacturaController extends Controller
         )->addCustomAttributes(
             EfectivoCambio::attrCreate()
         )->validate();
+
         $ec = new EfectivoCambio();
+
         $ec->id_venta = $request->id_venta;
+        $ec->tipo = $request->tipo;
         $ec->fecha = date('d-m-Y');
         $ec->centavo_uno = $request->centavo_uno;
         $ec->centavo_cinco = $request->centavo_cinco;
@@ -162,7 +165,6 @@ class FacturaController extends Controller
             Session::flash('success', 'Reporte Entregado');
             return redirect()->back();
         }
-
     }
 
     public function CrearFactura(Request $request)
@@ -179,8 +181,11 @@ class FacturaController extends Controller
         $f->fecha = date("Y-m-d");
         $f->representante = $request->representante;
         $f->n_remision = $request->n_remision;
-        $f->factura_i = $request->factura_i;
-        $f->factura_f = $request->factura_f;
+
+        $f->factura_i = str_pad($request->factura_i, 5, '0', STR_PAD_LEFT);
+        $f->factura_f = str_pad($request->factura_f, 5, '0', STR_PAD_LEFT);
+
+
         $f->cupon_i = $request->cupon_i;
         $f->cupon_f = $request->cupon_f;
         $f->save();
