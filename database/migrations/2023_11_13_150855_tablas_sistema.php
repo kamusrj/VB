@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -51,6 +50,11 @@ return new class extends Migration
             $table->double('dolar_cinco')->notNull();
             $table->double('dolar_diez')->notNull();
             $table->double('dolar_veinte')->notNull();
+
+            $table->double('dolar_cincuenta')->default(0);
+            $table->double('dolar_cien')->default(0);
+            $table->double('total')->default(0);
+
         });
         Schema::create('inventario', function (Blueprint $table) {
             $table->id();
@@ -79,8 +83,10 @@ return new class extends Migration
             $table->string('padre', 200);
             $table->string('fecha');
             $table->string('hora');
+            $table->set('anulada', ['si', 'no'])->default('no');
+            $table->string('motivo', 200)->default('---');
+            $table->double('total')->default(0);
         });
-<<<<<<< HEAD
 
         DB::statement(' CREATE OR REPLACE VIEW DatoVenta AS
         SELECT
@@ -121,8 +127,9 @@ return new class extends Migration
         nota_remision.id_venta, nota_remision.factura_f, nota_remision.factura_i;
            ");
 
+
         DB::statement(" CREATE OR REPLACE VIEW Cambio AS
-    
+      
         SELECT
         c.id_venta,
         c.tipo,
@@ -162,8 +169,6 @@ FROM
           
            ");
 
-=======
->>>>>>> parent of 3042101 (Merge pull request #29 from kamusrj/kamus)
     }
     public function down(): void
     {

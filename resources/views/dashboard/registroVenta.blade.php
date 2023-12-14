@@ -147,7 +147,7 @@
         <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
             @include('dashboard.componentesDetalleVenta.cambio')
         </div>
-        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+        <div class="tab-pane fade" id="-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
 
 
         </div>
@@ -159,8 +159,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-
-    //Codigo tabla venta
     document.addEventListener('DOMContentLoaded', function() {
         var totalVenta = 0;
         var totalReintegro = 0;
