@@ -50,6 +50,11 @@ return new class extends Migration
             $table->double('dolar_cinco')->notNull();
             $table->double('dolar_diez')->notNull();
             $table->double('dolar_veinte')->notNull();
+
+            $table->double('dolar_cincuenta')->default(0);
+            $table->double('dolar_cien')->default(0);
+            $table->double('total')->default(0);
+
         });
         Schema::create('inventario', function (Blueprint $table) {
             $table->id();
@@ -78,7 +83,92 @@ return new class extends Migration
             $table->string('padre', 200);
             $table->string('fecha');
             $table->string('hora');
+            $table->set('anulada', ['si', 'no'])->default('no');
+            $table->string('motivo', 200)->default('---');
+            $table->double('total')->default(0);
         });
+
+        DB::statement(' CREATE OR REPLACE VIEW DatoVenta AS
+        SELECT
+            dv.id_venta,
+            dv.fecha,
+            dv.id_libro,
+            dv.stock,
+            dv.stock_venta,
+            dv.precio,
+            dv.descuento,
+            dv.ofrecimiento_a,
+            dv.fecha_inicio,
+            dv.stock - dv.stock_venta AS vendido,
+            CAST((dv.stock - dv.stock_venta) * dv.precio AS DECIMAL(10, 2)) AS totalventa,
+            CAST((dv.precio * dv.descuento / 100) AS DECIMAL(10, 2)) AS reintegro,
+            CAST((dv.stock - dv.stock_venta) * (dv.precio * dv.descuento / 100) AS DECIMAL(10, 2)) AS totalReintegro,
+            CAST((dv.stock - dv.stock_venta) * ofrecimiento_a AS DECIMAL(10, 2)) AS totaloa,
+            lb.nombre AS nombre_libro
+        FROM
+            inventario dv
+        JOIN
+            libro lb ON dv.id_libro = lb.id;                     
+    ');
+
+        DB::statement(" CREATE OR REPLACE VIEW FacturasControl AS
+        SELECT
+         nota_remision.id_venta,
+        (nota_remision.factura_f - nota_remision.factura_i) AS total_facturas,
+         SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) AS total_anuladas,
+         SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END) AS total_no_anuladas,
+         ((nota_remision.factura_f - nota_remision.factura_i) - (SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) + SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END))) AS total_sin_utilizar,
+         COUNT(detallefactura.anulada) AS total_utilizadas
+        FROM
+        nota_remision
+        LEFT JOIN
+        detallefactura ON detallefactura.id_venta = nota_remision.id_venta
+        GROUP BY
+        nota_remision.id_venta, nota_remision.factura_f, nota_remision.factura_i;
+           ");
+
+
+        DB::statement(" CREATE OR REPLACE VIEW Cambio AS
+      
+        SELECT
+        c.id_venta,
+        c.tipo,
+        c.centavo_uno,
+        c.centavo_cinco,
+        c.centavo_diez,
+        c.centavo_veinticinco,
+        c.dolar_uno,
+        c.dolar_cinco,
+        c.dolar_diez,
+        c.dolar_veinte,
+        ROUND(COALESCE(c.centavo_uno * 0.01, 0), 2) AS c1Total,
+        ROUND(COALESCE(c.centavo_cinco * 0.05, 0), 2) AS c5Total,
+        ROUND(COALESCE(c.centavo_diez * 0.10, 0), 2) AS c10Total,
+        ROUND(COALESCE(c.centavo_veinticinco * 0.25, 0), 2) AS c25Total,
+        ROUND(COALESCE(c.dolar_uno * 1.00, 0), 2) AS d1Total,
+        ROUND(COALESCE(c.dolar_cinco * 5.00, 0), 2) AS d5Total,
+        ROUND(COALESCE(c.dolar_diez * 10.00, 0), 2) AS d10Total,
+        ROUND(COALESCE(c.dolar_veinte * 20.00, 0), 2) AS d20Total,
+        ROUND(COALESCE(c.dolar_cincuenta * 50.00, 0), 2) AS d50Total,
+        ROUND(COALESCE(c.dolar_cien * 100.00, 0), 2) AS d100Total,
+        ROUND(
+        COALESCE(c.centavo_uno * 0.01, 0) +
+        COALESCE(c.centavo_cinco * 0.05, 0) +
+        COALESCE(c.centavo_diez * 0.10, 0) +
+        COALESCE(c.centavo_veinticinco * 0.25, 0) +
+        COALESCE(c.dolar_uno * 1.00, 0) +
+        COALESCE(c.dolar_cinco * 5.00, 0) +
+        COALESCE(c.dolar_diez * 10.00, 0) +
+        COALESCE(c.dolar_veinte * 20.00, 0)+
+        COALESCE(c.dolar_cincuenta * 50.00, 0) +
+        COALESCE(c.dolar_cien * 100.00, 0) ,
+        2
+    ) AS totalGeneral
+FROM
+    efectivo_c c;
+          
+           ");
+
     }
     public function down(): void
     {
