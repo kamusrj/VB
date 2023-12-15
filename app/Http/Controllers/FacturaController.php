@@ -118,15 +118,17 @@ class FacturaController extends Controller
     }
 
     //cracion de venta diracta
-    public function EfectivoCambio($id)
+    public function EfectivoCambio($id, $fecha)
     {
+
         $tituloVenta = TituloVenta::where('id', $id)->first();
-        return view('ventas/EfectivoCambio')->with('tituloVenta', $tituloVenta);
+        return view('ventas/EfectivoCambio')
+            ->with('tituloVenta', $tituloVenta)
+            ->with('fecha', $fecha);
     }
 
     public function CrearEfectivo(Request $request)
     {
-
 
         Validator::make(
             $request->all(),
@@ -139,7 +141,7 @@ class FacturaController extends Controller
 
         $ec->id_venta = $request->id_venta;
         $ec->tipo = $request->tipo;
-        $ec->fecha = date('d-m-Y');
+        $ec->fecha = $request->fecha;
         $ec->centavo_uno = $request->centavo_uno;
         $ec->centavo_cinco = $request->centavo_cinco;
         $ec->centavo_diez = $request->centavo_diez;
@@ -157,7 +159,7 @@ class FacturaController extends Controller
         $id = $request->id_venta;
 
         if ($request->tipo === 'c') {
-            return redirect("venta/libros/" . $id);
+            return redirect("venta/libros/$id/$request->fecha");
         } else {
 
             Session::flash('success', 'Reporte Entregado');
@@ -176,18 +178,19 @@ class FacturaController extends Controller
 
         $f = new Facturas();
         $f->id_venta = $request->id_venta;
+        $f->fecha_programada = $request->fecha_programada;
         $f->fecha = date("Y-m-d");
         $f->representante = $request->representante;
         $f->n_remision = $request->n_remision;
 
         $f->factura_i = str_pad($request->factura_i, 5, '0', STR_PAD_LEFT);
         $f->factura_f = str_pad($request->factura_f, 5, '0', STR_PAD_LEFT);
-
-
         $f->cupon_i = $request->cupon_i;
         $f->cupon_f = $request->cupon_f;
         $f->save();
         $data = $f->id_venta;
-        return redirect("factura/efectivoCambio/$data");
+        $fecha =  $request->fecha_programada;
+
+        return redirect("factura/efectivoCambio/$data/$fecha");
     }
 }

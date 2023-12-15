@@ -163,6 +163,17 @@ class PanelControl extends Controller
         return view('dashboard.panel')->with('ventas', $ventas);
     }
 
+
+    public function controlFecha($id)
+    {
+
+
+
+        return view('dashboard.ControlFechas')->with('id', $id);
+    }
+
+
+
     public function perfilVenta($id)
     {
         $tituloVenta = TituloVenta::join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')
@@ -173,7 +184,7 @@ class PanelControl extends Controller
             ->where('id', $id)->first();
         return view('dashboard.PerfilVenta')->with('tituloVenta', $tituloVenta);
     }
-    public function inventarioVenta($id)
+    public function inventarioVenta($id, $fecha)
     {
         $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
             ->select(
@@ -182,6 +193,8 @@ class PanelControl extends Controller
             )
 
             ->where('id_venta', $id)->get();
-        return view('ventas.inventario')->with('inventario', $inventario);
+        return view('ventas.inventario')
+            ->with('inventario', $inventario)
+            ->with('fecha', $fecha);
     }
 }

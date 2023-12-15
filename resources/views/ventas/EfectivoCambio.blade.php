@@ -22,6 +22,7 @@
 
                 @csrf
                 <input type="number" name="id_venta" hidden value="{{ $tituloVenta->id }}">
+                <input value="{{$fecha}}" name="fecha" hidden>
                 <input name="tipo" hidden value="c">
                 <div class="row">
                     <div class="col-md-4">

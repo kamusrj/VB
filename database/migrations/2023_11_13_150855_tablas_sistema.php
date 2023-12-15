@@ -29,6 +29,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
+            $table->String('fecha_programada');
             $table->string('fecha', 10);
             $table->string('representante', 200);
             $table->foreign('representante')->references('correo')->on('usuario');

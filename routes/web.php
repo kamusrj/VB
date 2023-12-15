@@ -36,7 +36,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
         Route::post("crear", "CrearFactura");
-        Route::get('efectivoCambio/{id}', 'EfectivoCambio');
+        Route::get('efectivoCambio/{id}/{fecha}', 'EfectivoCambio');
         Route::post('crearEfectivo', 'CrearEfectivo');
 
         //gestion de facturas 
@@ -53,7 +53,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('editar/{id}', 'EditarVenta');
         Route::get('facturar/{id}', 'CrearFacturas');
         Route::post('libros', 'ListaLibros');
-        Route::get('libros/{id}', 'ListaLibros');
+        Route::get('libros/{id}/{fecha}', 'ListaLibros');
         Route::post('inventarioVenta', 'ventaInventario');
         Route::post('inventario', 'inventario');
 
@@ -84,10 +84,16 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     Route::controller(PanelControl::class)->prefix('panel')->group(function () {
 
         //dashboard
+        Route::get('controlFecha/{id}', 'controlFecha');
+
         Route::get('controlVenta/{id}', 'controlVenta');
+
+        // reevia a la vista con fecha  
         Route::get('perfilVenta/{id}', 'perfilVenta');
+
         Route::get('/', 'ListarVentas');
-        Route::get('inventario/{id}', 'inventarioVenta');
+
+        Route::get('inventario/{id}/{fecha}', 'inventarioVenta');
         Route::post('stockventa', 'stockVenta');
 
 

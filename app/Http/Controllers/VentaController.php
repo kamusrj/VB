@@ -20,12 +20,13 @@ class VentaController extends Controller
         foreach ($libros as $libro_id) {
             $in = new Inventario();
             $in->id_venta = $request->id_venta;
-            $in->fecha = date('Y-m-d');
+            $in->fecha = $request->fecha;
             $in->id_libro = $libro_id;
             $in->save();
         }
         $id = $request->id_venta;
-        return redirect("panel/inventario/$id");
+        $fecha = $request->fecha;
+        return redirect("panel/inventario/$id/$fecha");
     }
 
     public function ventaInventario(Request $request)
@@ -49,7 +50,7 @@ class VentaController extends Controller
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
-        return redirect("panel/");
+        return view('dashboard.ControlFechas')->with('id', $idVenta);
     }
 
     public function NuevaVenta(Request $request)
@@ -116,13 +117,16 @@ class VentaController extends Controller
         return redirect("panel");
     }
 
-    function ListaLibros(Request $request)
+    function ListaLibros($id, $fecha)
     {
-        $tituloVenta = TituloVenta::where('id', $request->id)->first();
+
+
+        $tituloVenta = TituloVenta::where('id', $id)->first();
         $libro = Libro::orderByRaw('FIELD(editorial, "ed", "mdf", "eng", "info")')->get();
         return view("ventas/Libros")
             ->with('libro', $libro)
-            ->with('tituloVenta', $tituloVenta);
+            ->with('tituloVenta', $tituloVenta)
+            ->with('fecha', $fecha);
     }
 
     // --------- Bodega-----------------

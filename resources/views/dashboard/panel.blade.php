@@ -52,7 +52,7 @@
                                     <td>{{ $item->direccion }}</td>
 
                                     <td>
-                                        <a href="{{ url('panel/perfilVenta/' . $item->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta">
+                                        <a href="{{ url('panel/controlFecha/' . $item->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
                                         @if ($item->estado === 'on')
