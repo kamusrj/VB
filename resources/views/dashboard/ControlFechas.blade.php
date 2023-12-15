@@ -26,23 +26,31 @@
                         <table class="table table-bordered table-striped" id="venta">
                             <thead>
                                 <tr>
-                                    <th>numero</th>
-                                    <th>Codigo</th>
-                                    <th>Instituci&oacute;n</th>
-                                    <th>director</th>
-                                    <th>encargado</th>
-                                    <th>telefono</th>
-                                    <th>vendedor</th>
-                                    <th>zona</th>
-                                    <th>direccion</th>
-                                    <th>Ver / Estado</th>
+                                    <th>Fecha </th>
+                                    <th>estado</th>
+                                    <th>Accion</th>
                                 </tr>
                             </thead>
+                            @foreach($dato as $item)
                             <tbody>
                                 <tr>
-                                    <td></td>
+
+
+
+
+                                    <td>{{$item->fecha_programada}}</td>
+                                    <td>on</td>
+                                    <td>
+                                        <a href="{{ url('panel/controlFecha/' . $item->id_venta .$item->fecha_programada) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver Datos de la venta ">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                    </td>
+
+
+                                    </td>
                                 </tr>
                             </tbody>
+                            @endforeach
                         </table>
                     </div>
                 </div>

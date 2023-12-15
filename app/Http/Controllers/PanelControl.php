@@ -167,9 +167,12 @@ class PanelControl extends Controller
     public function controlFecha($id)
     {
 
+        $dato = Facturas::where('id_venta', $id)->get();
 
 
-        return view('dashboard.ControlFechas')->with('id', $id);
+        return view('dashboard.ControlFechas')
+            ->with('id', $id)
+            ->with('dato', $dato);
     }
 
 
