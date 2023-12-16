@@ -115,6 +115,7 @@ return new class extends Migration
         DB::statement(" CREATE OR REPLACE VIEW FacturasControl AS
         SELECT
          nota_remision.id_venta,
+         nota_remision.fecha_programada,
         (nota_remision.factura_f - nota_remision.factura_i) AS total_facturas,
          SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) AS total_anuladas,
          SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END) AS total_no_anuladas,
@@ -125,7 +126,7 @@ return new class extends Migration
         LEFT JOIN
         detallefactura ON detallefactura.id_venta = nota_remision.id_venta
         GROUP BY
-        nota_remision.id_venta, nota_remision.factura_f, nota_remision.factura_i;
+        nota_remision.id_venta, nota_remision.fecha_programada, nota_remision.factura_f, nota_remision.factura_i;
            ");
 
 
@@ -134,6 +135,7 @@ return new class extends Migration
         SELECT
         c.id_venta,
         c.tipo,
+        c.fecha,
         c.centavo_uno,
         c.centavo_cinco,
         c.centavo_diez,

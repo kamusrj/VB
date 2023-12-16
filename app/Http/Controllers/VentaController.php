@@ -9,6 +9,7 @@ use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,6 +18,7 @@ class VentaController extends Controller
     public function inventario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
+
         foreach ($libros as $libro_id) {
             $in = new Inventario();
             $in->id_venta = $request->id_venta;
@@ -50,7 +52,8 @@ class VentaController extends Controller
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
-        return view('dashboard.ControlFechas')->with('id', $idVenta);
+
+        return redirect('panel/controlFecha/' . $idVenta);
     }
 
     public function NuevaVenta(Request $request)

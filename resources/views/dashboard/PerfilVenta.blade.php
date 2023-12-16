@@ -20,6 +20,7 @@
     <div class="row">
         <div class="col mb-4">
             <h3>Venta directa de {{ $tituloVenta->institucion }} </h3>
+            <h4>{{$fecha}}</h4>
             <p class="text-muted">
                 Haz clic en los botones para realizar las acciones correspondientes
             </p>
@@ -32,12 +33,11 @@
             </ol>
         </div>
     </div>
-
-
     <div class="row">
         @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
         <div class="col-md-4 col-sm-6 mb-3">
-            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('panel/controlVenta/' . $tituloVenta->id) }}')">
+            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('panel/controlVenta/' . $tituloVenta->id) }}/{{ $fecha }}')">
+
                 <div class="row g-0">
                     <div class="col-4">
                         <div class="card bg-info d-flex h-100"><i class="fa-solid fa-list-check m-auto text-light" style="font-size: 3rem;"></i></div>

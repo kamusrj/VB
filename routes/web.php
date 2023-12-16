@@ -86,10 +86,10 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         //dashboard
         Route::get('controlFecha/{id}', 'controlFecha');
 
-        Route::get('controlVenta/{id}', 'controlVenta');
+        Route::get('controlVenta/{id}/{fecha}', 'controlVenta');
 
         // reevia a la vista con fecha  
-        Route::get('perfilVenta/{id}', 'perfilVenta');
+        Route::get('perfilVenta/{id}/{fecha}', 'perfilVenta');
 
         Route::get('/', 'ListarVentas');
 

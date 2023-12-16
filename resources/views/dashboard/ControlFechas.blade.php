@@ -41,9 +41,10 @@
                                     <td>{{$item->fecha_programada}}</td>
                                     <td>on</td>
                                     <td>
-                                        <a href="{{ url('panel/controlFecha/' . $item->id_venta .$item->fecha_programada) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver Datos de la venta ">
+                                        <a href="{{ url('panel/perfilVenta/' . $item->id_venta . '/' . $item->fecha_programada) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver Datos de la venta">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
+
                                     </td>
 
 

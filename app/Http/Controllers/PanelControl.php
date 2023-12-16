@@ -121,21 +121,26 @@ class PanelControl extends Controller
         return redirect()->back();
     }
 
-    public function controlVenta($id)
+    public function controlVenta($id, $fecha)
     {
         $facturasControl = Facturas::select('*')
             ->from('facturascontrol')
             ->where('id_venta', $id)
+            ->where('fecha_programada', $fecha)
             ->first();
 
         $inventario = DB::table('datoventa')
             ->where('id_venta', $id)
+            ->where('fecha', $fecha)
             ->orderBy('nombre_libro')
+
             ->get();
 
         $cambio = EfectivoCambio::where('id_venta', $id)
+            ->where('fecha', $fecha)
             ->where('tipo', '=', 'c')
             ->first();
+
         return view('dashboard.registroVenta')
             ->with('inventario', $inventario)
             ->with('id', $id)
@@ -175,9 +180,7 @@ class PanelControl extends Controller
             ->with('dato', $dato);
     }
 
-
-
-    public function perfilVenta($id)
+    public function perfilVenta($id, $fecha)
     {
         $tituloVenta = TituloVenta::join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')
             ->select(
@@ -185,7 +188,8 @@ class PanelControl extends Controller
                 'ins.nombre as institucion'
             )
             ->where('id', $id)->first();
-        return view('dashboard.PerfilVenta')->with('tituloVenta', $tituloVenta);
+        return view('dashboard.PerfilVenta')->with('tituloVenta', $tituloVenta)
+            ->with('fecha', $fecha);
     }
     public function inventarioVenta($id, $fecha)
     {
@@ -193,8 +197,7 @@ class PanelControl extends Controller
             ->select(
                 'inventario.*',
                 'lb.nombre as nombre_libro'
-            )
-
+            )->where('fecha', $fecha)
             ->where('id_venta', $id)->get();
         return view('ventas.inventario')
             ->with('inventario', $inventario)
