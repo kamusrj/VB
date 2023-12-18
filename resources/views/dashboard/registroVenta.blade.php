@@ -98,10 +98,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ url('panel/actualizarIn') }}" method="post">
+                                <form action="{{ url('panel/actualizarIn/') }}" method="post">
                                     @csrf
                                     <input name="id_libro" id="Ulibro" hidden>
                                     <input name="id_venta" id="Uventa" hidden>
+                                    <input name="fecha" id='Ufecha' hidden>
                                     <div class="col-auto mb-3">
                                         <label for="precio" class="form-label">Precio</label>
                                         <input type="number" class="form-control" id="Uprecio" step="any" name="precio">
@@ -194,6 +195,7 @@
 
     const id_libro = document.getElementById("Ulibro");
     const id_venta = document.getElementById("Uventa");
+    const fecha = document.getElementById("Ufecha");
     const precio = document.getElementById("Uprecio");
     const descuento = document.getElementById("Udescuento");
     const oa = document.getElementById("Uoa");
@@ -216,18 +218,16 @@
                     }),
                 }).then((response) => response.json())
                 .then((data) => {
-
                     modal_editar_title.innerText = "Edición para " + data.nombre_libro;
-                    console.log(data);
                     id_libro.value = data.id_libro;
                     id_venta.value = data.id_venta;
+                    fecha.value = data.fecha;
                     precio.value = data.precio;
                     descuento.value = data.descuento;
                     oa.value = data.ofrecimiento_a;
                     stock.value = data.stock_venta;
 
                     modal_editar.show();
-
 
                     modal_editar_component.addEventListener('hidden.bs.modal', function() {
 
@@ -249,8 +249,6 @@
             });
             total.innerText = parseFloat(total_actual).toFixed(2);
         }
-
-
         calcularTotal();
     });
 </script>

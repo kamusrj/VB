@@ -225,6 +225,8 @@
             let totalPrecio = 0;
 
             data.forEach(item => {
+               
+
                 const row = tableBody.insertRow();
                 const total = parseFloat(item.precio_libro) * parseInt(item.cantidad);
                 row.innerHTML = `

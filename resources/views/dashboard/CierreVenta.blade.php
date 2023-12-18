@@ -37,6 +37,7 @@
                                 @csrf
                                 <input name="id_venta" hidden value="   {{ $id }}">
                                 <input name="tipo" hidden value="v">
+                                <input name="fecha" hidden value="{{$fecha}}">
                                 <div class="row justify-content-center">
                                     <div class="col-md-5">
                                         <table class="table table-bordered caption-top">
@@ -139,7 +140,7 @@
                                                         @if(!$dato)
                                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                                         @else
-                                                        <span>Venta entregada <h3> {{$dato->fecha}}</h3> </span>
+                                                        <span>Venta Finalizada <h3> {{$dato->fecha}}</h3> </span>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -156,83 +157,7 @@
                     @include('dashboard.componentesDetalleVenta.Documentacion')
                 </div>
                 <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <table class="table table-bordered caption-top " id="tabla-cambio">
-                                <caption>
-                                    <h5>Denominacion</h5>
-                                </caption>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row" class="col-4">$0.01</th>
-                                        <td class="col-8">
-                                            <input type="number" value="{{$cambio->centavo_uno}}" class="form-control" data-denominacion-c="0.01" name="dato_1" readonly onchange="cambioTotal(this.value, this.name)">
-                                        </td>
-                                        <td id="Cambio_dato_1">$ 0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="col-4">$0.05</th>
-                                        <td class="col-8">
-                                            <input type="number" value="{{$cambio->centavo_cinco}}" data-denominacion-c="0.05" class="form-control" name="dato_2" readonly onchange="cambioTotal(this.value, this.name)">
-                                        </td>
-                                        <td id="Cambio_dato_2">$ 0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="col-4">$0.10</th>
-                                        <td class="col-8">
-                                            <input type="number" value="{{$cambio->centavo_diez}}" data-denominacion-c="0.10" class="form-control" name="dato_3" readonly onchange="cambioTotal(this.value, this.name)">
-                                        </td>
-                                        <td id="Cambio_dato_3">$ 0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="col-4">$0.25</th>
-                                        <td class="col-8">
-                                            <input type="number" value="{{$cambio->centavo_veinticinco}}" data-denominacion-c="0.25" class="form-control" name="dato_4" readonly onchange="cambioTotal(this.value, this.name)">
-                                        </td>
-                                        <td id="Cambio_dato_4">$ 0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="col-4">$1.00</th>
-                                        <td class="col-8">
-                                            <input type="number" value="{{$cambio->dolar_uno}}" data-denominacion-c="1.0" class="form-control" name="dato_5" readonly onchange="cambioTotal(this.value, this.name)">
-                                        </td>
-                                        <td id="Cambio_dato_5">$ 0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="col-4">$5.00</th>
-                                        <td class="col-8">
-                                            <input type="number" value="{{$cambio->dolar_cinco}}" data-denominacion-c="5.0" class="form-control" name="dato_6" readonly onchange="cambioTotal(this.value, this.name)">
-                                        </td>
-                                        <td id="Cambio_dato_6">$ 0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="col-4">$10.00</th>
-                                        <td class="col-8">
-                                            <input type="number" value="{{$cambio->dolar_diez}}" data-denominacion-c="10.0" class="form-control" name="dato_7" onchange="cambioTotal(this.value, this.name)">
-                                        </td>
-                                        <td id="Cambio_dato_7">$ 0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="col-4">$20.00</th>
-                                        <td class="col-8">
-                                            <input type="number" value="{{$cambio->dolar_veinte}}" data-denominacion-c="20.0" class="form-control" name="dato_8" onchange="cambioTotal(this.value, this.name)">
-                                        </td>
-                                        <td id="Cambio_dato_8">$ 0.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="col-4">Total</th>
-                                        <td>
-                                            <h3> <span id="totalCambio">0.0</span></h3>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-
-                        </div>
-                    </div>
-
+                    @include('dashboard.componentesCierreVenta.cambioCierre')
 
                 </div>
                 <div class="tab-pane fade" id="return-tab-pane" role="tabpanel" aria-labelledby="return-tab" tabindex="0">

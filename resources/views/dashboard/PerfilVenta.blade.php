@@ -101,7 +101,7 @@
             </div>
         </div>
         <div class="col-md-4 col-sm-6 mb-3">
-            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('panel/cierre/' . $tituloVenta->id) }}')">
+            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('panel/cierre/'  . $tituloVenta->id) }}/{{ $fecha }}')">
                 <div class="row g-0">
                     <div class="col-4">
                         <div class="card bg-warning d-flex h-100"><i class="fa-solid fa-school-lock m-auto text-light" style="font-size: 3rem;"></i></div>

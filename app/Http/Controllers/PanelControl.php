@@ -16,7 +16,7 @@ class PanelControl extends Controller
     use HasFactory;
 
     //Cierre de venta    
-    public function cierreVenta($id)
+    public function cierreVenta($id, $fecha)
     {
 
         $factura = Facturas::select('*')
@@ -36,7 +36,8 @@ class PanelControl extends Controller
             ->with('id', $id)
             ->with('dato', $dato)
             ->with('factura', $factura)
-            ->with('cambio', $cambio);
+            ->with('cambio', $cambio)
+            ->with('fecha', $fecha);
     }
 
     public function finalizarVenta($id)
@@ -80,23 +81,32 @@ class PanelControl extends Controller
                 'lb.nombre as nombre_libro'
             )
             ->where('id_venta', $request->id_venta)
-            ->where('fecha', $request->fecha)
             ->where('id_libro', $request->id_libro)
             ->first();
+
         return json_encode($data);
     }
-
     public function actualizarInventario(Request $request)
     {
+
         $data = Inventario::where('id_venta', $request->id_venta)
             ->where('id_libro', $request->id_libro)
+            ->where('fecha', $request->fecha)
             ->first();
-        $data->precio = $request->precio;
-        $data->descuento = $request->descuento;
-        $data->ofrecimiento_a = $request->oa;
-        $data->stock += $request->modificacion;
-        $data->stock_venta += $request->modificacion;
-        Session::flash('success', 'Inventario actualizado');
+
+        if ($data) {
+
+            $data->precio = $request->precio;
+            $data->descuento = $request->descuento;
+            $data->ofrecimiento_a = $request->oa;
+            $data->stock += $request->modificacion;
+            $data->stock_venta += $request->modificacion;
+            $data->save();
+            Session::flash('success', 'Inventario actualizado');
+        } else {
+            Session::flash('error', 'No se encontró el registro en el inventario');
+        }
+
         return redirect()->back();
     }
 
@@ -172,10 +182,7 @@ class PanelControl extends Controller
 
     public function controlFecha($id)
     {
-
         $dato = Facturas::where('id_venta', $id)->get();
-
-
         return view('dashboard.ControlFechas')
             ->with('id', $id)
             ->with('dato', $dato);

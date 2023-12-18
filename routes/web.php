@@ -96,14 +96,11 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
 
         //Cierre de venta 
-
-
-
         Route::post('buscarInventario', 'buscarInventario');
-        Route::post('actualizarIn', 'actualizarInventario');
+        Route::post('actualizarIn/', 'actualizarInventario');
         Route::post('actualizarCambio', 'actualizarCambio');
 
-        Route::get('cierre/{id}', 'cierreVenta');
+        Route::get('cierre/{id}/{fecha}', 'cierreVenta');
     });
 });
 
