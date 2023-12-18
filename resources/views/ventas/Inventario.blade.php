@@ -7,6 +7,7 @@
         border-collapse: collapse;
         width: 100%;
     }
+
     th,
     td {
         border: px solid #ddd;
@@ -14,15 +15,19 @@
         /* Ajusta el padding según sea necesario */
         text-align: left;
     }
+
     th {
         background-color: #f2f2f2;
     }
+
     td.editing {
         background-color: #ffffcc;
     }
+
     .table-responsive {
         overflow-x: auto;
     }
+
     table td input[type="number"] {
         max-width: 80px;
     }
@@ -32,8 +37,8 @@
 <div class="container">
     <form action="{{ url('venta/inventarioVenta') }}" method="post"><br><br><br><br>
         @csrf
-        <label for="fecha">Fecha de inicio de la venta:</label>
-        <input type="date" name="fecha" required>
+
+        <input name="fecha" value="{{$fecha}}" hidden id="fecha">
         <div class="table-responsive">
 
             <table class="table table-striped">
@@ -52,8 +57,8 @@
                     <tr>
                         <th scope="row">{{$item->nombre_libro}}</th>
                         <input class="form-check-input" type="hidden" name="id" value="{{ $item->id_venta}}" required>
-                        <input class="form-check-input" type="hidden"  name="libros_seleccionados[]" value="{{ $item->id_libro}}" required>
-                        <td><input type="number" name="stock[]"  min="0" value="" required></td>
+                        <input class="form-check-input" type="hidden" name="libros_seleccionados[]" value="{{ $item->id_libro}}" required>
+                        <td><input type="number" name="stock[]" min="0" value="" required></td>
                         <td class="precio">$<input type="number" min="0" value="" name="precio[]" step="any" required></td>
                         <td><input type="number" name="descuento[]" min="0" value="0"></td>
                         <td><input type="number" name="ofrecimiento_a[]" min="0" step="any" value="0" required></td>

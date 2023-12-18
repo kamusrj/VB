@@ -28,6 +28,12 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group mb-3">
+                    <label for="fecha_programada">Fecha Programada</label>
+                    <input type="date" name="fecha_programada" class="form-control" id="fecha_programada" style="width: 12%;">
+                </div>
+
                 <div class="form-group mb-3">
                     <label for="representante">Departamento de cr&eacute;dito venta asignada a: </label>
                     <select name="representante" class="form-control" id="representante">
@@ -37,6 +43,7 @@
                         @endforeach
                     </select>
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="n_remision">Nota / Notas de remisi&oacute;n</label>
                     <input type="text" name="n_remision" class="form-control" id="n_remision">
@@ -52,7 +59,7 @@
                 <div class="mb-3">
                     <p>Total de facturas: <span id="total_f"></span></p>
                 </div>
-                <div class="form-group">
+                <!--div class="form-group">
                     <label for="cupon_i">Cup&oacute;n inicial</label>
                     <input type="number" value="0" min="0" step="1" name="cupon_i" class="form-control" id="cupon_i" oninput="calcularTotalCupones()">
                 </div>
@@ -62,7 +69,7 @@
                 </div>
                 <div class="mb-3">
                     <p>Total de cupones: <span id="cupon_t"></span></p>
-                </div><br>
+                </div --><br>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </form>
         </div>
@@ -87,6 +94,7 @@
     const cuponInicialInput = document.getElementById("cupon_i");
     const cuponFinalInput = document.getElementById("cupon_f");
     const totalCuponesInput = document.getElementById("cupon_t");
+
     function calcularTotalCupones() {
         var cuponInicial = cuponInicialInput.value || 0;
         var cuponFinal = cuponFinalInput.value || 0;
