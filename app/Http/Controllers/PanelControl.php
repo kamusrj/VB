@@ -170,12 +170,9 @@ class PanelControl extends Controller
     }
 
 
-    public function controlFecha($id)
+    public function programacion($id)
     {
-
-        $dato = Facturas::where('id_venta', $id)->get();
-
-
+        $dato = (object) DB::select("SELECT * FROM VIEW_VENTA_PROGRAMADA WHERE venta = ?", [$id]);
         return view('dashboard.ControlFechas')
             ->with('id', $id)
             ->with('dato', $dato);
@@ -203,5 +200,21 @@ class PanelControl extends Controller
         return view('ventas.inventario')
             ->with('inventario', $inventario)
             ->with('fecha', $fecha);
+    }
+
+    function CambiarEstado($id)
+    {
+        $venta = TituloVenta::where("id", $id)->first();
+        if ($venta) {
+            $venta->estado = !$venta->estado;
+            $venta->save();
+            Session::flash('type', 'success');
+            Session::flash('message', 'Estado cambiado correctamente');
+        } else {
+            Session::flash('type', 'danger');
+            Session::flash('message', 'La acción no se pudo completar');
+        }
+
+        return redirect()->back();
     }
 }

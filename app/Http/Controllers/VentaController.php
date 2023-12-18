@@ -55,7 +55,7 @@ class VentaController extends Controller
             }
         }
 
-        return redirect('panel/controlFecha/' . $idVenta);
+        return redirect('panel/programacion/' . $idVenta);
     }
 
     public function NuevaVenta(Request $request)

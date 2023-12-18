@@ -22,17 +22,15 @@
                         <table class="table table-bordered table-striped" id="venta">
                             <thead>
                                 <tr>
-                                    <th>numero</th>
-                                    <th>Codigo</th>
+                                    <th>C&oacute;digo</th>
                                     <th>Instituci&oacute;n</th>
-                                    <th>director</th>
-                                    <th>encargado</th>
-                                    <th>telefono</th>
-                                    <th>vendedor</th>
-                                    <th>zona</th>
-                                    <th>direccion</th>
-
-                                    <th>Ver / Estado</th>
+                                    <th>Director</th>
+                                    <th>Encargado</th>
+                                    <th>Tel&eacute;fono</th>
+                                    <th>Vendedor</th>
+                                    <th>Vona</th>
+                                    <th>Direcci&oacute;n</th>
+                                    <th>Ver</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,7 +39,6 @@
                                 @endphp
                                 @foreach ($ventas as $item)
                                 <tr>
-                                    <td>{{ $numero }}</td>
                                     <td>{{ $item->institucion }}</td>
                                     <td>{{ $item->institucion_n }}</td>
                                     <td>{{ $item->director }}</td>
@@ -52,15 +49,9 @@
                                     <td>{{ $item->direccion }}</td>
 
                                     <td>
-                                        <a href="{{ url('panel/controlFecha/' . $item->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta">
+                                        <a href="{{ url('panel/programacion/' . $item->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
-                                        @if ($item->estado === 'on')
-                                        <i class="fa-solid fa-toggle-on fa-2xl" style="color: #029d96;"></i>
-                                        @endif
-                                        @if ($item->estado === 'off')
-                                        <i class="fa-solid fa-toggle-off fa-2xl" style="color: #eb0d68;"></i>
-                                        @endif
                                     </td>
                                 </tr>
                                 @php

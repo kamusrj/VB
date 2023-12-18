@@ -85,7 +85,8 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     Route::controller(PanelControl::class)->prefix('panel')->group(function () {
 
         //dashboard
-        Route::get('controlFecha/{id}', 'controlFecha');
+        Route::get('programacion/{id}', 'programacion');
+        Route::get('programacion/estado/{id}', 'CambiarEstado');
         Route::get('controlVenta/{id}/{fecha}', 'controlVenta');
 
         // reevia a la vista con fecha  
