@@ -31,7 +31,7 @@
 
                 <div class="form-group mb-3">
                     <label for="fecha_programada">Fecha Programada</label>
-                    <input type="date" name="fecha_programada" class="form-control" id="fecha_programada">
+                    <input type="date" name="fecha_programada" class="form-control" id="fecha_programada" style="width: 12%;">
                 </div>
 
                 <div class="form-group mb-3">

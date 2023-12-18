@@ -23,32 +23,26 @@
                                     {{$factura->total_no_anuladas}}
                                 </td>
                             </tr>
-
-
                             <tr>
                                 <th scope="row" class="col-4">Anuladas</th>
                                 <td class="col-8">
-                                    {{$factura->total_anuladas}}
+                                 {{$factura->total_anuladas}}
                                 </td>
                             </tr>
-
                             <tr>
                                 <th scope="row" class="col-4">Utilizadas</th>
                                 <td class="col-8">
                                     {{$factura->total_utilizadas}}
                                 </td>
                             </tr>
-
                             <tr>
                                 <th scope="row" class="col-4">Sin utilizar</th>
                                 <td class="col-8">
                                     {{$factura->total_sin_utilizar}}
                                 </td>
                             </tr>
-
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>

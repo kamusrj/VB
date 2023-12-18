@@ -16,29 +16,39 @@ class FacturaController extends Controller
 
     //gestion de facturas 
 
-    public function listarFacturas($id)
+    public function listarFacturas($id, $fecha)
     {
         //modal
         $inventario = Inventario::join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
             ->join('libro', 'inventario.id_libro', '=', 'libro.id')
             ->where('tv.id', '=', $id)
+            ->where('fecha', $fecha)
             ->where('stock_venta', '>', 0)
             ->select(
                 'inventario.*',
                 'libro.nombre as nombre_libro'
-            )->orderBy('nombre_libro')
+            )
+            ->orderBy('nombre_libro')
             ->get();
-        $facturas = Facturas::where('id_venta', $id)->get();
-        $detalleFactura = Detallefactura::where('id_venta', $id)->orderBy('correlativo', 'asc')->get();
+
+
+
+
+        $facturas = Facturas::where('id_venta', $id)
+            ->where('fecha_programada', $fecha)
+            ->get();
+
+        $detalleFactura = Detallefactura::where('id_venta', $id)
+            ->where('fecha_programada', $fecha)
+            ->orderBy('correlativo', 'asc')->get();
+
         $dt =  $detalleFactura->unique('correlativo');
-
-
-
         return view('dashboard/facturasControl')
             ->with('inventario', $inventario)
             ->with('facturas', $facturas)
             ->with('id', $id)
-            ->with('detalle', $dt);
+            ->with('detalle', $dt)
+            ->with('fecha', $fecha);
     }
 
     public function guardarFactura(Request $request)
@@ -56,14 +66,13 @@ class FacturaController extends Controller
             $dt = new Detallefactura();
             $dt->id_venta = $request->id_venta;
             $dt->correlativo = $request->correlativo;
-
+            $dt->fecha_programada = $request->fecha;
             $dt->anulada = 'si';
             $dt->motivo = $request->motivo;
             $dt->fecha = date('Y-m-d');
             $dt->hora = date("H:i");
             $dt->save();
         } else {
-
             Validator::make(
                 $request->all(),
                 Detallefactura::ruleCrear()
@@ -81,6 +90,7 @@ class FacturaController extends Controller
                 $dt->id_libro = $libro_id;
                 $dt->cantidad = $request->cantidad[$libro_id];
                 $dt->padre = $request->padre;
+                $dt->fecha_programada = $request->fecha;
                 $dt->fecha = date('Y-m-d');
                 $dt->hora = date("H:i");
                 $dt->total = $request->totalFactura;
@@ -101,7 +111,6 @@ class FacturaController extends Controller
     public function facturaBuscar(Request $request)
     {
 
-
         $data = Detallefactura::join('titulo_venta as tv', 'detallefactura.id_venta', '=', 'tv.id')
             ->join('libro as lb', 'detallefactura.id_libro', '=', 'lb.id')
             ->join('inventario as inv', 'lb.id', '=', 'inv.id_libro')
@@ -111,8 +120,8 @@ class FacturaController extends Controller
                 'inv.precio as precio_libro'
             )
             ->where('inv.id_venta', $request->id)
+            ->where('inv.fecha', $request->fecha)
             ->where('correlativo', $request->correlativo)
-
             ->get();
         return json_encode($data);
     }

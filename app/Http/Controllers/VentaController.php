@@ -35,9 +35,12 @@ class VentaController extends Controller
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
         $idVenta = $request->id;
+
+
         foreach ($librosSeleccionados as $key => $libro_id) {
             $inventario = Inventario::where('id_venta', $idVenta)
                 ->where('id_libro', $libro_id)
+                ->where('fecha', $request->fecha)
                 ->first();
             if ($inventario) {
                 $inventario->stock = $request->input('stock')[$key];
@@ -45,7 +48,6 @@ class VentaController extends Controller
                 $inventario->precio = $request->input('precio')[$key];
                 $inventario->descuento = $request->input('descuento')[$key];
                 $inventario->ofrecimiento_a = $request->input('ofrecimiento_a')[$key];
-                $inventario->fecha_inicio = $request->fecha;
 
                 $inventario->save();
             } else {

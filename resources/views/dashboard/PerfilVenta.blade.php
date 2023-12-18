@@ -34,6 +34,8 @@
         </div>
     </div>
     <div class="row">
+
+
         @if (in_array(auth()->user()->rol, ['a', 'g', 'c']))
         <div class="col-md-4 col-sm-6 mb-3">
             <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('panel/controlVenta/' . $tituloVenta->id) }}/{{ $fecha }}')">
@@ -50,9 +52,42 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('/') }}')">
+                <div class="row g-0">
+                    <div class="col-4">
+                        <div class="card bg-success d-flex h-100"><i class="fa-solid fa-user-tie m-auto text-light" style="font-size: 3rem;"></i></div>
+                    </div>
+
+                    <div class="col-8">
+                        <div class="card-body">
+                            <h3 class="card-title">Administrador</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('panel/controlFecha/' . $tituloVenta->id) }}')">
+                <div class="row g-0">
+                    <div class="col-4">
+
+                        <div class="card bg-primary d-flex h-100"><i class="fa-solid fa-calendar-days m-auto text-light" style="font-size: 3rem;"></i></div>
+                    </div>
+
+                    <div class="col-8">
+                        <div class="card-body">
+                            <h3 class="card-title">Listado de Fechas</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @endif
         <div class="col-md-4 col-sm-6 mb-3">
-            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('factura/facturasLista/' . $tituloVenta->id) }}')">
+            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('factura/facturasLista/' . $tituloVenta->id) }} /{{ $fecha }}')">
                 <div class="row g-0">
                     <div class="col-4">
                         <div class="card bg-dark d-flex h-100"><i class="fas fa-file-invoice m-auto text-light" style="font-size: 3rem;"></i></div>
@@ -74,22 +109,6 @@
                     <div class="col-8">
                         <div class="card-body">
                             <h3 class="card-title">Cierre</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 mb-3">
-            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('/') }}')">
-                <div class="row g-0">
-                    <div class="col-4">
-                        <div class="card bg-success d-flex h-100"><i class="fa-solid fa-user-tie m-auto text-light" style="font-size: 3rem;"></i></div>
-                    </div>
-
-                    <div class="col-8">
-                        <div class="card-body">
-                            <h3 class="card-title">Administrador</h3>
                         </div>
                     </div>
                 </div>

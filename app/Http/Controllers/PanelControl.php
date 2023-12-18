@@ -15,8 +15,7 @@ class PanelControl extends Controller
 {
     use HasFactory;
 
-    //Cierre de venta
-
+    //Cierre de venta    
     public function cierreVenta($id)
     {
 
@@ -81,6 +80,7 @@ class PanelControl extends Controller
                 'lb.nombre as nombre_libro'
             )
             ->where('id_venta', $request->id_venta)
+            ->where('fecha', $request->fecha)
             ->where('id_libro', $request->id_libro)
             ->first();
         return json_encode($data);
@@ -123,8 +123,7 @@ class PanelControl extends Controller
 
     public function controlVenta($id, $fecha)
     {
-        $facturasControl = Facturas::select('*')
-            ->from('facturascontrol')
+        $facturasControl = DB::table('facturascontrol')
             ->where('id_venta', $id)
             ->where('fecha_programada', $fecha)
             ->first();
@@ -133,19 +132,21 @@ class PanelControl extends Controller
             ->where('id_venta', $id)
             ->where('fecha', $fecha)
             ->orderBy('nombre_libro')
-
             ->get();
+
 
         $cambio = EfectivoCambio::where('id_venta', $id)
             ->where('fecha', $fecha)
             ->where('tipo', '=', 'c')
             ->first();
 
+
         return view('dashboard.registroVenta')
             ->with('inventario', $inventario)
             ->with('id', $id)
             ->with('cambio', $cambio)
-            ->with('factura', $facturasControl);
+            ->with('factura', $facturasControl)
+            ->with('fecha', $fecha);
     }
 
 

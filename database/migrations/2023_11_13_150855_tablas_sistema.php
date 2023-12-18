@@ -69,7 +69,7 @@ return new class extends Migration
             $table->double('precio')->default(0);
             $table->integer('descuento')->default(0);
             $table->double('ofrecimiento_a')->default(0);
-            $table->string('fecha_inicio', 200)->nullable();
+           
         });
 
 
@@ -82,6 +82,7 @@ return new class extends Migration
             $table->foreign('id_libro')->references('id')->on('libro');
             $table->integer('cantidad')->default(0);
             $table->string('padre', 200)->default('---');
+            $table->String('fecha_programada');
             $table->string('fecha', 10);
             $table->string('hora');
             $table->set('anulada', ['si', 'no'])->default('no');
@@ -99,7 +100,7 @@ return new class extends Migration
             dv.precio,
             dv.descuento,
             dv.ofrecimiento_a,
-            dv.fecha_inicio,
+  
             dv.stock - dv.stock_venta AS vendido,
             CAST((dv.stock - dv.stock_venta) * dv.precio AS DECIMAL(10, 2)) AS totalventa,
             CAST((dv.precio * dv.descuento / 100) AS DECIMAL(10, 2)) AS reintegro,
@@ -114,20 +115,21 @@ return new class extends Migration
 
         DB::statement(" CREATE OR REPLACE VIEW FacturasControl AS
         SELECT
-         nota_remision.id_venta,
-         nota_remision.fecha_programada,
-        (nota_remision.factura_f - nota_remision.factura_i) AS total_facturas,
-         SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) AS total_anuladas,
-         SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END) AS total_no_anuladas,
-         ((nota_remision.factura_f - nota_remision.factura_i) - (SUM(CASE WHEN detallefactura.anulada = 'si' THEN 1 ELSE 0 END) + SUM(CASE WHEN detallefactura.anulada = 'no' THEN 1 ELSE 0 END))) AS total_sin_utilizar,
-         COUNT(detallefactura.anulada) AS total_utilizadas
+            nota_remision.id_venta,
+            nota_remision.fecha_programada,
+            (nota_remision.factura_f - nota_remision.factura_i) AS total_facturas,
+            COUNT(DISTINCT CASE WHEN detallefactura.anulada = 'si' THEN detallefactura.correlativo END) AS total_anuladas,
+            COUNT(DISTINCT CASE WHEN detallefactura.anulada = 'no' THEN detallefactura.correlativo END) AS total_no_anuladas,
+            ((nota_remision.factura_f - nota_remision.factura_i) - COUNT(DISTINCT CASE WHEN detallefactura.anulada = 'si' THEN detallefactura.correlativo END)
+             - COUNT(DISTINCT CASE WHEN detallefactura.anulada = 'no' THEN detallefactura.correlativo END)) AS total_sin_utilizar,
+            COUNT(DISTINCT detallefactura.correlativo) AS total_utilizadas
         FROM
-        nota_remision
+            nota_remision
         LEFT JOIN
-        detallefactura ON detallefactura.id_venta = nota_remision.id_venta
+            detallefactura ON detallefactura.fecha_programada = nota_remision.fecha_programada
         GROUP BY
-        nota_remision.id_venta, nota_remision.fecha_programada, nota_remision.factura_f, nota_remision.factura_i;
-           ");
+            nota_remision.id_venta, nota_remision.fecha_programada, nota_remision.factura_f, nota_remision.factura_i;
+         ");
 
 
         DB::statement(" CREATE OR REPLACE VIEW Cambio AS

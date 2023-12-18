@@ -41,9 +41,9 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
         //gestion de facturas 
 
-        Route::get('facturasLista/{id}', 'listarFacturas');
+        Route::get('facturasLista/{id}/{fecha}', 'listarFacturas');
         Route::post('guardarfactura', 'guardarFactura');
-        Route::post('facturaBuscar', 'facturaBuscar');
+        Route::post('facturaBuscar/{id}/{fecha}', 'facturaBuscar');
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
@@ -54,6 +54,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('facturar/{id}', 'CrearFacturas');
         Route::post('libros', 'ListaLibros');
         Route::get('libros/{id}/{fecha}', 'ListaLibros');
+
         Route::post('inventarioVenta', 'ventaInventario');
         Route::post('inventario', 'inventario');
 
@@ -85,14 +86,11 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
         //dashboard
         Route::get('controlFecha/{id}', 'controlFecha');
-
         Route::get('controlVenta/{id}/{fecha}', 'controlVenta');
 
         // reevia a la vista con fecha  
         Route::get('perfilVenta/{id}/{fecha}', 'perfilVenta');
-
         Route::get('/', 'ListarVentas');
-
         Route::get('inventario/{id}/{fecha}', 'inventarioVenta');
         Route::post('stockventa', 'stockVenta');
 
@@ -100,6 +98,12 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         //Cierre de venta 
 
 
+
+        Route::post('buscarInventario', 'buscarInventario');
+        Route::post('actualizarIn', 'actualizarInventario');
+        Route::post('actualizarCambio', 'actualizarCambio');
+
+        Route::get('cierre/{id}', 'cierreVenta');
     });
 });
 
