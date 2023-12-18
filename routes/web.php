@@ -36,14 +36,14 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
 
     Route::controller(FacturaController::class)->prefix('factura')->group(function () {
         Route::post("crear", "CrearFactura");
-        Route::get('efectivoCambio/{id}', 'EfectivoCambio');
+        Route::get('efectivoCambio/{id}/{fecha}', 'EfectivoCambio');
         Route::post('crearEfectivo', 'CrearEfectivo');
 
         //gestion de facturas 
 
-        Route::get('facturasLista/{id}', 'listarFacturas');
+        Route::get('facturasLista/{id}/{fecha}', 'listarFacturas');
         Route::post('guardarfactura', 'guardarFactura');
-        Route::post('facturaBuscar', 'facturaBuscar');
+        Route::post('facturaBuscar/{id}/{fecha}', 'facturaBuscar');
     });
 
     Route::controller(VentaController::class)->prefix('venta')->group(function () {
@@ -53,9 +53,11 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('editar/{id}', 'EditarVenta');
         Route::get('facturar/{id}', 'CrearFacturas');
         Route::post('libros', 'ListaLibros');
-        Route::get('libros/{id}', 'ListaLibros');
+        Route::get('libros/{id}/{fecha}', 'ListaLibros');
+
         Route::post('inventarioVenta', 'ventaInventario');
         Route::post('inventario', 'inventario');
+
 
         Route::get('bodega', 'perfilBodega');
         Route::post('bodegaBuscar', 'bodegaBuscar');
@@ -83,16 +85,25 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
     Route::controller(PanelControl::class)->prefix('panel')->group(function () {
 
         //dashboard
-        Route::get('controlVenta/{id}', 'controlVenta');
-        Route::get('perfilVenta/{id}', 'perfilVenta');
+        Route::get('controlFecha/{id}', 'controlFecha');
+        Route::get('controlVenta/{id}/{fecha}', 'controlVenta');
+
+        // reevia a la vista con fecha  
+        Route::get('perfilVenta/{id}/{fecha}', 'perfilVenta');
         Route::get('/', 'ListarVentas');
-        Route::get('inventario/{id}', 'inventarioVenta');
+        Route::get('inventario/{id}/{fecha}', 'inventarioVenta');
         Route::post('stockventa', 'stockVenta');
 
 
         //Cierre de venta 
 
 
+
+        Route::post('buscarInventario', 'buscarInventario');
+        Route::post('actualizarIn', 'actualizarInventario');
+        Route::post('actualizarCambio', 'actualizarCambio');
+
+        Route::get('cierre/{id}', 'cierreVenta');
     });
 });
 

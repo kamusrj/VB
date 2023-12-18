@@ -9,6 +9,8 @@ use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class VentaController extends Controller
@@ -16,25 +18,29 @@ class VentaController extends Controller
     public function inventario(Request $request)
     {
         $libros = $request->input('libros_seleccionados', []);
+
         foreach ($libros as $libro_id) {
             $in = new Inventario();
             $in->id_venta = $request->id_venta;
-            $in->fecha = date('Y-m-d');
+            $in->fecha = $request->fecha;
             $in->id_libro = $libro_id;
             $in->save();
         }
         $id = $request->id_venta;
-        return redirect("panel/inventario/$id");
+        $fecha = $request->fecha;
+        return redirect("panel/inventario/$id/$fecha");
     }
-
 
     public function ventaInventario(Request $request)
     {
         $librosSeleccionados = $request->input('libros_seleccionados', []);
         $idVenta = $request->id;
+
+
         foreach ($librosSeleccionados as $key => $libro_id) {
             $inventario = Inventario::where('id_venta', $idVenta)
                 ->where('id_libro', $libro_id)
+                ->where('fecha', $request->fecha)
                 ->first();
             if ($inventario) {
                 $inventario->stock = $request->input('stock')[$key];
@@ -42,14 +48,14 @@ class VentaController extends Controller
                 $inventario->precio = $request->input('precio')[$key];
                 $inventario->descuento = $request->input('descuento')[$key];
                 $inventario->ofrecimiento_a = $request->input('ofrecimiento_a')[$key];
-                $inventario->fecha_inicio = $request->fecha;
 
                 $inventario->save();
             } else {
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
-        return redirect("panel/");
+
+        return redirect('panel/controlFecha/' . $idVenta);
     }
 
     public function NuevaVenta(Request $request)
@@ -83,17 +89,21 @@ class VentaController extends Controller
             TituloVenta::attrCrear()
         )->validate();
 
-        $institucion = Institucion::where("codigo", $request->codigo)->first();
-        if(!$institucion){
+        $usuario = Auth::user();
+
+        $vd = TituloVenta::where('institucion', $request->codigo)
+            ->first();
+        if (!$vd) {
+
             $institucion = new Institucion();
             $institucion->codigo = $request->codigo;
             $institucion->nombre = $request->nombre;
             $institucion->save();
+
+            $vd = new TituloVenta();
+            $vd->institucion = $request->codigo;
         }
 
-        $usuario = Auth::user();
-        $vd = new TituloVenta();
-        $vd->institucion = $request->codigo;
         $vd->director = $request->director;
         $vd->encargado = $request->encargado;
         $vd->telefono = $request->telefono;
@@ -103,18 +113,25 @@ class VentaController extends Controller
         $vd->autor = $usuario->correo;
         $vd->fecha_creacion = date('d-m-Y');
         $vd->save();
+
         Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
         $data = $vd->id;
-        return redirect("venta/facturar/$data");
+
+        // return redirect("venta/facturar/$data");
+        Session::flash('success', 'Institucion registrada ');
+        return redirect("panel");
     }
 
-    function ListaLibros(Request $request)
+    function ListaLibros($id, $fecha)
     {
-        $tituloVenta = TituloVenta::where('id', $request->id)->first();
+
+
+        $tituloVenta = TituloVenta::where('id', $id)->first();
         $libro = Libro::orderByRaw('FIELD(editorial, "ed", "mdf", "eng", "info")')->get();
         return view("ventas/Libros")
             ->with('libro', $libro)
-            ->with('tituloVenta', $tituloVenta);
+            ->with('tituloVenta', $tituloVenta)
+            ->with('fecha', $fecha);
     }
 
     // --------- Bodega-----------------

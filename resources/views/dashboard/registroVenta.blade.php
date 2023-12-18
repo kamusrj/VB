@@ -4,8 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col my-3">
-            <a href="{{ url('panel/perfilVenta/ '.$id) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
-
+            <a href="{{ url('panel/perfilVenta/' . $id . '/' . $fecha) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -25,10 +24,7 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
             <br>
-            @include('errorMj')
             <h3><i class="fas fa-basket-shopping"> Datos de venta </i> </h3><br>
-
-
             <div class="table table-striped">
                 <table class="table  table-sm table-bordered table-striped" style="text-align: center;">
                     <thead>
@@ -46,6 +42,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <h4>Fecha:{{$fecha}}</h4><br>
                         @foreach($inventario as $item)
                         <tr>
                             <td>{{ $item->nombre_libro }}</td>

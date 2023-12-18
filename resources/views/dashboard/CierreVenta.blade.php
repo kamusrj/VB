@@ -10,9 +10,7 @@
         <div class="col-md-10">
             <div class="row">
                 <div class="col my-3">
-                    <a href="{{ url('panel/perfilVenta/ '.$id) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i>
-                    </a>
-
+                    <a href="{{ url('panel/perfilVenta/' . $id . '/' . $fecha) }}" class="btn btn-dark"> <i class="fas fa-arrow-left"></i></a>
                 </div>
                 <h2><span style="display: block; text-align: center; margin: auto;"><i class="fa-solid fa-shop-lock"> Cierre de venta</i> </span></h2>
             </div>

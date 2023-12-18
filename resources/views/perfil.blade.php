@@ -30,8 +30,7 @@
             <ol class="list-group">
                 <li class="list-group-item border-0 py-0">Libros: Gestiona la lista de libros para la venta directa
                 </li>
-                <li class="list-group-item border-0 py-0">Intituciones: Administra las intituciones de catalogo de
-                    venta</li>
+
                 <li class="list-group-item border-0 py-0">Usuarios: Administra los usuarios y sus roles dentro de la
                     aplicaci&oacute;n</li>
                 <li class="list-group-item border-0 py-0">Ventas: Crea y gestiona las ventas que se
@@ -45,8 +44,7 @@
             <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('libro/') }}')">
                 <div class="row g-0">
                     <div class="col-4">
-                        <div class="card bg-secondary d-flex h-100"><i class="fas fa-book m-auto text-light"
-                                style="font-size: 3rem;"></i></div>
+                        <div class="card bg-secondary d-flex h-100"><i class="fas fa-book m-auto text-light" style="font-size: 3rem;"></i></div>
                     </div>
                     <div class="col-8">
                         <div class="card-body">
@@ -56,27 +54,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6 mb-3">
-            <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('institucion/') }}')">
-                <div class="row g-0">
-                    <div class="col-4">
-                        <div class="card bg-primary d-flex h-100"><i class="fas fa-school m-auto text-light"
-                                style="font-size: 3rem;"></i></div>
-                    </div>
-                    <div class="col-8">
-                        <div class="card-body">
-                            <h3 class="card-title">Intituciones</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <div class="col-md-4 col-sm-6 mb-3">
             <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('admin/listar/') }}')">
                 <div class="row g-0">
                     <div class="col-4">
-                        <div class="card bg-warning d-flex h-100"><i class="fas fa-user m-auto text-light"
-                                style="font-size: 3rem;"></i></div>
+                        <div class="card bg-warning d-flex h-100"><i class="fas fa-user m-auto text-light" style="font-size: 3rem;"></i></div>
                     </div>
                     <div class="col-8">
                         <div class="card-body">
@@ -90,8 +73,7 @@
             <div class="card mb-3 shadow" style="max-width: 540px;cursor: pointer;" onclick="redireccionar('{{ url('panel/') }}')">
                 <div class="row g-0">
                     <div class="col-4">
-                        <div class="card bg-info d-flex h-100"><i class="fas fa-basket-shopping m-auto text-light"
-                                style="font-size: 3rem;"></i></div>
+                        <div class="card bg-info d-flex h-100"><i class="fas fa-basket-shopping m-auto text-light" style="font-size: 3rem;"></i></div>
                     </div>
                     <div class="col-8">
                         <div class="card-body">
@@ -106,8 +88,10 @@
 
 @endsection
 
+
+
 <script>
-    function redireccionar(location){
+    function redireccionar(location) {
         document.location.href = location;
     }
 </script>

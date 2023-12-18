@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EfectivoCambio;
+use App\Models\Facturas;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class PanelControl extends Controller
 {
     use HasFactory;
 
-    //Cierre de venta
-
+    //Cierre de venta    
     public function cierreVenta($id)
     {
 
@@ -78,6 +80,7 @@ class PanelControl extends Controller
                 'lb.nombre as nombre_libro'
             )
             ->where('id_venta', $request->id_venta)
+            ->where('fecha', $request->fecha)
             ->where('id_libro', $request->id_libro)
             ->first();
         return json_encode($data);
@@ -118,26 +121,32 @@ class PanelControl extends Controller
         return redirect()->back();
     }
 
-    public function controlVenta($id)
+    public function controlVenta($id, $fecha)
     {
-        $facturasControl = Facturas::select('*')
-            ->from('facturascontrol')
+        $facturasControl = DB::table('facturascontrol')
             ->where('id_venta', $id)
+            ->where('fecha_programada', $fecha)
             ->first();
 
         $inventario = DB::table('datoventa')
             ->where('id_venta', $id)
+            ->where('fecha', $fecha)
             ->orderBy('nombre_libro')
             ->get();
 
+
         $cambio = EfectivoCambio::where('id_venta', $id)
+            ->where('fecha', $fecha)
             ->where('tipo', '=', 'c')
             ->first();
+
+
         return view('dashboard.registroVenta')
             ->with('inventario', $inventario)
             ->with('id', $id)
             ->with('cambio', $cambio)
-            ->with('factura', $facturasControl);
+            ->with('factura', $facturasControl)
+            ->with('fecha', $fecha);
     }
 
 
@@ -160,7 +169,19 @@ class PanelControl extends Controller
         return view('dashboard.panel')->with('ventas', $ventas);
     }
 
-    public function perfilVenta($id)
+
+    public function controlFecha($id)
+    {
+
+        $dato = Facturas::where('id_venta', $id)->get();
+
+
+        return view('dashboard.ControlFechas')
+            ->with('id', $id)
+            ->with('dato', $dato);
+    }
+
+    public function perfilVenta($id, $fecha)
     {
         $tituloVenta = TituloVenta::join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')
             ->select(
@@ -168,17 +189,19 @@ class PanelControl extends Controller
                 'ins.nombre as institucion'
             )
             ->where('id', $id)->first();
-        return view('dashboard.PerfilVenta')->with('tituloVenta', $tituloVenta);
+        return view('dashboard.PerfilVenta')->with('tituloVenta', $tituloVenta)
+            ->with('fecha', $fecha);
     }
-    public function inventarioVenta($id)
+    public function inventarioVenta($id, $fecha)
     {
         $inventario = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
             ->select(
                 'inventario.*',
                 'lb.nombre as nombre_libro'
-            )
-
+            )->where('fecha', $fecha)
             ->where('id_venta', $id)->get();
-        return view('ventas.inventario')->with('inventario', $inventario);
+        return view('ventas.inventario')
+            ->with('inventario', $inventario)
+            ->with('fecha', $fecha);
     }
 }
