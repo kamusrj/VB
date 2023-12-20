@@ -26,7 +26,7 @@
                                     <th>Codigo</th>
                                     <th>Instituci&oacute;n</th>
                                     <th>director</th>
-                                    <th>encargado</th>
+
                                     <th>telefono</th>
                                     <th>vendedor</th>
                                     <th>zona</th>
@@ -45,7 +45,7 @@
                                     <td>{{ $item->institucion }}</td>
                                     <td>{{ $item->institucion_n }}</td>
                                     <td>{{ $item->director }}</td>
-                                    <td>{{ $item->nombre_encargado }} {{ $item->apellido_encargado }}</td>
+
                                     <td>{{ $item->telefono }}</td>
                                     <td>{{ $item->nombre_vendedor }} {{ $item->apellido_vendedor }}</td>
                                     <td>{{ $item->zona }}</td>

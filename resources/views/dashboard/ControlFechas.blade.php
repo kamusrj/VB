@@ -28,6 +28,7 @@
                                 <tr>
                                     <th>Fecha </th>
                                     <th>estado</th>
+                                    <th>Encargado</th>
                                     <th>Accion</th>
                                 </tr>
                             </thead>
@@ -35,19 +36,15 @@
                             <tbody>
                                 <tr>
 
-
-
-
                                     <td>{{$item->fecha_programada}}</td>
-                                    <td>on</td>
+                                    <td>{{$item->estado}}</td>
+                                    <td>{{$item->nombre_encargado}} {{$item->apellido_encargado}}</td>
                                     <td>
                                         <a href="{{ url('panel/perfilVenta/' . $item->id_venta . '/' . $item->fecha_programada) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver Datos de la venta">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
 
                                     </td>
-
-
                                     </td>
                                 </tr>
                             </tbody>

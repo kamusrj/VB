@@ -37,9 +37,19 @@
                 <div class="form-group mb-3">
                     <label for="representante">Departamento de cr&eacute;dito venta asignada a: </label>
                     <select name="representante" class="form-control" id="representante">
-                        <option value="">Selecciona un Encargado</option>
+                        <option value="">Seleccionar</option>
                         @foreach ($conta as $c)
                         <option value="{{ $c->correo }}">{{ $c->nombre }} {{ $c->apellido }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-8 mb-3">
+                    <label for="encargado">Encargado de la venta </label>
+                    <select name="encargado" class="form-select" id="encargado">
+                        <option selected disabled>Selecciona un Encargado</option>
+                        @foreach ($encargado as $e)
+                        <option value="{{ $e->correo }}">{{ $e->nombre }} {{ $e->apellido }}</option>
                         @endforeach
                     </select>
                 </div>

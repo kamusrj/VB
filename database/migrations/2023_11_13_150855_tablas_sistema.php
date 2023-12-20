@@ -13,15 +13,12 @@ return new class extends Migration
             $table->id();
             $table->string('institucion', 6);
             $table->string('director', 200);
-            $table->string('encargado', 200);
             $table->string('telefono', 50);
             $table->string('vendedor');
             $table->string('zona', 200);
             $table->string('direccion', 80);
             $table->string('autor', 200);
             $table->string('fecha_creacion', 10);
-            $table->set('estado', ['on', 'off'])->default('on');
-            $table->foreign('encargado')->references('correo')->on('usuario');
             $table->foreign('vendedor')->references('correo')->on('usuario');
             $table->foreign('institucion')->references('codigo')->on('institucion');
         });
@@ -29,6 +26,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_venta');
             $table->foreign('id_venta')->references('id')->on('titulo_venta');
+
+            $table->string('encargado', 200);
+            $table->foreign('encargado')->references('correo')->on('usuario');
+            $table->set('estado', ['on', 'off'])->default('on');
+        
             $table->String('fecha_programada');
             $table->string('fecha', 10);
             $table->string('representante', 200);
@@ -69,7 +71,6 @@ return new class extends Migration
             $table->double('precio')->default(0);
             $table->integer('descuento')->default(0);
             $table->double('ofrecimiento_a')->default(0);
-           
         });
 
 

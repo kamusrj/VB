@@ -18,20 +18,17 @@ class PanelControl extends Controller
     //Cierre de venta    
     public function cierreVenta($id, $fecha)
     {
-
-        $factura = Facturas::select('*')
+        
+     $factura = Facturas::select('*')
             ->from('facturascontrol')
             ->where('id_venta', $id)
             ->first();
-
         $dato = EfectivoCambio::where('id_venta', $id)
             ->where('tipo', '=', 'v')->first();
-
 
         $cambio = EfectivoCambio::where('id_venta', $id)
             ->where('tipo', '=', 'c')
             ->first();
-
         return view('dashboard/CierreVenta')
             ->with('id', $id)
             ->with('dato', $dato)
@@ -159,30 +156,33 @@ class PanelControl extends Controller
             ->with('fecha', $fecha);
     }
 
-
     public function ListarVentas()
     {
-        $ventas = TituloVenta::join('usuario as enc', 'titulo_venta.encargado', '=', 'enc.correo')
-            ->join('usuario as ven', 'titulo_venta.vendedor', '=', 'ven.correo')
+        $ventas = TituloVenta::join('usuario as ven', 'titulo_venta.vendedor', '=', 'ven.correo')
             ->join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')
             ->select(
                 'titulo_venta.*',
-                'enc.nombre as nombre_encargado',
-                'enc.apellido as apellido_encargado',
+
                 'ven.nombre as nombre_vendedor',
                 'ven.apellido as apellido_vendedor',
                 'ins.nombre as institucion_n'
             )
             ->orderBy('fecha_creacion', 'asc')
-            ->orderByRaw("titulo_venta.estado = 'on' desc")
+
             ->get();
         return view('dashboard.panel')->with('ventas', $ventas);
     }
 
-
     public function controlFecha($id)
     {
-        $dato = Facturas::where('id_venta', $id)->get();
+        $dato = Facturas::join('usuario as en', 'nota_remision.encargado', '=', 'en.correo')
+            ->select(
+                'nota_remision.*',
+                'en.nombre as nombre_encargado',
+                'en.apellido as apellido_encargado',
+            )
+            ->where('id_venta', $id)->get();
+
         return view('dashboard.ControlFechas')
             ->with('id', $id)
             ->with('dato', $dato);

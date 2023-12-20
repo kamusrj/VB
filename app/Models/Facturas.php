@@ -26,7 +26,8 @@ class Facturas extends Model
     static function attrCrear(): array
     {
         return [
-            'representante' => "Encargado",
+            'representante' => "Encargado Departamento de crédito",
+            'encargado' => "Encargado de venta ",
             'n_remision' => "Nota de remisión",
             'factura_i' => "Factura inicial",
             'factura_f' => "Factura final"
@@ -36,6 +37,7 @@ class Facturas extends Model
     {
         return [
             'representante' => "required",
+
             'n_remision' => "required ",
             'factura_i' => "required",
             'factura_f' => "required",
@@ -46,7 +48,8 @@ class Facturas extends Model
     static function attrActualizar(): array
     {
         return [
-            'representante' => "Encargado",
+            'representante' => "Encargado Departamento de crédito",
+            'encargado' => "Encargado de venta",
             'n_remision' => "Nota de remisión",
             'factura_i' => "Factura inicial",
             'factura_f' => "Factura final"

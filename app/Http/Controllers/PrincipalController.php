@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Facturas;
 use App\Models\TituloVenta;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
@@ -29,14 +30,15 @@ class PrincipalController extends Controller
                 default:
                     //redirecciona al encargado a su venta asignada
 
-                    $titulo = TituloVenta::where('encargado', Auth::user()->correo)
+                    $titulo = Facturas::where('encargado', Auth::user()->correo)
                         ->where('estado', 'on')
                         ->first();
 
+
                     if ($titulo) {
 
-                        $tituloVenta = $titulo->id;
-                        return redirect('panel/perfilVenta/' . $tituloVenta);
+                        $tituloVenta = $titulo->id_venta;
+                        return redirect('panel/perfilVenta/' . $tituloVenta . '/' . $titulo->fecha_programada);
                     }
                     Session::flash('type', 'info');
                     Session::flash('message', 'Usuario sin Venta asignada ');

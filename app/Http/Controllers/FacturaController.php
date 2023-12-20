@@ -7,6 +7,7 @@ use App\Models\EfectivoCambio;
 use App\Models\Facturas;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -30,10 +31,6 @@ class FacturaController extends Controller
             )
             ->orderBy('nombre_libro')
             ->get();
-
-
-
-
         $facturas = Facturas::where('id_venta', $id)
             ->where('fecha_programada', $fecha)
             ->get();
@@ -53,7 +50,6 @@ class FacturaController extends Controller
 
     public function guardarFactura(Request $request)
     {
-
         if ($request->anulada === 'on') {
 
             Validator::make(
@@ -81,7 +77,6 @@ class FacturaController extends Controller
             )->validate();
 
             $libros = $request->input('libros_seleccionados', []);
-
 
             foreach ($libros as $libro_id) {
                 $dt = new Detallefactura();
@@ -191,7 +186,8 @@ class FacturaController extends Controller
         $f->fecha = date("Y-m-d");
         $f->representante = $request->representante;
         $f->n_remision = $request->n_remision;
-
+        $f->encargado = $request->encargado;
+        $f->estado = 'on';
         $f->factura_i = str_pad($request->factura_i, 5, '0', STR_PAD_LEFT);
         $f->factura_f = str_pad($request->factura_f, 5, '0', STR_PAD_LEFT);
         $f->cupon_i = $request->cupon_i;
@@ -199,6 +195,7 @@ class FacturaController extends Controller
         $f->save();
         $data = $f->id_venta;
         $fecha =  $request->fecha_programada;
+        Usuario::where('correo', $request->encargado)->update(['estado' => 'off']);
 
         return redirect("factura/efectivoCambio/$data/$fecha");
     }

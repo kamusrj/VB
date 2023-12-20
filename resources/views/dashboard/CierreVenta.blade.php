@@ -2,6 +2,7 @@
 
 @section('title', 'Cierre de venta')
 
+
 @section('content')
 
 <div class="containe">
@@ -71,7 +72,7 @@
                                                     <td class="col-8">
                                                         <input type="number" min="0" value="{{ $dato && $dato->centavo_diez !== null ? $dato->centavo_diez : '0' }}" data-denominacion="0.10" step="1" oninput="calcularTotal(this)" name="centavo_diez" class="form-control">
                                                     </td>
-                                                    <td id="total_input_centavo_diez">$ 0.00</td>
+                                                    <td id="total_input_centavo_diez" colspan="2">$ 0.00</td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row" class="col-4">$0.25</th>
@@ -236,6 +237,21 @@
 
         // Actualiza el total general en la celda correspondiente
         document.getElementById("totalCambio").textContent = "$ " + totalGeneral.toFixed(2);
+    }
+
+
+
+    const totalCambio = document.getElementById('totalCambioV');
+    const camposCambio = document.querySelectorAll("[Cambio-data]");
+
+    function calcularCambio() {
+        let total_actual = 0;
+        [].slice.call(camposCambio).forEach(function(campo) {
+            let denominacion = campo.getAttribute("Cambio-data");
+            total_actual += campo.value * denominacion;
+        });
+        totalCambioV.innerText = parseFloat(total_actual).toFixed(2);
+        document.getElementById('totalInCambio').value = parseFloat(total_actual).toFixed(2);
     }
 </script>
 @endsection

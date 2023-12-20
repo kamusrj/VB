@@ -14,12 +14,10 @@ class TituloVenta extends Model
     protected $fillable = ['id'];
     public $timestamps = false;
 
-
     static function ruleCrear(): array
     {
         return [
             'director' => "required",
-            'encargado' => "required",
             'telefono' => "required",
             'vendedor' => "required",
             'zona' => "required",
@@ -30,7 +28,6 @@ class TituloVenta extends Model
     {
         return [
             'director' => "Director / Responsable",
-            'encargado' => "Operador",
             'telefono' => "Teléfono",
             'vendedor' => "Vendedor",
             'zona' => "Zona",
@@ -41,7 +38,6 @@ class TituloVenta extends Model
     {
         return [
             'director' => "required",
-            'encargado' => "required",
             'telefono' => "required|min:8",
             'vendedor' => "required",
             'zona' => "required",
@@ -52,7 +48,6 @@ class TituloVenta extends Model
     {
         return [
             'director' => "Director / Responsable",
-            'encargado' => "Operador",
             'telefono' => "Teléfono",
             'vendedor' => "Vendedor",
             'zona' => "Zona",

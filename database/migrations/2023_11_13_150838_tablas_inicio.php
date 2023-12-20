@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre', 50);
             $table->string('apellido', 50);
             $table->set('rol', ['a', 'v', 'e', 'c', 'b', 'g'])->nullable();
+            $table->set('estado', ['on', 'off'])->default('on');
         });
         Schema::create('libro', function (Blueprint $table) {
             $table->id();

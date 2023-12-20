@@ -51,18 +51,7 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
-                    <div class="col-md-8 mb-3">
-
-                        <label for="encargado">Encargado</label>
-                        <select name="encargado" class="form-select" id="encargado">
-                            <option selected disabled>Selecciona un Encargado</option>
-                            @foreach ($encargado as $e)
-                            <option value="{{ $e->correo }}">{{ $e->nombre }} {{ $e->apellido }}</option>
-                            @endforeach
-                        </select>
-                    </div>
                     <div class="col-md-4">
                         <label for="telefono">Teléfono</label>
                         <input type="tel" name="telefono" class="form-control" id="telefono">
@@ -78,12 +67,10 @@
                         @endforeach
                     </select>
                 </div>
-
                 <div class="row">
                     <div class="col-md-8 mb-3">
                         <label for="direccion">Dirección</label>
                         <input type="text" name="direccion" class="form-control" id="direccion">
-
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="zona">Zona</label>
@@ -95,9 +82,7 @@
         </div>
     </div>
 </div>
-
 @endsection
-
 @section('script')
 <script>
     const codigo = document.getElementById('codigo');
@@ -119,6 +104,19 @@
                 if (data)
                     nombre.value = data.nombre;
             });
+    }
+
+    const total = document.getElementById('total-v');
+    const campos = document.querySelectorAll("[data-denominacion-v]");
+
+    function calcularTotal() {
+        let total_actual = 0;
+        [].slice.call(campos).forEach(function(campo) {
+            let denominacion = campo.getAttribute("data-denominacion-v");
+            total_actual += campo.value * denominacion;
+        });
+        total.innerText = parseFloat(total_actual).toFixed(2);
+        document.getElementById('totalInput-v').value = parseFloat(total_actual).toFixed(2);
     }
 </script>
 @endsection

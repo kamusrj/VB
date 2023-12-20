@@ -36,7 +36,6 @@ class VentaController extends Controller
         $librosSeleccionados = $request->input('libros_seleccionados', []);
         $idVenta = $request->id;
 
-
         foreach ($librosSeleccionados as $key => $libro_id) {
             $inventario = Inventario::where('id_venta', $idVenta)
                 ->where('id_libro', $libro_id)
@@ -54,7 +53,6 @@ class VentaController extends Controller
                 return 'Error: No se encontró el libro en el inventario para la venta especificada.';
             }
         }
-
         return redirect('panel/controlFecha/' . $idVenta);
     }
 
@@ -62,11 +60,10 @@ class VentaController extends Controller
     {
         $escuela = Institucion::where('codigo', $request->id)->first();
         $vendedores = Usuario::where('rol', 'v')->get();
-        $encargado = Usuario::where('rol', 'e')->get();
+
         return view('ventas.CrearVenta')
             ->with('escuela', $escuela)
-            ->with('vendedores', $vendedores)
-            ->with('encargado', $encargado);
+            ->with('vendedores', $vendedores);
     }
 
     public function CrearFacturas($id)
@@ -74,10 +71,14 @@ class VentaController extends Controller
         $tituloVenta = TituloVenta::where('id', $id)->first();
         $institucion = Institucion::where("codigo", $tituloVenta->institucion)->first();
         $conta = Usuario::where('rol', 'c')->get();
+        $encargado = Usuario::where('rol', 'e')
+            ->where('estado', 'on')
+            ->get();
         return view('ventas/Facturas')
             ->with('tituloVenta', $tituloVenta)
             ->with('conta', $conta)
-            ->with('institucion', $institucion);
+            ->with('institucion', $institucion)
+            ->with('encargado', $encargado);
     }
 
     public function Crear(Request $request)
@@ -105,7 +106,7 @@ class VentaController extends Controller
         }
 
         $vd->director = $request->director;
-        $vd->encargado = $request->encargado;
+
         $vd->telefono = $request->telefono;
         $vd->vendedor = $request->vendedor;
         $vd->zona = $request->zona;
@@ -114,18 +115,14 @@ class VentaController extends Controller
         $vd->fecha_creacion = date('d-m-Y');
         $vd->save();
 
-        Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
-        $data = $vd->id;
+        // Institucion::where('codigo', $request->codigo)->update(['estado' => 'on']);
 
-        // return redirect("venta/facturar/$data");
         Session::flash('success', 'Institucion registrada ');
         return redirect("panel");
     }
 
     function ListaLibros($id, $fecha)
     {
-
-
         $tituloVenta = TituloVenta::where('id', $id)->first();
         $libro = Libro::orderByRaw('FIELD(editorial, "ed", "mdf", "eng", "info")')->get();
         return view("ventas/Libros")
@@ -133,7 +130,6 @@ class VentaController extends Controller
             ->with('tituloVenta', $tituloVenta)
             ->with('fecha', $fecha);
     }
-
     // --------- Bodega-----------------
     public function bodegaBuscar(Request $request)
     {
@@ -144,7 +140,6 @@ class VentaController extends Controller
                 'lb.nombre as nombre_libro',
             )
             ->where('id_venta', $request->id)->get();
-
         return json_encode($data);
     }
 
