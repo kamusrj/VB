@@ -19,6 +19,7 @@ class Facturas extends Model
         return [
             'representante' => "required",
             'n_remision' => "required ",
+            'fecha_programada' => "required",
             'factura_i' => "required",
             'factura_f' => "required",
         ];
@@ -28,6 +29,7 @@ class Facturas extends Model
         return [
             'representante' => "Encargado Departamento de crédito",
             'encargado' => "Encargado de venta ",
+            'fecha_programada'=>"Fecha de venta ",
             'n_remision' => "Nota de remisión",
             'factura_i' => "Factura inicial",
             'factura_f' => "Factura final"

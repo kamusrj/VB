@@ -38,6 +38,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post("crear", "CrearFactura");
         Route::get('efectivoCambio/{id}/{fecha}', 'EfectivoCambio');
         Route::post('crearEfectivo', 'CrearEfectivo');
+        Route::post('retornoCambio', 'retornoCambio');
 
         //gestion de facturas 
 
@@ -99,7 +100,7 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('buscarInventario', 'buscarInventario');
         Route::post('actualizarIn/', 'actualizarInventario');
         Route::post('actualizarCambio', 'actualizarCambio');
-
+        Route::get('cambio/{id}/{fecha}', 'registroCambio');
         Route::get('cierre/{id}/{fecha}', 'cierreVenta');
     });
 });

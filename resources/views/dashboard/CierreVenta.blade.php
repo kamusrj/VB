@@ -2,7 +2,13 @@
 
 @section('title', 'Cierre de venta')
 
-
+@section('style')
+<style>
+    td {
+        white-space: nowrap;
+    }
+</style>
+@endsection
 @section('content')
 
 <div class="containe">
@@ -22,19 +28,19 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Documentos</button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <!--li class="nav-item" role="presentation">
                     <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Cambio</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#return-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Devolución</button>
-                </li>
+                </li-->
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"><br>
                     <div class="row">
                         <div class="col">
-                            <form method="post" action="{{ url('factura/crearEfectivo') }}">
-                                @include('errorMj')
+                            <form id="form1" method="post" action="{{ url('factura/crearEfectivo') }}">
+
                                 @csrf
                                 <input name="id_venta" hidden value="   {{ $id }}">
                                 <input name="tipo" hidden value="v">
@@ -72,7 +78,7 @@
                                                     <td class="col-8">
                                                         <input type="number" min="0" value="{{ $dato && $dato->centavo_diez !== null ? $dato->centavo_diez : '0' }}" data-denominacion="0.10" step="1" oninput="calcularTotal(this)" name="centavo_diez" class="form-control">
                                                     </td>
-                                                    <td id="total_input_centavo_diez" colspan="2">$ 0.00</td>
+                                                    <td id="total_input_centavo_diez">$ 0.00</td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row" class="col-4">$0.25</th>
@@ -139,7 +145,7 @@
                                                 <tr>
                                                     <td colspan="3">
                                                         @if(!$dato)
-                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                        <button type="button" onclick="enviarFormulario('form1')" class="btn btn-primary">Guardar</button>
                                                         @else
                                                         <span>Venta Finalizada <h3> {{$dato->fecha}}</h3> </span>
                                                         @endif
@@ -149,7 +155,6 @@
                                         </table>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
@@ -158,7 +163,7 @@
                     @include('dashboard.componentesDetalleVenta.Documentacion')
                 </div>
                 <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-                    @include('dashboard.componentesCierreVenta.cambioCierre')
+
 
                 </div>
                 <div class="tab-pane fade" id="return-tab-pane" role="tabpanel" aria-labelledby="return-tab" tabindex="0">
@@ -170,6 +175,7 @@
 </div>
 @endsection
 @section('script')
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     function calcularTotal(input) {
         var denominacion = parseFloat(input.getAttribute("data-denominacion"));
@@ -252,6 +258,12 @@
         });
         totalCambioV.innerText = parseFloat(total_actual).toFixed(2);
         document.getElementById('totalInCambio').value = parseFloat(total_actual).toFixed(2);
+    }
+</script>
+<script>
+    function enviarFormulario(formId) {
+
+        $("#" + formId).submit();
     }
 </script>
 @endsection

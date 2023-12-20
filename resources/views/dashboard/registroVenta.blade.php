@@ -1,5 +1,10 @@
 @extends('layouts.master')
 @section('title', 'Datos de venta')
+@section('style')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+
+@endsection
 @section('content')
 <div class="container">
     <div class="row">
@@ -17,13 +22,17 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Cambio</button>
         </li>
-        <li class="nav-item" role="presentation">
+        <!--li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Cambio</button>
-        </li>
+        </li-->
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
             <br>
+
+            <!-- Agrega esto en tu vista Blade donde quieras el botón o enlace>
+                <button onclick="exportarAExcel()">Exportar a Excel</button-->
+
             <h3><i class="fas fa-basket-shopping"> Datos de venta </i> </h3><br>
             <div class="table table-striped">
                 <table class="table  table-sm table-bordered table-striped" style="text-align: center;">
@@ -252,4 +261,44 @@
         calcularTotal();
     });
 </script>
+
+<script>
+    //Pruebas para exporta exel
+
+    function exportarAExcel() {
+        var datos = [];
+
+        // Agrega la fila de encabezado
+        datos.push(["Libro", "Precio", "Unidades Vendidas", "Total Vendido", "Descuento %", "Reintegro por Libro", "Total Reintegro", "O/A", "Total O/A"]);
+
+        // Recorre las filas de la tabla y agrega los datos a la matriz
+        document.querySelectorAll('table tbody tr').forEach(function(fila) {
+            var celdas = fila.querySelectorAll('td');
+
+            var filaDatos = Array.from(celdas).map(function(celda) {
+                return celda.innerText.trim();
+            });
+
+            datos.push(filaDatos);
+        });
+
+        // Agrega las filas de totales
+        var totalVenta = document.querySelector('.total-venta').innerText.trim();
+        var totalReintegro = document.querySelector('.total-reintegro').innerText.trim();
+        var totalOA = document.querySelector('.total-oa').innerText.trim();
+        datos.push(["Venta:", totalVenta]);
+        datos.push(["Reintegro:", totalReintegro]);
+        datos.push(["Total O/A:", totalOA]);
+
+        // Crea el libro y la hoja de Excel
+        var ws = XLSX.utils.aoa_to_sheet(datos);
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Datos");
+
+        // Descarga el archivo Excel
+        XLSX.writeFile(wb, "archivo_excel.xlsx");
+    }
+</script>
+</script>
+
 @endsection

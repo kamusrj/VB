@@ -16,24 +16,66 @@ class PanelControl extends Controller
     use HasFactory;
 
     //Cierre de venta    
-    public function cierreVenta($id, $fecha)
+
+
+
+    public function registroCambio($id, $fecha)
     {
-        
-     $factura = Facturas::select('*')
+        $factura = Facturas::select('*')
             ->from('facturascontrol')
             ->where('id_venta', $id)
+
             ->first();
-        $dato = EfectivoCambio::where('id_venta', $id)
-            ->where('tipo', '=', 'v')->first();
+
 
         $cambio = EfectivoCambio::where('id_venta', $id)
             ->where('tipo', '=', 'c')
+            ->where('fecha', $fecha)
             ->first();
+
+        $retornoCambio = EfectivoCambio::where('id_venta', $id)
+            ->where('tipo', '=', 'r')
+            ->where('fecha', $fecha)
+            ->first();
+
+        return view('dashboard/CambioRegistro')
+            ->with('id', $id)
+
+            ->with('factura', $factura)
+            ->with('cambio', $cambio)
+            ->with('retorno', $retornoCambio)
+            ->with('fecha', $fecha);
+    }
+
+    public function cierreVenta($id, $fecha)
+    {
+        $factura = Facturas::select('*')
+            ->from('facturascontrol')
+            ->where('id_venta', $id)
+
+            ->first();
+        $dato = EfectivoCambio::where('id_venta', $id)
+            ->where('tipo', '=', 'v')
+            ->where('fecha', $fecha)
+            ->first();
+
+        $cambio = EfectivoCambio::where('id_venta', $id)
+            ->where('tipo', '=', 'c')
+            ->where('fecha', $fecha)
+            ->first();
+
+        $retornoCambio = EfectivoCambio::where('id_venta', $id)
+            ->where('tipo', '=', 'r')
+            ->where('fecha', $fecha)
+            ->first();
+
+
         return view('dashboard/CierreVenta')
             ->with('id', $id)
             ->with('dato', $dato)
             ->with('factura', $factura)
             ->with('cambio', $cambio)
+            ->with('retorno', $retornoCambio)
             ->with('fecha', $fecha);
     }
 

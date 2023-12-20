@@ -51,14 +51,12 @@ class FacturaController extends Controller
     public function guardarFactura(Request $request)
     {
         if ($request->anulada === 'on') {
-
             Validator::make(
                 $request->all(),
                 Detallefactura::ruleAnulada()
             )->addCustomAttributes(
                 Detallefactura::attrAnulada()
             )->validate();
-
             $dt = new Detallefactura();
             $dt->id_venta = $request->id_venta;
             $dt->correlativo = $request->correlativo;
@@ -75,9 +73,7 @@ class FacturaController extends Controller
             )->addCustomAttributes(
                 Detallefactura::attrCrear()
             )->validate();
-
             $libros = $request->input('libros_seleccionados', []);
-
             foreach ($libros as $libro_id) {
                 $dt = new Detallefactura();
                 $dt->id_venta = $request->id_venta;
@@ -102,10 +98,8 @@ class FacturaController extends Controller
         Session::flash('success', 'Factura guardada');
         return redirect()->back();
     }
-
     public function facturaBuscar(Request $request)
     {
-
         $data = Detallefactura::join('titulo_venta as tv', 'detallefactura.id_venta', '=', 'tv.id')
             ->join('libro as lb', 'detallefactura.id_libro', '=', 'lb.id')
             ->join('inventario as inv', 'lb.id', '=', 'inv.id_libro')
@@ -124,7 +118,6 @@ class FacturaController extends Controller
     //cracion de venta diracta
     public function EfectivoCambio($id, $fecha)
     {
-
         $tituloVenta = TituloVenta::where('id', $id)->first();
         return view('ventas/EfectivoCambio')
             ->with('tituloVenta', $tituloVenta)
@@ -134,38 +127,34 @@ class FacturaController extends Controller
     public function CrearEfectivo(Request $request)
     {
 
+
+
         Validator::make(
             $request->all(),
             EfectivoCambio::ruleCreate()
         )->addCustomAttributes(
             EfectivoCambio::attrCreate()
         )->validate();
-
         $ec = new EfectivoCambio();
-
         $ec->id_venta = $request->id_venta;
         $ec->tipo = $request->tipo;
         $ec->fecha = $request->fecha;
-        $ec->centavo_uno = $request->centavo_uno;
-        $ec->centavo_cinco = $request->centavo_cinco;
-        $ec->centavo_diez = $request->centavo_diez;
-        $ec->centavo_veinticinco = $request->centavo_veinticinco;
-        $ec->dolar_uno = $request->dolar_uno;
-        $ec->dolar_cinco = $request->dolar_cinco;
-        $ec->dolar_diez = $request->dolar_diez;
-        $ec->dolar_veinte = $request->dolar_veinte;
-        $ec->total = $request->totalFactura;
+        $ec->centavo_uno = $request->centavo_uno ?? 0;
+        $ec->centavo_cinco = $request->centavo_cinco ?? 0;
+        $ec->centavo_diez = $request->centavo_diez ?? 0;
+        $ec->centavo_veinticinco = $request->centavo_veinticinco ?? 0;
+        $ec->dolar_uno = $request->dolar_uno ?? 0;
+        $ec->dolar_cinco = $request->dolar_cinco ?? 0;
+        $ec->dolar_diez = $request->dolar_diez ?? 0;
+        $ec->dolar_veinte = $request->dolar_veinte ?? 0;
         $ec->dolar_cincuenta = $request->dolar_cincuenta ?? 0;
         $ec->dolar_cien = $request->dolar_cien  ?? 0;
         $ec->total = $request->totalFactura ?? 0;
-
         $ec->save();
         $id = $request->id_venta;
-
         if ($request->tipo === 'c') {
             return redirect("venta/libros/$id/$request->fecha");
         } else {
-
             Session::flash('success', 'Reporte Entregado');
             return redirect()->back();
         }
@@ -179,7 +168,6 @@ class FacturaController extends Controller
         )->addCustomAttributes(
             Facturas::attrCrear()
         )->validate();
-
         $f = new Facturas();
         $f->id_venta = $request->id_venta;
         $f->fecha_programada = $request->fecha_programada;
@@ -196,7 +184,29 @@ class FacturaController extends Controller
         $data = $f->id_venta;
         $fecha =  $request->fecha_programada;
         Usuario::where('correo', $request->encargado)->update(['estado' => 'off']);
-
         return redirect("factura/efectivoCambio/$data/$fecha");
+    }
+    public function retornoCambio(Request $request)
+    {
+
+
+        $ec = new EfectivoCambio();
+        $ec->id_venta = $request->id_venta;
+        $ec->fecha = $request->fecha;
+        $ec->tipo = $request->tipo;
+        $ec->centavo_uno = $request->Vcentavo_uno;
+        $ec->centavo_cinco = $request->Vcentavo_cinco;
+        $ec->centavo_diez = $request->Vcentavo_diez;
+        $ec->centavo_veinticinco = $request->Vcentavo_veinticinco;
+        $ec->dolar_uno = $request->Vdolar_uno;
+        $ec->dolar_cinco = $request->Vdolar_cinco;
+        $ec->dolar_diez = $request->Vdolar_diez;
+        $ec->dolar_veinte = $request->Vdolar_veinte;
+        $ec->dolar_cincuenta = $request->Vdolar_cincuenta ?? 0;
+        $ec->dolar_cien = $request->Vdolar_cien  ?? 0;
+        $ec->total = $request->totalRetorno ?? 0;
+        $ec->save();
+        Session::flash('success', 'Reporte Entregado');
+        return redirect()->back();
     }
 }
