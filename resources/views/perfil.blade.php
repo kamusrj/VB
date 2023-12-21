@@ -88,8 +88,6 @@
 
 @endsection
 
-
-
 <script>
     function redireccionar(location) {
         document.location.href = location;

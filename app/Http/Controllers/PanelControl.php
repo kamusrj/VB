@@ -6,6 +6,7 @@ use App\Models\EfectivoCambio;
 use App\Models\Facturas;
 use App\Models\Inventario;
 use App\Models\TituloVenta;
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +17,6 @@ class PanelControl extends Controller
     use HasFactory;
 
     //Cierre de venta    
-
-
 
     public function registroCambio($id, $fecha)
     {
@@ -51,6 +50,7 @@ class PanelControl extends Controller
     {
         $factura = Facturas::select('*')
             ->from('facturascontrol')
+            ->where('fecha_programada', $fecha)
             ->where('id_venta', $id)
 
             ->first();
@@ -79,11 +79,14 @@ class PanelControl extends Controller
             ->with('fecha', $fecha);
     }
 
-    public function finalizarVenta($id)
+    public function finalizarVenta($id, $fecha)
     {
-        $venta = TituloVenta::where('id', $id)->first();
+        $venta = Facturas::where('id_venta', $id)
+            ->where('fecha_programada', $fecha)
+            ->first();
 
         $venta->estado = 'off';
+        Usuario::where('correo', $venta->encargado)->update(['estado' => 'on']);
         $venta->save();
         Session::flash('success', 'Venta finalizada');
 

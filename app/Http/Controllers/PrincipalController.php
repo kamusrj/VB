@@ -24,7 +24,6 @@ class PrincipalController extends Controller
                 case 'g':
                 case 'c':
                     return view('perfil');
-
                 case 'b':
                     return redirect('venta/bodega');
                 default:
@@ -33,8 +32,6 @@ class PrincipalController extends Controller
                     $titulo = Facturas::where('encargado', Auth::user()->correo)
                         ->where('estado', 'on')
                         ->first();
-
-
                     if ($titulo) {
 
                         $tituloVenta = $titulo->id_venta;

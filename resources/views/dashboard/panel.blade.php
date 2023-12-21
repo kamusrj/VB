@@ -26,13 +26,12 @@
                                     <th>Codigo</th>
                                     <th>Instituci&oacute;n</th>
                                     <th>director</th>
-
                                     <th>telefono</th>
                                     <th>vendedor</th>
                                     <th>zona</th>
                                     <th>direccion</th>
 
-                                    <th>Ver / Estado</th>
+                                    <th>Ver</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,13 +53,7 @@
                                     <td>
                                         <a href="{{ url('panel/controlFecha/' . $item->id) }}" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver venta">
                                             <i class="fa-solid fa-eye"></i>
-                                        </a>
-                                        @if ($item->estado === 'on')
-                                        <i class="fa-solid fa-toggle-on fa-2xl" style="color: #029d96;"></i>
-                                        @endif
-                                        @if ($item->estado === 'off')
-                                        <i class="fa-solid fa-toggle-off fa-2xl" style="color: #eb0d68;"></i>
-                                        @endif
+                                        </a>                             
                                     </td>
                                 </tr>
                                 @php

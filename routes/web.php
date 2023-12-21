@@ -95,16 +95,15 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::get('inventario/{id}/{fecha}', 'inventarioVenta');
         Route::post('stockventa', 'stockVenta');
 
-
         //Cierre de venta 
         Route::post('buscarInventario', 'buscarInventario');
         Route::post('actualizarIn/', 'actualizarInventario');
         Route::post('actualizarCambio', 'actualizarCambio');
         Route::get('cambio/{id}/{fecha}', 'registroCambio');
         Route::get('cierre/{id}/{fecha}', 'cierreVenta');
+        Route::get('finalizarVenta/{id}/{fecha}', 'finalizarVenta');
     });
 });
-
 
 /*Route::fallback(function () {
     return view("error");
