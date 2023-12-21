@@ -86,8 +86,12 @@ class PanelControl extends Controller
             ->first();
 
         $venta->estado = 'off';
-        Usuario::where('correo', $venta->encargado)->update(['estado' => 'on']);
+
         $venta->save();
+        Usuario::where('correo', $venta->encargado)->update(['estado' => 'on']);
+        Inventario::where('id_venta', $id)
+            ->where('fecha', $fecha)
+            ->update(['estado' => 'off']);
         Session::flash('success', 'Venta finalizada');
 
         return redirect()->back();
@@ -97,7 +101,6 @@ class PanelControl extends Controller
     {
         $data = EfectivoCambio::where('id_venta', $request->id_venta)
             ->where('tipo', $request->tipo)->first();
-
         if ($data) {
             $data->centavo_uno = $request->centavo_uno;
             $data->centavo_cinco = $request->centavo_cinco;
@@ -113,10 +116,8 @@ class PanelControl extends Controller
         Session::flash('success', 'El cambio entregado fue actualizado');
         return redirect()->back();
     }
-
     public function buscarInventario(Request $request)
     {
-
         $data = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
             ->select(
                 'inventario.*',
@@ -125,7 +126,6 @@ class PanelControl extends Controller
             ->where('id_venta', $request->id_venta)
             ->where('id_libro', $request->id_libro)
             ->first();
-
         return json_encode($data);
     }
     public function actualizarInventario(Request $request)

@@ -248,12 +248,6 @@
         });
     });
 
-    //Padre requerido si factura no es anulada
-
-    function toggleRequired() {
-        var padreInput = document.getElementById('padre');
-        var anuladaCheckbox = document.getElementsByName('anulada')[0];
-        padreInput.required = !anuladaCheckbox.checked;
-    }
+    
 </script>
 @endsection

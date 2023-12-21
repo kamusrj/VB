@@ -60,8 +60,15 @@ Route::middleware(UsuarioMiddleware::class)->group(function () {
         Route::post('inventario', 'inventario');
 
 
+        //bodega
         Route::get('bodega', 'perfilBodega');
         Route::post('bodegaBuscar', 'bodegaBuscar');
+        Route::get('controlFechaBodega/{id}', 'controlFechaBodega');
+
+        Route::get('listadoFechaBodega/{id}', 'listadoFechaBodega');
+
+
+
     });
 
     Route::controller(LibrosController::class)->prefix('libro')->group(function () {

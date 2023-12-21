@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Facturas;
 use App\Models\Institucion;
 use App\Models\Inventario;
 use App\Models\Libro;
@@ -130,34 +131,70 @@ class VentaController extends Controller
             ->with('tituloVenta', $tituloVenta)
             ->with('fecha', $fecha);
     }
-    // --------- Bodega-----------------
+
+
+    // --------- Bodega----------------------------------------------------------------------------------
+
+
+    public function listadoFechaBodega($id)
+    {
+        $dato = Facturas::join('usuario as en', 'nota_remision.encargado', '=', 'en.correo')
+            ->select(
+                'nota_remision.*',
+                'en.nombre as nombre_encargado',
+                'en.apellido as apellido_encargado'
+            )
+            ->where('nota_remision.id_venta', $id)
+            ->where('nota_remision.estado', '=', 'off')
+            ->get();
+
+        return view('bodega.fechaBodega')
+            ->with('id', $id)
+            ->with('dato', $dato);
+    }
+
     public function bodegaBuscar(Request $request)
     {
+
         $data = Inventario::join('libro as lb', 'inventario.id_libro', '=', 'lb.id')
             ->join('titulo_venta as tv', 'inventario.id_venta', '=', 'tv.id')
             ->select(
                 'inventario.*',
                 'lb.nombre as nombre_libro',
             )
-            ->where('id_venta', $request->id)->get();
+            ->where('inventario.id_venta', $request->id)
+            ->where('inventario.fecha', $request->fecha)
+            ->get();
+
         return json_encode($data);
     }
 
     public function perfilBodega()
     {
-        $ventas = TituloVenta::join('usuario as enc', 'titulo_venta.encargado', '=', 'enc.correo')
-            ->join('usuario as ven', 'titulo_venta.vendedor', '=', 'ven.correo')
+        $ventas = TituloVenta::join('usuario as ven', 'titulo_venta.vendedor', '=', 'ven.correo')
             ->join('institucion as ins', 'titulo_venta.institucion', '=', 'ins.codigo')
             ->select(
                 'titulo_venta.*',
-                'enc.nombre as nombre_encargado',
-                'enc.apellido as apellido_encargado',
                 'ven.nombre as nombre_vendedor',
                 'ven.apellido as apellido_vendedor',
                 'ins.nombre as institucion_n'
+            )->get();
+
+        return view('bodega.bodega')->with('ventas', $ventas);
+    }
+
+    public function controlFechaBodega($id)
+    {
+        $dato = Facturas::join('usuario as en', 'nota_remision.encargado', '=', 'en.correo')
+            ->select(
+                'nota_remision.*',
+                'en.nombre as nombre_encargado',
+                'en.apellido as apellido_encargado',
             )
-            ->where('titulo_venta.estado', 'off')
-            ->get();
-        return view('dashboard.bodega')->with('ventas', $ventas);
+            ->where('id_venta', $id)->get();
+
+        return view('dashboard.ControlFechas')
+            ->with('id', $id)
+            ->with('dato', $dato);
     }
 }

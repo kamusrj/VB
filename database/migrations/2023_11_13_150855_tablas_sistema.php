@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('encargado', 200);
             $table->foreign('encargado')->references('correo')->on('usuario');
             $table->set('estado', ['on', 'off'])->default('on');
-        
+            $table->set('recibida', ['on', 'off'])->default('off');
             $table->String('fecha_programada');
             $table->string('fecha', 10);
             $table->string('representante', 200);
@@ -71,6 +71,7 @@ return new class extends Migration
             $table->double('precio')->default(0);
             $table->integer('descuento')->default(0);
             $table->double('ofrecimiento_a')->default(0);
+            $table->set('estado', ['on', 'off'])->default('on');
         });
 
 
